@@ -1,0 +1,120 @@
+fileFormatVersion: 2
+guid: a6360ccc7ef304efca27c480cc550479
+timeCreated: 1469473329
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Cube
+    100004: EastWall_Stone
+    100006: EastWall_Wood
+    100008: NorthWall_Stone
+    100010: NorthWall_Wood
+    100012: SouthWall_Stone
+    100014: SouthWall_Wood
+    100016: WestWall_Stone
+    100018: WestWall_Wood
+    400000: //RootNode
+    400002: Cube
+    400004: EastWall_Stone
+    400006: EastWall_Wood
+    400008: NorthWall_Stone
+    400010: NorthWall_Wood
+    400012: SouthWall_Stone
+    400014: SouthWall_Wood
+    400016: WestWall_Stone
+    400018: WestWall_Wood
+    2300000: Cube
+    2300002: EastWall_Stone
+    2300004: EastWall_Wood
+    2300006: NorthWall_Stone
+    2300008: NorthWall_Wood
+    2300010: SouthWall_Stone
+    2300012: SouthWall_Wood
+    2300014: WestWall_Stone
+    2300016: WestWall_Wood
+    3300000: Cube
+    3300002: EastWall_Stone
+    3300004: EastWall_Wood
+    3300006: NorthWall_Stone
+    3300008: NorthWall_Wood
+    3300010: SouthWall_Stone
+    3300012: SouthWall_Wood
+    3300014: WestWall_Stone
+    3300016: WestWall_Wood
+    4300000: NorthWall_Stone
+    4300002: SouthWall_Stone
+    4300004: WestWall_Stone
+    4300006: EastWall_Stone
+    4300008: NorthWall_Wood
+    4300010: SouthWall_Wood
+    4300012: EastWall_Wood
+    4300014: WestWall_Wood
+    4300016: Cube
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

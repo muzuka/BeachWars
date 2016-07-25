@@ -1,0 +1,167 @@
+fileFormatVersion: 2
+guid: f23ab48abfcce49d38448d4add889cd8
+timeCreated: 1453499521
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Armature_001
+    100004: Armature_L1
+    100006: Armature_L2
+    100008: Armature_L3
+    100010: Armature_L4
+    100012: Armature_L5
+    100014: Armature_R1
+    100016: Armature_R2
+    100018: Armature_R4
+    100020: Armature_R5
+    100022: Carpus_L1
+    100024: Carpus_L2
+    100026: Carpus_L3
+    100028: Carpus_L4
+    100030: Carpus_L5
+    100032: Carpus_R1
+    100034: Carpus_r2
+    100036: Carpus_r3
+    100038: Carpus_R4
+    100040: Carpus_R5
+    100042: Cheliped_L
+    100044: Cheliped_R
+    100046: Claw_L
+    100048: Claw_R
+    100050: Crab
+    100052: Dactyl_L2
+    100054: Dactyl_L3
+    100056: Dactyl_L4
+    100058: Dactyl_L5
+    100060: Dactyl_r2
+    100062: Dactyl_r3
+    100064: Dactyl_R4
+    100066: Dactyl_R5
+    100068: Merus_L1
+    100070: Merus_L2
+    100072: Merus_L3
+    100074: Merus_L4
+    100076: Merus_L5
+    100078: Merus_R1
+    100080: Merus_r2
+    100082: Merus_r3
+    100084: Merus_R4
+    100086: Merus_R5
+    100088: //RootNode
+    100090: Spine
+    400000: Armature
+    400002: Armature_001
+    400004: Armature_L1
+    400006: Armature_L2
+    400008: Armature_L3
+    400010: Armature_L4
+    400012: Armature_L5
+    400014: Armature_R1
+    400016: Armature_R2
+    400018: Armature_R4
+    400020: Armature_R5
+    400022: Carpus_L1
+    400024: Carpus_L2
+    400026: Carpus_L3
+    400028: Carpus_L4
+    400030: Carpus_L5
+    400032: Carpus_R1
+    400034: Carpus_r2
+    400036: Carpus_r3
+    400038: Carpus_R4
+    400040: Carpus_R5
+    400042: Cheliped_L
+    400044: Cheliped_R
+    400046: Claw_L
+    400048: Claw_R
+    400050: Crab
+    400052: Dactyl_L2
+    400054: Dactyl_L3
+    400056: Dactyl_L4
+    400058: Dactyl_L5
+    400060: Dactyl_r2
+    400062: Dactyl_r3
+    400064: Dactyl_R4
+    400066: Dactyl_R5
+    400068: Merus_L1
+    400070: Merus_L2
+    400072: Merus_L3
+    400074: Merus_L4
+    400076: Merus_L5
+    400078: Merus_R1
+    400080: Merus_r2
+    400082: Merus_r3
+    400084: Merus_R4
+    400086: Merus_R5
+    400088: //RootNode
+    400090: Spine
+    4300000: Crab
+    7400000: Default Take
+    9500000: //RootNode
+    13700000: Crab
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
