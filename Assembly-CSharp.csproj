@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\CrabController.cs" />
      <Compile Include="Assets\Scripts\EnemyAIController.cs" />
      <Compile Include="Assets\Scripts\Enterable.cs" />
+     <Compile Include="Assets\Scripts\GateController.cs" />
      <Compile Include="Assets\Scripts\GhostBlockController.cs" />
      <Compile Include="Assets\Scripts\InventorySlotController.cs" />
      <Compile Include="Assets\Scripts\MainUnitGUITag.cs" />
