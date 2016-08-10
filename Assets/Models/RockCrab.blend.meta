@@ -51,6 +51,25 @@ ModelImporter:
     100086: Merus_R5
     100088: //RootNode
     100090: Spine
+    100092: Armature_R3
+    100094: Carpus_R2
+    100096: Carpus_R3
+    100098: Claw_L_0
+    100100: ClawIK_L
+    100102: ClawIK_R
+    100104: Dactyl_R2
+    100106: Dactyl_R3
+    100108: DactylIK_L2
+    100110: DactylIK_L3
+    100112: DactylIK_L4
+    100114: DactylIK_L5
+    100116: DactylIK_R3
+    100118: DactylIK_R4
+    100120: DactylIK_R5
+    100122: Merus_R2
+    100124: Merus_R3
+    100126: DactylIK_R2
+    100128: Body
     400000: Armature
     400002: Armature_001
     400004: Armature_L1
@@ -97,10 +116,31 @@ ModelImporter:
     400086: Merus_R5
     400088: //RootNode
     400090: Spine
+    400092: Armature_R3
+    400094: Carpus_R2
+    400096: Carpus_R3
+    400098: Claw_L_0
+    400100: ClawIK_L
+    400102: ClawIK_R
+    400104: Dactyl_R2
+    400106: Dactyl_R3
+    400108: DactylIK_L2
+    400110: DactylIK_L3
+    400112: DactylIK_L4
+    400114: DactylIK_L5
+    400116: DactylIK_R3
+    400118: DactylIK_R4
+    400120: DactylIK_R5
+    400122: Merus_R2
+    400124: Merus_R3
+    400126: DactylIK_R2
+    400128: Body
     4300000: Crab
+    4300002: Claw_L
     7400000: Default Take
     9500000: //RootNode
     13700000: Crab
+    13700002: Claw_L
   materials:
     importMaterials: 1
     materialName: 0
