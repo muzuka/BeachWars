@@ -57,7 +57,6 @@
      <Compile Include="Assets\Scripts\GUIController.cs" />
      <Compile Include="Assets\Scripts\GateController.cs" />
      <Compile Include="Assets\Scripts\GhostBlockController.cs" />
-     <Compile Include="Assets\Scripts\InventorySlotController.cs" />
      <Compile Include="Assets\Scripts\MainUnitGUITag.cs" />
      <Compile Include="Assets\Scripts\NestController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />

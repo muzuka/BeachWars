@@ -90,7 +90,6 @@
 'Assets/Scripts/GUIController.cs'
 'Assets/Scripts/GateController.cs'
 'Assets/Scripts/GhostBlockController.cs'
-'Assets/Scripts/InventorySlotController.cs'
 'Assets/Scripts/MainUnitGUITag.cs'
 'Assets/Scripts/NestController.cs'
 'Assets/Scripts/PlayerController.cs'
