@@ -1,10 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CrabController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GUIController.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="71" Column="17" />
-      <File FileName="Assets/Scripts/InputController.cs" Line="75" Column="49" />
-      <File FileName="Assets/Scripts/CrabController.cs" Line="534" Column="32" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="131" Column="5" />
+      <File FileName="Assets/Scripts/InputController.cs" Line="343" Column="13" />
+      <File FileName="Assets/Scripts/GUIController.cs" Line="294" Column="29" />
+      <File FileName="Assets/Scripts/SelectUtils.cs" Line="11" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
