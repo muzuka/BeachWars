@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\CameraMover.cs" />
      <Compile Include="Assets\Scripts\CastleController.cs" />
      <Compile Include="Assets\Scripts\CastleDesign.cs" />
+     <Compile Include="Assets\Scripts\CrabAgent.cs" />
      <Compile Include="Assets\Scripts\CrabController.cs" />
      <Compile Include="Assets\Scripts\EnemyAIController.cs" />
      <Compile Include="Assets\Scripts\Enterable.cs" />
