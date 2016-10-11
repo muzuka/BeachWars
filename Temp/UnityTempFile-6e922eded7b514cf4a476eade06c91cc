@@ -105,6 +105,7 @@
 'Assets/Scripts/SelectUtils.cs'
 'Assets/Scripts/SiegeController.cs'
 'Assets/Scripts/StateController.cs'
+'Assets/Scripts/Team.cs'
 'Assets/Scripts/TerrainController.cs'
 'Assets/Scripts/TowerController.cs'
 'Assets/Scripts/Upgradable.cs'
