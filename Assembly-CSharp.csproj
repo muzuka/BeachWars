@@ -69,7 +69,6 @@
      <Compile Include="Assets\Scripts\SiegeController.cs" />
      <Compile Include="Assets\Scripts\StateController.cs" />
      <Compile Include="Assets\Scripts\Team.cs" />
-     <Compile Include="Assets\Scripts\TerrainController.cs" />
      <Compile Include="Assets\Scripts\TowerController.cs" />
      <Compile Include="Assets\Scripts\Upgradable.cs" />
      <Compile Include="Assets\Scripts\WorkshopController.cs" />
