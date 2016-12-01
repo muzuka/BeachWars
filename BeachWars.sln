@@ -5,6 +5,8 @@ Project("{1260F508-99D2-981C-CB07-E629420DF63A}") = "BeachWars", "Assembly-CShar
 EndProject
 Project("{1260F508-99D2-981C-CB07-E629420DF63A}") = "BeachWars", "Assembly-CSharp.csproj", "{A91B7100-1E65-C40F-005C-E7DBB739088B}"
 EndProject
+Project("{1260F508-99D2-981C-CB07-E629420DF63A}") = "BeachWars", "Assembly-UnityScript.unityproj", "{3046BD5D-8A16-9CF1-FBE7-8BDD5A572517}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{A91B7100-1E65-C40F-005C-E7DBB739088B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A91B7100-1E65-C40F-005C-E7DBB739088B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A91B7100-1E65-C40F-005C-E7DBB739088B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3046BD5D-8A16-9CF1-FBE7-8BDD5A572517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3046BD5D-8A16-9CF1-FBE7-8BDD5A572517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3046BD5D-8A16-9CF1-FBE7-8BDD5A572517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3046BD5D-8A16-9CF1-FBE7-8BDD5A572517}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

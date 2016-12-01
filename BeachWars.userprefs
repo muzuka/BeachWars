@@ -1,12 +1,8 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CrabController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/WorkshopController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player.cs" Line="8" Column="49" />
-      <File FileName="Assets/Scripts/GUIController.cs" Line="5" Column="38" />
-      <File FileName="Assets/Scripts/InputController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/CrabController.cs" Line="862" Column="37" />
-      <File FileName="Assets/Scripts/SiegeController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/WorkshopController.cs" Line="19" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
