@@ -1,8 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/WorkshopController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GhostBuildingManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/WorkshopController.cs" Line="19" Column="22" />
+      <File FileName="Assets/Scripts/GhostBuildingManager.cs" Line="100" Column="61" />
+      <File FileName="Assets/Scripts/InputController.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

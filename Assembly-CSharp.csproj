@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\GUIController.cs" />
      <Compile Include="Assets\Scripts\GateController.cs" />
      <Compile Include="Assets\Scripts\GhostBlockController.cs" />
+     <Compile Include="Assets\Scripts\GhostBuilder.cs" />
      <Compile Include="Assets\Scripts\GhostBuildingManager.cs" />
      <Compile Include="Assets\Scripts\GhostColorChanger.cs" />
      <Compile Include="Assets\Scripts\IdUtility.cs" />
