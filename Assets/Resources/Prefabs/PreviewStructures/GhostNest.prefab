@@ -16,15 +16,16 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010579726668}
-  - 33: {fileID: 33000012311172316}
-  - 23: {fileID: 23000013426421050}
-  - 65: {fileID: 65000013097432430}
-  - 114: {fileID: 114000013842686576}
-  - 114: {fileID: 114000012274507194}
-  - 114: {fileID: 114000011234717354}
+  - component: {fileID: 4000010579726668}
+  - component: {fileID: 33000012311172316}
+  - component: {fileID: 23000013426421050}
+  - component: {fileID: 65000013097432430}
+  - component: {fileID: 114000013842686576}
+  - component: {fileID: 114000012274507194}
+  - component: {fileID: 114000011234717354}
+  - component: {fileID: 114200638860509814}
   m_Layer: 0
   m_Name: GhostNest
   m_TagString: Ghost
@@ -41,10 +42,10 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1, z: 0.5}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!23 &23000013426421050
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -59,7 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: ca209861ddb5f4b828cbc5fd8624b598, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -67,7 +70,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -128,3 +131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a80655729f940c1a13db5ebe2db5e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114200638860509814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013617449846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 1

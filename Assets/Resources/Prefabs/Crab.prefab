@@ -5,18 +5,19 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 484922}
-  - 33: {fileID: 3325628}
-  - 23: {fileID: 2307816}
-  - 64: {fileID: 6428428}
-  - 54: {fileID: 5406880}
-  - 95: {fileID: 9526376}
-  - 195: {fileID: 19530082}
-  - 114: {fileID: 11428854}
-  - 114: {fileID: 11428676}
-  - 114: {fileID: 114000013596240112}
+  - component: {fileID: 484922}
+  - component: {fileID: 3325628}
+  - component: {fileID: 2307816}
+  - component: {fileID: 6428428}
+  - component: {fileID: 5406880}
+  - component: {fileID: 9526376}
+  - component: {fileID: 19530082}
+  - component: {fileID: 11428854}
+  - component: {fileID: 11428676}
+  - component: {fileID: 114000013596240112}
+  - component: {fileID: 114085913685307978}
   m_Layer: 0
   m_Name: Crab
   m_TagString: Crab
@@ -33,10 +34,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2307816
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -51,7 +52,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 4b4a147c60b244585a36949fe6dd0c9b, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -59,7 +62,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -99,6 +102,8 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!95 &9526376
 Animator:
@@ -318,3 +323,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+--- !u!114 &114085913685307978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 1

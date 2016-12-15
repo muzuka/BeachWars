@@ -5,10 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 447012}
-  - 114: {fileID: 11494776}
+  - component: {fileID: 447012}
+  - component: {fileID: 11494776}
+  - component: {fileID: 114089150047801438}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -25,10 +26,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11494776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -71,3 +72,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 146140}
   m_IsPrefabParent: 1
+--- !u!114 &114089150047801438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 1
