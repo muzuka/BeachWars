@@ -5,17 +5,18 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 423610}
-  - 33: {fileID: 3358248}
-  - 23: {fileID: 2388050}
-  - 65: {fileID: 6527850}
-  - 208: {fileID: 20869126}
-  - 95: {fileID: 9525176}
-  - 114: {fileID: 11422838}
-  - 114: {fileID: 11472820}
-  - 114: {fileID: 114000010918744372}
+  - component: {fileID: 423610}
+  - component: {fileID: 3358248}
+  - component: {fileID: 2388050}
+  - component: {fileID: 6527850}
+  - component: {fileID: 20869126}
+  - component: {fileID: 9525176}
+  - component: {fileID: 11422838}
+  - component: {fileID: 11472820}
+  - component: {fileID: 114000010918744372}
+  - component: {fileID: 114847857063092588}
   m_Layer: 0
   m_Name: Workshop
   m_TagString: Workshop
@@ -32,10 +33,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 38.20777, y: 0, z: 28.232336}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2388050
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -50,7 +51,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: fe0baafe33a724a709530c61b0888f70, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -58,7 +61,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -163,3 +166,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+--- !u!114 &114847857063092588
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 1
