@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 114000010182843452}
   - component: {fileID: 114000010127862500}
   - component: {fileID: 114500683125472680}
+  - component: {fileID: 114480996228777934}
   m_Layer: 0
   m_Name: GhostBlock
   m_TagString: Ghost
@@ -145,6 +146,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a80655729f940c1a13db5ebe2db5e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114480996228777934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114500683125472680

@@ -67,6 +67,7 @@ GameObject:
   - component: {fileID: 11458206}
   - component: {fileID: 114000013417585826}
   - component: {fileID: 114397831019717198}
+  - component: {fileID: 114845445209847938}
   m_Layer: 0
   m_Name: Catapult
   m_TagString: Catapult
@@ -1054,3 +1055,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+--- !u!114 &114845445209847938
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

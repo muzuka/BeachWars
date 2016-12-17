@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114000013186019994}
   - component: {fileID: 114000011687141308}
   - component: {fileID: 114321529287121856}
+  - component: {fileID: 114111830741844768}
   m_Layer: 0
   m_Name: GhostWorkshop
   m_TagString: Ghost
@@ -131,6 +132,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   original: {fileID: 177976, guid: 5ceee33e9f35b44489a38ae9adc20703, type: 2}
+--- !u!114 &114111830741844768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010040265136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114321529287121856
 MonoBehaviour:
   m_ObjectHideFlags: 1
