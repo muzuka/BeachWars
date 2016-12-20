@@ -1,11 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Hoverable.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GUIController.cs">
     <Files>
-      <File FileName="Assets/Scripts/CrabController.cs" Line="98" Column="52" />
-      <File FileName="Assets/Scripts/InputController.cs" Line="340" Column="42" />
-      <File FileName="Assets/Scripts/GUIController.cs" Line="496" Column="35" />
-      <File FileName="Assets/Scripts/Hoverable.cs" Line="26" Column="49" />
+      <File FileName="Assets/Scripts/InputController.cs" Line="355" Column="4" />
+      <File FileName="Assets/Scripts/GUIController.cs" Line="55" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
