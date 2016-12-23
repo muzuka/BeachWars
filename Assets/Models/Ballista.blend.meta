@@ -19,6 +19,13 @@ ModelImporter:
     100022: Cylinder_006
     100024: NurbsPath
     100026: NurbsPath_001
+    100028: Base
+    100030: Bolt
+    100032: Bow
+    100034: Wheel1
+    100036: Wheel2
+    100038: Wheel3
+    100040: Wheel4
     400000: //RootNode
     400002: BezierCurve
     400004: Cone
@@ -33,6 +40,13 @@ ModelImporter:
     400022: Cylinder_006
     400024: NurbsPath
     400026: NurbsPath_001
+    400028: Base
+    400030: Bolt
+    400032: Bow
+    400034: Wheel1
+    400036: Wheel2
+    400038: Wheel3
+    400040: Wheel4
     2300000: BezierCurve
     2300002: Cone
     2300004: Cube
@@ -46,6 +60,13 @@ ModelImporter:
     2300020: Cylinder_006
     2300022: NurbsPath
     2300024: NurbsPath_001
+    2300026: Base
+    2300028: Bolt
+    2300030: Bow
+    2300032: Wheel1
+    2300034: Wheel2
+    2300036: Wheel3
+    2300038: Wheel4
     3300000: BezierCurve
     3300002: Cone
     3300004: Cube
@@ -59,6 +80,13 @@ ModelImporter:
     3300020: Cylinder_006
     3300022: NurbsPath
     3300024: NurbsPath_001
+    3300026: Base
+    3300028: Bolt
+    3300030: Bow
+    3300032: Wheel1
+    3300034: Wheel2
+    3300036: Wheel3
+    3300038: Wheel4
     4300000: NurbsPath_001
     4300002: NurbsPath
     4300004: Cone
@@ -72,6 +100,13 @@ ModelImporter:
     4300020: Cylinder_001
     4300022: Cylinder
     4300024: Cube
+    4300026: Bolt
+    4300028: Bow
+    4300030: Wheel2
+    4300032: Wheel4
+    4300034: Wheel1
+    4300036: Wheel3
+    4300038: Base
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -81,7 +116,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -120,6 +155,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -130,7 +166,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
