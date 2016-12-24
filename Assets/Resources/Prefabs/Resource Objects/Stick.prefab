@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11419500}
   - component: {fileID: 114089145166090572}
   - component: {fileID: 114585869450307238}
+  - component: {fileID: 114615680115898196}
   m_Layer: 0
   m_Name: Stick
   m_TagString: Wood
@@ -170,3 +171,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114615680115898196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 803b68598584745248615134e8fa4caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: -1

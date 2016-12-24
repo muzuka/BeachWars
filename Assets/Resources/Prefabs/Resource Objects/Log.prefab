@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11410284}
   - component: {fileID: 114657008784359182}
   - component: {fileID: 114521789746098356}
+  - component: {fileID: 114664049965343414}
   m_Layer: 0
   m_Name: Log
   m_TagString: Wood
@@ -158,3 +159,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+--- !u!114 &114664049965343414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 803b68598584745248615134e8fa4caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: -1
