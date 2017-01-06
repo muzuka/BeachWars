@@ -5,13 +5,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 497040}
-  - 33: {fileID: 3377870}
-  - 23: {fileID: 2380034}
-  - 95: {fileID: 9537052}
-  - 65: {fileID: 6568836}
+  - component: {fileID: 497040}
+  - component: {fileID: 3377870}
+  - component: {fileID: 2380034}
+  - component: {fileID: 9537052}
+  - component: {fileID: 6568836}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Shield
@@ -28,10 +28,10 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 41.601685, y: -5.684342e-14, z: 18.609451}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2380034
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -47,7 +47,9 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 7ab87b989a9e846f7b28fa420e4bcdbf, type: 2}
   - {fileID: 2100000, guid: e31f5d2826f1741d9a491b5e43c32b00, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -55,7 +57,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -76,7 +78,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152188}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 1}
