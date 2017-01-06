@@ -31,6 +31,7 @@ TagManager:
   - Junction
   - Gate
   - Ghost
+  - Armoury
   layers:
   - Default
   - TransparentFX
