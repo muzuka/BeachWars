@@ -162,7 +162,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 479748}
-  - component: {fileID: 23793855617045304}
   - component: {fileID: 9569688}
   - component: {fileID: 6598890}
   - component: {fileID: 11464744}
@@ -170,7 +169,7 @@ GameObject:
   - component: {fileID: 11461432}
   - component: {fileID: 114000010374613188}
   - component: {fileID: 114787570158757714}
-  - component: {fileID: 114680973054006668}
+  - component: {fileID: 114157625698888612}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -761,37 +760,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 191168}
   m_IsPrefabParent: 1
---- !u!23 &23793855617045304
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 191168}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: b9fc5ec45d72f4a97822f78aa00858b1, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
 --- !u!114 &114000010374613188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -804,7 +772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
---- !u!114 &114680973054006668
+--- !u!114 &114157625698888612
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -812,7 +780,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 191168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b38f00837e594f45b04308b3a790210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114787570158757714

@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4378577207968338}
   - component: {fileID: 95577870351131056}
+  - component: {fileID: 114179017752986110}
   m_Layer: 0
   m_Name: Gate
   m_TagString: Untagged
@@ -195,3 +196,14 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114179017752986110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1915185857799260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b38f00837e594f45b04308b3a790210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

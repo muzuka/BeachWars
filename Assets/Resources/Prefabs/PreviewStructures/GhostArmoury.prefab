@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 114772144089259316}
   - component: {fileID: 114589376228094546}
   - component: {fileID: 114432310995579192}
-  - component: {fileID: 114007668754044708}
+  - component: {fileID: 114593740019533128}
   m_Layer: 0
   m_Name: GhostArmoury
   m_TagString: Untagged
@@ -481,17 +481,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114007668754044708
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1920904412707224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114151565723281080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -582,6 +571,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+--- !u!114 &114593740019533128
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1920904412707224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b38f00837e594f45b04308b3a790210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114772144089259316
 MonoBehaviour:
   m_ObjectHideFlags: 1

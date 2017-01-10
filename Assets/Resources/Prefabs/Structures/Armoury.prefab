@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 114480470438757270}
   - component: {fileID: 114247612546113490}
   - component: {fileID: 114431784707340296}
-  - component: {fileID: 114183668773803694}
+  - component: {fileID: 114046735724974060}
   m_Layer: 0
   m_Name: Armoury
   m_TagString: Untagged
@@ -491,7 +491,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114183668773803694
+--- !u!114 &114046735724974060
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -499,7 +499,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1847427194095158}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b38f00837e594f45b04308b3a790210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114247612546113490

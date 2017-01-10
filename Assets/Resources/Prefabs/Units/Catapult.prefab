@@ -16,10 +16,10 @@ GameObject:
   - component: {fileID: 114718721107410304}
   - component: {fileID: 114894666530229908}
   - component: {fileID: 114320749252020594}
-  - component: {fileID: 114300800685016044}
+  - component: {fileID: 114386891981760994}
   m_Layer: 0
   m_Name: Catapult
-  m_TagString: Untagged
+  m_TagString: Catapult
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,17 +491,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &114300800685016044
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 114126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c8f8802cfb94062b773021c7a323a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114320749252020594
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -514,6 +503,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+--- !u!114 &114386891981760994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b38f00837e594f45b04308b3a790210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114669466782673824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -570,7 +570,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 114126}
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
