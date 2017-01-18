@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GUIController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InputController.cs">
     <Files>
-      <File FileName="Assets/Scripts/HoldsWeapons.cs" Line="20" Column="25" />
-      <File FileName="Assets/Scripts/ArmouryController.cs" Line="83" Column="17" />
-      <File FileName="Assets/Scripts/ActionViewController.cs" Line="136" Column="23" />
-      <File FileName="Assets/Scripts/Player.cs" Line="328" Column="35" />
-      <File FileName="Assets/Scripts/InputController.cs" Line="314" Column="24" />
-      <File FileName="Assets/Scripts/GUIController.cs" Line="525" Column="5" />
-      <File FileName="Assets/Scripts/CrabController.cs" Line="630" Column="17" />
+      <File FileName="Assets/Scripts/CrabController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GhostBuildingManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HoldsWeapons.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Player.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InputController.cs" Line="495" Column="4" />
+      <File FileName="Assets/Scripts/GhostBuilder.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ChangeTextPlayer.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
