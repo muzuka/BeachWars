@@ -1,11 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MainMenuButtonController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ButtonController.cs">
     <Files>
-      <File FileName="Assets/Scripts/GUIController.cs" Line="581" Column="42" />
-      <File FileName="Assets/Scripts/InputController.cs" Line="572" Column="3" />
-      <File FileName="Assets/Scripts/MainMenuButtonController.cs" Line="7" Column="64" />
-      <File FileName="Assets/Scripts/ButtonController.cs" Line="40" Column="3" />
+      <File FileName="Assets/Scripts/Player.cs" Line="182" Column="15" />
+      <File FileName="Assets/Scripts/GUIController.cs" Line="52" Column="29" />
+      <File FileName="Assets/Scripts/InputController.cs" Line="414" Column="36" />
+      <File FileName="Assets/Scripts/MainMenuButtonController.cs" Line="14" Column="2" />
+      <File FileName="Assets/Scripts/ButtonController.cs" Line="22" Column="45" />
+      <File FileName="Assets/Scripts/ActionViewController.cs" Line="195" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
