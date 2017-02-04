@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 447012}
   - component: {fileID: 11494776}
   - component: {fileID: 114089150047801438}
+  - component: {fileID: 114719870649767766}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -41,10 +42,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfb9a0435ca4475797152cad5d19d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultState: Collecting
   team: 1
   warningDistance: 15
   dangerDistance: 5
+  startMode: 0
+  gathering: 1
+  building: 1
+  makingCrabs: 1
+  harassing: 1
+  defending: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -84,3 +90,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+--- !u!114 &114719870649767766
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 803b68598584745248615134e8fa4caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
