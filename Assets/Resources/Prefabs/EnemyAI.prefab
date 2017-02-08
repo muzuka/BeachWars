@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 11494776}
   - component: {fileID: 114089150047801438}
   - component: {fileID: 114719870649767766}
+  - component: {fileID: 114310524506956852}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -42,7 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfb9a0435ca4475797152cad5d19d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 1
   warningDistance: 15
   dangerDistance: 5
   startMode: 0
@@ -90,6 +90,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+--- !u!114 &114310524506956852
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c830ca241b34e58910e60f41a4b86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114719870649767766
 MonoBehaviour:
   m_ObjectHideFlags: 1
