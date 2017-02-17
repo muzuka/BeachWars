@@ -121,6 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   original: {fileID: 148416, guid: 006e36848c3474d5599d129372c9dd90, type: 2}
+  woodRequirement: 10
+  stoneRequirement: 0
 --- !u!114 &114000013842686576
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -607,3 +607,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   original: {fileID: 1847427194095158, guid: 303c51e4c0cc0409a8c76e01c6e279f8, type: 2}
+  woodRequirement: 10
+  stoneRequirement: 5
