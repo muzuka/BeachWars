@@ -9,10 +9,10 @@ GameObject:
   m_Component:
   - component: {fileID: 447012}
   - component: {fileID: 11494776}
+  - component: {fileID: 114312245290865342}
+  - component: {fileID: 114310524506956852}
   - component: {fileID: 114089150047801438}
   - component: {fileID: 114719870649767766}
-  - component: {fileID: 114310524506956852}
-  - component: {fileID: 114312245290865342}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
