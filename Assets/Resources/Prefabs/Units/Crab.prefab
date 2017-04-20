@@ -69,6 +69,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &3325628
 MeshFilter:
@@ -145,12 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fd63ee9f7dea4768b64302b06d0e888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: Rock Crab
+  type: 0
   attackRange: 4
-  timeToBuild: 2
-  timeToUpgrade: 10
   deathClip: {fileID: 8300000, guid: 01cf8c1f524bc46bf841f3336a981192, type: 3}
   hitClip: {fileID: 8300000, guid: ca5b2ebecee304421a468d8d94afbfb1, type: 3}
+  timeToBuild: 2
+  timeToUpgrade: 10
 --- !u!195 &19530082
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -158,6 +159,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
+  m_AgentTypeID: 0
   m_Radius: 0.398409
   m_Speed: 3.5
   m_Acceleration: 8
@@ -335,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
 --- !u!114 &114970429990493344
 MonoBehaviour:
   m_ObjectHideFlags: 1
