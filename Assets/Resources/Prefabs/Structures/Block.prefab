@@ -166,10 +166,10 @@ GameObject:
   - component: {fileID: 6598890}
   - component: {fileID: 11464744}
   - component: {fileID: 11433458}
-  - component: {fileID: 11461432}
   - component: {fileID: 114000010374613188}
   - component: {fileID: 114787570158757714}
   - component: {fileID: 114157625698888612}
+  - component: {fileID: 114181653924317868}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -707,19 +707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f350603d953640979e25088aada8d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11461432
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 191168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa987a4c683f44571aae30ee15b2f877, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxLevel: 2
-  timeToUpgrade: 2
 --- !u!114 &11464744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -792,6 +779,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b38f00837e594f45b04308b3a790210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114181653924317868
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc719fb902489453fb71c2bc6f510269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToUpgrade: 5
 --- !u!114 &114787570158757714
 MonoBehaviour:
   m_ObjectHideFlags: 1
