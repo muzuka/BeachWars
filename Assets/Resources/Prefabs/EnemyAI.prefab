@@ -41,17 +41,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f9aa8f89ac4548c1871e38c173b2b38, type: 3}
+  m_Script: {fileID: 11500000, guid: c7b31a86e5b1d419c84074ceb74033d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningDistance: 0
-  dangerDistance: 0
+  warningDistance: 15
+  dangerDistance: 10
   startMode: 0
   gathering: 1
   building: 1
   makingCrabs: 1
   harassing: 1
   defending: 1
+  lowResourceCount: 10
+  maxGatheringCrabs: 0
+  maxBuildingCrabs: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
