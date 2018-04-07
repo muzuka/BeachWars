@@ -1,0 +1,10 @@
+<buildingCosts>
+	<woodCost name="Nest">5</woodCost>
+	<stoneCost name="Nest">5</stoneCost>
+	<woodCost name="Workshop">20</woodCost>
+	<stoneCost name="Workshop">20</stoneCost>
+	<woodCost name="Armoury">20</woodCost>
+	<stoneCost name="Armoury">20</stoneCost>
+	<woodCost name="Tower">20</woodCost>
+	<stoneCost name="Tower">20</stoneCost>
+</buildingCosts>
