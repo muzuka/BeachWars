@@ -112,6 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ed474145b7c41c1a3df50be9c5a1a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  occupiedCanvas: {fileID: 1328040157561480, guid: 6074a61ec1024445097b7f727dadd3ff,
+    type: 2}
+  sliderHidden: 0
 --- !u!208 &20857404
 NavMeshObstacle:
   m_ObjectHideFlags: 1
@@ -244,7 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  debug: 1
 --- !u!114 &114705097782129810
 MonoBehaviour:
   m_ObjectHideFlags: 1
