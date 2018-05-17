@@ -3667,6 +3667,10 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11410284, guid: 44db22ea1ea8d4533900191ea9e6bfe5, type: 2}
+      propertyPath: resourceCount
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 44db22ea1ea8d4533900191ea9e6bfe5, type: 2}
   m_IsPrefabParent: 0
@@ -7470,7 +7474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &734875253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7571,6 +7575,9 @@ MonoBehaviour:
   woodGoal: 20
   stoneGoal: 20
   woodToStoneRatio: 0.5
+  crabs: []
+  woodCrabs: []
+  stoneCrabs: []
 --- !u!114 &734875260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14500,7 +14507,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 420178, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 48.36
+      value: 80.3
       objectReference: {fileID: 0}
     - target: {fileID: 420178, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 2}
       propertyPath: m_LocalPosition.y
@@ -14508,7 +14515,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 420178, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 27.9
+      value: 96.73
       objectReference: {fileID: 0}
     - target: {fileID: 420178, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 2}
       propertyPath: m_LocalRotation.x
@@ -19824,6 +19831,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1008784478806070, guid: 6fc94e4a4ec331346a589c9ddc1c6c25,
         type: 2}
+    - target: {fileID: 114847857063092588, guid: 5ceee33e9f35b44489a38ae9adc20703,
+        type: 2}
+      propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ceee33e9f35b44489a38ae9adc20703, type: 2}
   m_IsPrefabParent: 0
