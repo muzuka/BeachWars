@@ -129,8 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a638cf81d33f48779488b7e55c7ca61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  catapultCost: 1
-  ballistaCost: 1
+  catapultWoodCost: 1
+  catapultStoneCost: 1
+  ballistaWoodCost: 1
+  ballistaStoneCost: 1
   sliderCanvas: {fileID: 1008784478806070, guid: 6fc94e4a4ec331346a589c9ddc1c6c25,
     type: 2}
 --- !u!208 &20869126
