@@ -122,6 +122,7 @@ MonoBehaviour:
   occupiedCanvas: {fileID: 1328040157561480, guid: 6074a61ec1024445097b7f727dadd3ff,
     type: 2}
   sliderHidden: 1
+  distanceToInstantiate: 0
 --- !u!114 &11451256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -134,6 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 10
+  maxHealth: 200
+  timeToAttack: 2
 --- !u!114 &11475668
 MonoBehaviour:
   m_ObjectHideFlags: 1

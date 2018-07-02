@@ -135,6 +135,9 @@ MonoBehaviour:
   ballistaStoneCost: 1
   sliderCanvas: {fileID: 1008784478806070, guid: 6fc94e4a4ec331346a589c9ddc1c6c25,
     type: 2}
+  maxHealth: 200
+  timeToBuild: 10
+  distanceToInstantiate: 2
 --- !u!208 &20869126
 NavMeshObstacle:
   m_ObjectHideFlags: 1
