@@ -719,6 +719,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6395666a582476ba611a1e66b1eb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalMaxHealth: 10
+  woodMaxHealth: 20
+  stoneMaxHealth: 30
 --- !u!208 &20824734
 NavMeshObstacle:
   m_ObjectHideFlags: 1
