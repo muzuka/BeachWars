@@ -1,0 +1,92 @@
+﻿<crabStats>
+  <health name="Rock" id="0">100</health>
+  <movementSpeed name="Rock" id="0">4.5</movementSpeed>
+  <attackDamage name="Rock" id="0">25</attackDamage>
+  <attackSpeed name="Rock" id="0">2</attackSpeed>
+  <scaleFactor name="Rock" id="0">
+    <x>3</x>
+    <y>3</y>
+    <z>3</z>
+  </scaleFactor>
+  <health name="Fiddler" id="1">100</health>
+  <movementSpeed name="Fiddler" id="1">4.5</movementSpeed>
+  <attackDamage name="Fiddler" id="1">35</attackDamage>
+  <attackSpeed name="Fiddler" id="1">0.5</attackSpeed>
+  <scaleFactor name="Fiddler" id="1">
+    <x>5</x>
+    <y>3</y>
+    <z>3</z>
+  </scaleFactor>
+  <health name="Tgiant" id="2">200</health>
+  <movementSpeed name="Tgiant" id="2">3</movementSpeed>
+  <attackDamage name="Tgiant" id="2">60</attackDamage>
+  <attackSpeed name="Tgiant" id="2">2</attackSpeed>
+  <scaleFactor name="Tgiant" id="2">
+    <x>7</x>
+    <y>7</y>
+    <z>7</z>
+  </scaleFactor>
+  <health name="Spider" id="3">150</health>
+  <movementSpeed name="Spider" id="3">3.5</movementSpeed>
+  <attackDamage name="Spider" id="3">20</attackDamage>
+  <attackSpeed name="Spider" id="3">1</attackSpeed>
+  <scaleFactor name="Spider" id="3">
+    <x>3</x>
+    <y>5</y>
+    <z>3</z>
+  </scaleFactor>
+  <health name="Coconut" id="4">200</health>
+  <movementSpeed name="Coconut" id="4">2</movementSpeed>
+  <attackDamage name="Coconut" id="4">40</attackDamage>
+  <attackSpeed name="Coconut" id="4">2</attackSpeed>
+  <scaleFactor name="Coconut" id="4">
+    <x>3</x>
+    <y>3</y>
+    <z>5</z>
+  </scaleFactor>
+  <health name="Horseshoe" id="5">200</health>
+  <movementSpeed name="Horseshoe" id="5">5.5</movementSpeed>
+  <attackDamage name="Horseshoe" id="5">2</attackDamage>
+  <attackSpeed name="Horseshoe" id="5">3</attackSpeed>
+  <scaleFactor name="Horseshoe" id="5">
+    <x>3</x>
+    <y>3</y>
+    <z>3</z>
+  </scaleFactor>
+  <health name="Seaweed" id="6">75</health>
+  <movementSpeed name="Seaweed" id="6">2</movementSpeed>
+  <attackDamage name="Seaweed" id="6">10</attackDamage>
+  <attackSpeed name="Seaweed" id="6">0.25</attackSpeed>
+  <scaleFactor name="Seaweed" id="6">
+    <x>2</x>
+    <y>2</y>
+    <z>2</z>
+  </scaleFactor>
+  <health name="Calico" id="7">100</health>
+  <movementSpeed name="Calico" id="7">4.5</movementSpeed>
+  <attackDamage name="Calico" id="7">25</attackDamage>
+  <attackSpeed name="Calico" id="7">1</attackSpeed>
+  <scaleFactor name="Calico" id="7">
+    <x>3</x>
+    <y>3</y>
+    <z>3</z>
+  </scaleFactor>
+  <health name="Trilobite" id="8">150</health>
+  <movementSpeed name="Trilobite" id="8">2</movementSpeed>
+  <attackDamage name="Trilobite" id="8">20</attackDamage>
+  <attackSpeed name="Trilobite" id="8">1</attackSpeed>
+  <scaleFactor name="Trilobite" id="8">
+    <x>3</x>
+    <y>2</y>
+    <z>3</z>
+  </scaleFactor>
+  <health name="Kakoota" id="9">75</health>
+  <movementSpeed name="Kakoota" id="9">2</movementSpeed>
+  <attackDamage name="Kakoota" id="9">10</attackDamage>
+  <attackSpeed name="Kakoota" id="9">0.5</attackSpeed>
+  <scaleFactor name="Kakoota" id="9">
+    <x>3</x>
+    <y>3</y>
+    <z>3</z>
+  </scaleFactor>
+</crabStats>
