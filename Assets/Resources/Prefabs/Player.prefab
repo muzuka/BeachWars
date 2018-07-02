@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2392153687c654f9cb91c641b22f22bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loseCondition: 0
+  winCondition: 0
+  maxUnitCount: 0
 --- !u!114 &11435120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,6 +59,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756d1ca550ef84c30913c6cf82ef7f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  singleClickMaxDist: 1
+  maxOffsets: 100
+  offsetRadius: 2
 --- !u!114 &11496906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,6 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainGUI: {fileID: 1063729130781174, guid: baeca3581e97147aaafe18160225a605, type: 2}
+  onGUI: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

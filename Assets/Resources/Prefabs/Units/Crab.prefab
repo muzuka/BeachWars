@@ -152,6 +152,11 @@ MonoBehaviour:
   hitClip: {fileID: 8300000, guid: ca5b2ebecee304421a468d8d94afbfb1, type: 3}
   timeToBuild: 2
   timeToUpgrade: 10
+  timeToRebuild: 1
+  rebuildAmount: 10
+  nextLevelExperience: 100
+  levelGain: 10
+  awarenessMultiplier: 3
 --- !u!195 &19530082
 NavMeshAgent:
   m_ObjectHideFlags: 1
