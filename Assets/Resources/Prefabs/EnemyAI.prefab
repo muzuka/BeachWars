@@ -8,9 +8,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 447012}
+  - component: {fileID: 114310524506956852}
   - component: {fileID: 11494776}
   - component: {fileID: 114312245290865342}
-  - component: {fileID: 114310524506956852}
+  - component: {fileID: 114656110707677084}
+  - component: {fileID: 114734630821329796}
+  - component: {fileID: 114574205225863802}
   - component: {fileID: 114089150047801438}
   - component: {fileID: 114719870649767766}
   m_Layer: 0
@@ -44,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b31a86e5b1d419c84074ceb74033d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningDistance: 15
-  dangerDistance: 10
+  warningDistance: 20
+  dangerDistance: 5
   startMode: 0
   gathering: 1
   building: 1
@@ -55,6 +58,13 @@ MonoBehaviour:
   lowResourceCount: 10
   maxGatheringCrabs: 0
   maxBuildingCrabs: 0
+  initialWoodGoal: 10
+  initialStoneGoal: 10
+  buildingQueue:
+  - Armoury
+  - Nest
+  - Workshop
+  woodToStoneRatio: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -93,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  debug: 1
 --- !u!114 &114310524506956852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -116,6 +126,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3adfe7d0cf1314de88657ff6489d6897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114574205225863802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a82fe73e6fbcb4e46b5b8982d8b09948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114656110707677084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c04fef6ba2f749b18ce5852937b717f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  woodGoal: 20
+  stoneGoal: 20
+  woodToStoneRatio: 0.5
 --- !u!114 &114719870649767766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,4 +162,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803b68598584745248615134e8fa4caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  team: 1
+--- !u!114 &114734630821329796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18442f1699f543ea9d6ca02fac67de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponCreationTime: 10
+  buildingDistance: 10
