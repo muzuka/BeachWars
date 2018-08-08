@@ -121,7 +121,7 @@ MonoBehaviour:
   occupiedCanvas: {fileID: 1328040157561480, guid: 6074a61ec1024445097b7f727dadd3ff,
     type: 2}
   sliderHidden: 0
-  distanceToInstantiate: 0
+  distanceToInstantiate: 3
 --- !u!208 &20857404
 NavMeshObstacle:
   m_ObjectHideFlags: 1
