@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   original: {fileID: 191168, guid: 8fa7701ae10ee4dc4b0070d2a5a6dab8, type: 2}
-  timeToWait: 0
+  timeToWait: 5
 --- !u!114 &114000012830061980
 MonoBehaviour:
   m_ObjectHideFlags: 1

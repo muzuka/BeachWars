@@ -56,9 +56,11 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ca209861ddb5f4b828cbc5fd8624b598, type: 2}
   m_StaticBatchInfo:
@@ -71,6 +73,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -133,8 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   original: {fileID: 1000010827638024, guid: 7b23435272b924411a89ce72421fb79f, type: 2}
-  woodRequirement: 0
-  stoneRequirement: 0
+  timeToWait: 5
 --- !u!114 &114255280689703090
 MonoBehaviour:
   m_ObjectHideFlags: 1
