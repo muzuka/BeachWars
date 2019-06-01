@@ -3,9 +3,9 @@
 --- !u!1 &154138
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 484922}
   - component: {fileID: 3325628}
@@ -29,7 +29,7 @@ GameObject:
 --- !u!4 &484922
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -42,7 +42,7 @@ Transform:
 --- !u!23 &2307816
 MeshRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -77,14 +77,14 @@ MeshRenderer:
 --- !u!33 &3325628
 MeshFilter:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Mesh: {fileID: 4300000, guid: f23ab48abfcce49d38448d4add889cd8, type: 3}
 --- !u!54 &5406880
 Rigidbody:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   serializedVersion: 2
@@ -99,7 +99,7 @@ Rigidbody:
 --- !u!64 &6428428
 MeshCollider:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Material: {fileID: 0}
@@ -114,7 +114,7 @@ MeshCollider:
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -131,7 +131,7 @@ Animator:
 --- !u!114 &11428676
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
 --- !u!114 &11428854
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -150,24 +150,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fd63ee9f7dea4768b64302b06d0e888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  attackRange: 4
-  deathClip: {fileID: 8300000, guid: 01cf8c1f524bc46bf841f3336a981192, type: 3}
-  hitClip: {fileID: 8300000, guid: ca5b2ebecee304421a468d8d94afbfb1, type: 3}
-  timeToBuild: 2
-  timeToUpgrade: 10
-  timeToRebuild: 1
-  timeToRepair: 1
-  damageIncrease: 0
-  healthIncrease: 0
-  rebuildAmount: 10
-  nextLevelExperience: 100
-  levelGain: 10
-  awarenessMultiplier: 3
+  Type: 0
+  AttackRange: 4
+  DeathClip: {fileID: 8300000, guid: 01cf8c1f524bc46bf841f3336a981192, type: 3}
+  HitClip: {fileID: 8300000, guid: ca5b2ebecee304421a468d8d94afbfb1, type: 3}
+  TimeToBuild: 2
+  TimeToUpgrade: 10
+  TimeToRebuild: 1
+  TimeToRepair: 1
+  DamageIncrease: 1
+  HealthIncrease: 2
+  RebuildAmount: 10
+  NextLevelExperience: 10
+  LevelGain: 1
+  AwarenessMultiplier: 3
 --- !u!195 &19530082
 NavMeshAgent:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -323,13 +323,13 @@ Prefab:
       value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 154138}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!114 &114000013596240112
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -341,7 +341,7 @@ MonoBehaviour:
 --- !u!114 &114085913685307978
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1
@@ -349,11 +349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  Debug: 0
 --- !u!114 &114970429990493344
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154138}
   m_Enabled: 1

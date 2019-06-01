@@ -3,9 +3,9 @@
 --- !u!1 &177976
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 423610}
   - component: {fileID: 3358248}
@@ -29,7 +29,7 @@ GameObject:
 --- !u!4 &423610
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -42,15 +42,17 @@ Transform:
 --- !u!23 &2388050
 MeshRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: fe0baafe33a724a709530c61b0888f70, type: 2}
   m_StaticBatchInfo:
@@ -63,6 +65,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -74,14 +77,14 @@ MeshRenderer:
 --- !u!33 &3358248
 MeshFilter:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Mesh: {fileID: 4300002, guid: 57279477c27e64ad299d6f7a66e6c91c, type: 3}
 --- !u!65 &6527850
 BoxCollider:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Material: {fileID: 0}
@@ -94,7 +97,7 @@ BoxCollider:
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -107,10 +110,11 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &11422838
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -121,7 +125,7 @@ MonoBehaviour:
 --- !u!114 &11472820
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -129,19 +133,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a638cf81d33f48779488b7e55c7ca61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  catapultWoodCost: 1
-  catapultStoneCost: 1
-  ballistaWoodCost: 1
-  ballistaStoneCost: 1
-  sliderCanvas: {fileID: 1008784478806070, guid: 6fc94e4a4ec331346a589c9ddc1c6c25,
+  CatapultWoodCost: 1
+  CatapultStoneCost: 1
+  BallistaWoodCost: 1
+  BallistaStoneCost: 1
+  SliderCanvas: {fileID: 1008784478806070, guid: 6fc94e4a4ec331346a589c9ddc1c6c25,
     type: 2}
-  maxHealth: 200
-  timeToBuild: 10
-  distanceToInstantiate: 2
+  MaxHealth: 200
+  TimeToBuild: 10
+  DistanceToInstantiate: 2
 --- !u!208 &20869126
 NavMeshObstacle:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -161,13 +165,13 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 177976}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!54 &54285230819397518
 Rigidbody:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   serializedVersion: 2
@@ -182,7 +186,7 @@ Rigidbody:
 --- !u!114 &114000010918744372
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -194,7 +198,7 @@ MonoBehaviour:
 --- !u!114 &114481432075608372
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -205,7 +209,7 @@ MonoBehaviour:
 --- !u!114 &114847857063092588
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177976}
   m_Enabled: 1
@@ -213,4 +217,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  Debug: 0
