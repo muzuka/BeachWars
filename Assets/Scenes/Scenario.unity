@@ -533,7 +533,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 484922, guid: d050f8084de9d47d9adaa835399a7dd0, type: 2}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 154138, guid: d050f8084de9d47d9adaa835399a7dd0, type: 2}
       propertyPath: m_Name
@@ -656,160 +656,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 466744, guid: 2945e662a39274e068deb48fec8c3017,
     type: 2}
   m_PrefabInternal: {fileID: 2134845065}
---- !u!1 &734875252
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 146140, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 734875258}
-  - component: {fileID: 734875255}
-  - component: {fileID: 734875257}
-  - component: {fileID: 734875256}
-  - component: {fileID: 734875259}
-  - component: {fileID: 734875260}
-  - component: {fileID: 734875261}
-  - component: {fileID: 734875254}
-  - component: {fileID: 734875253}
-  m_Layer: 0
-  m_Name: EnemyAI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &734875253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114719870649767766, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 803b68598584745248615134e8fa4caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 1
---- !u!114 &734875254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114089150047801438, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Debug: 0
---- !u!114 &734875255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114310524506956852, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c830ca241b34e58910e60f41a4b86e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &734875256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114312245290865342, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3adfe7d0cf1314de88657ff6489d6897, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &734875257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 11494776, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7b31a86e5b1d419c84074ceb74033d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WarningDistance: 0
-  DangerDistance: 0
-  StartMode: 0
-  Gathering: 0
-  Building: 0
-  MakingCrabs: 0
-  Harassing: 0
-  Defending: 0
-  LowResourceCount: 0
-  MaxGatheringCrabs: 0
-  MaxBuildingCrabs: 0
-  InitialWoodGoal: 0
-  InitialStoneGoal: 0
-  BuildingQueue: []
-  WoodToStoneRatio: 0
---- !u!4 &734875258
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &734875259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c04fef6ba2f749b18ce5852937b717f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WoodGoal: 0
-  StoneGoal: 0
-  WoodToStoneRatio: 0
---- !u!114 &734875260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b18442f1699f543ea9d6ca02fac67de0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponCreationTime: 0
-  BuildingDistance: 0
---- !u!114 &734875261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 734875252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a82fe73e6fbcb4e46b5b8982d8b09948, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SmallUnitSize: 0
 --- !u!1001 &782408026
 Prefab:
   m_ObjectHideFlags: 0
@@ -1922,6 +1768,48 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b8ad5e840fb9435288e78657b3e072e, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!1001 &1159316584
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 447012, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
+      propertyPath: m_RootOrder
+      value: 19
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eb787b07d6b9346b58a4c6f4acccbba2, type: 2}
   m_IsPrefabAsset: 0
 --- !u!114 &1159376718 stripped
 MonoBehaviour:

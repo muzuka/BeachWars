@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82fe73e6fbcb4e46b5b8982d8b09948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SmallUnitSize: 0
+  SmallUnitSize: 3
 --- !u!114 &114656110707677084
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,9 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c04fef6ba2f749b18ce5852937b717f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WoodGoal: 0
-  StoneGoal: 0
-  WoodToStoneRatio: 0
+  WoodGoal: 20
+  StoneGoal: 20
+  WoodToStoneRatio: 0.5
 --- !u!114 &114719870649767766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,5 +175,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18442f1699f543ea9d6ca02fac67de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponCreationTime: 0
-  BuildingDistance: 0
+  WeaponCreationTime: 10
+  BuildingDistance: 10
