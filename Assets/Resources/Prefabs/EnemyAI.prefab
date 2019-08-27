@@ -3,9 +3,9 @@
 --- !u!1 &146140
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 447012}
   - component: {fileID: 114310524506956852}
@@ -26,7 +26,7 @@ GameObject:
 --- !u!4 &447012
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -39,7 +39,7 @@ Transform:
 --- !u!114 &11494776
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -47,24 +47,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b31a86e5b1d419c84074ceb74033d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningDistance: 20
-  dangerDistance: 5
-  startMode: 0
-  gathering: 1
-  building: 1
-  makingCrabs: 1
-  harassing: 1
-  defending: 1
-  lowResourceCount: 10
-  maxGatheringCrabs: 0
-  maxBuildingCrabs: 0
-  initialWoodGoal: 10
-  initialStoneGoal: 10
-  buildingQueue:
+  WarningDistance: 20
+  DangerDistance: 5
+  StartMode: 0
+  Gathering: 1
+  Building: 1
+  MakingCrabs: 1
+  Harassing: 1
+  Defending: 1
+  LowResourceCount: 10
+  MaxGatheringCrabs: 0
+  MaxBuildingCrabs: 0
+  InitialWoodGoal: 10
+  InitialStoneGoal: 10
+  BuildingQueue:
   - Armoury
   - Nest
   - Workshop
-  woodToStoneRatio: 1
+  WoodToStoneRatio: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -89,13 +89,13 @@ Prefab:
       value: Collecting
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 146140}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!114 &114089150047801438
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -103,11 +103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6725eaf8269d419cae21614d733559d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  Debug: 0
 --- !u!114 &114310524506956852
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -118,7 +118,7 @@ MonoBehaviour:
 --- !u!114 &114312245290865342
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -129,7 +129,7 @@ MonoBehaviour:
 --- !u!114 &114574205225863802
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -137,10 +137,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82fe73e6fbcb4e46b5b8982d8b09948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SmallUnitSize: 3
 --- !u!114 &114656110707677084
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -148,13 +149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c04fef6ba2f749b18ce5852937b717f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  woodGoal: 20
-  stoneGoal: 20
-  woodToStoneRatio: 0.5
+  WoodGoal: 20
+  StoneGoal: 20
+  WoodToStoneRatio: 0.5
 --- !u!114 &114719870649767766
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -166,7 +167,7 @@ MonoBehaviour:
 --- !u!114 &114734630821329796
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 146140}
   m_Enabled: 1
@@ -174,5 +175,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18442f1699f543ea9d6ca02fac67de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponCreationTime: 10
-  buildingDistance: 10
+  WeaponCreationTime: 10
+  BuildingDistance: 10
