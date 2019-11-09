@@ -9,100 +9,100 @@ using UnityEngine.UI;
 public class ActionViewController : MonoBehaviour {
 
 	// buttons fill action view from left to right and up to down
-	public Button button1;
-	public Button button2;
-	public Button button3;
-	public Button button4;
-	public Button button5;
-	public Button button6;
-	public Button button7;
-	public Button button8;
+	public Button Button1;
+	public Button Button2;
+	public Button Button3;
+	public Button Button4;
+	public Button Button5;
+	public Button Button6;
+	public Button Button7;
+	public Button Button8;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start () 
+	void Start() 
 	{
-		deactivateButtons();
+		DeactivateButtons();
 	}
 
 	/// <summary>
 	/// Called when build button is pressed.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	public void setBuildButtons (Player player) 
+	public void SetBuildButtons(Player player) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Nest";
-		button1.onClick.AddListener(() => {player.setBuildingType ("Nest");
-			player.createGhostBuilding();});
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "SiegeWorkshop";
-		button2.onClick.AddListener(() => {player.setBuildingType ("Workshop");
-			player.createGhostBuilding();});
-		button3.gameObject.SetActive(true);
-		button3.gameObject.GetComponentInChildren<Text>().text = "Tower";
-		button3.onClick.AddListener(() => {player.setBuildingType ("Tower");
-			player.createGhostBuilding();});
-		button4.gameObject.SetActive(true);
-		button4.gameObject.GetComponentInChildren<Text>().text = "Amoury";
-		button4.onClick.AddListener(() => {player.setBuildingType ("Armoury");
-			player.createGhostBuilding();});
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Nest";
+		Button1.onClick.AddListener(() => {player.SetBuildingType ("Nest");
+			player.CreateGhostBuilding();});
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "SiegeWorkshop";
+		Button2.onClick.AddListener(() => {player.SetBuildingType ("Workshop");
+			player.CreateGhostBuilding();});
+		Button3.gameObject.SetActive(true);
+		Button3.gameObject.GetComponentInChildren<Text>().text = "Tower";
+		Button3.onClick.AddListener(() => {player.SetBuildingType ("Tower");
+			player.CreateGhostBuilding();});
+		Button4.gameObject.SetActive(true);
+		Button4.gameObject.GetComponentInChildren<Text>().text = "Amoury";
+		Button4.onClick.AddListener(() => {player.SetBuildingType ("Armoury");
+			player.CreateGhostBuilding();});
 	}
 
 	/// <summary>
 	/// Called when a crab is selected.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	public void setCrabButtons (Player player) 
+	public void SetCrabButtons(Player player) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
-		button1.onClick.AddListener(() => player.setPlayerState ("Attacking"));
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "Build";
-		button2.onClick.AddListener(() => player.setPlayerState ("Building"));
-		button3.gameObject.SetActive(true);
-		button3.gameObject.GetComponentInChildren<Text>().text = "Enter";
-		button3.onClick.AddListener(() => player.setPlayerState ("Entering"));
-		button4.gameObject.SetActive(true);
-		button4.gameObject.GetComponentInChildren<Text>().text = "Upgrade";
-		button4.onClick.AddListener(() => player.setPlayerState ("Upgrading"));
-		button5.gameObject.SetActive(true);
-		button5.gameObject.GetComponentInChildren<Text>().text = "Recruit";
-		button5.onClick.AddListener(() => player.setPlayerState ("Recruiting"));
-		button6.gameObject.SetActive(true);
-		button6.gameObject.GetComponentInChildren<Text>().text = "Repair";
-		button6.onClick.AddListener(() => player.setPlayerState ("Repairing"));
-		button7.gameObject.SetActive(true);
-		button7.gameObject.GetComponentInChildren<Text>().text = "Capture";
-		button7.onClick.AddListener(() => player.setPlayerState ("Capturing"));
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
+		Button1.onClick.AddListener(() => player.SetPlayerState ("Attacking"));
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "Build";
+		Button2.onClick.AddListener(() => player.SetPlayerState ("Building"));
+		Button3.gameObject.SetActive(true);
+		Button3.gameObject.GetComponentInChildren<Text>().text = "Enter";
+		Button3.onClick.AddListener(() => player.SetPlayerState ("Entering"));
+		Button4.gameObject.SetActive(true);
+		Button4.gameObject.GetComponentInChildren<Text>().text = "Upgrade";
+		Button4.onClick.AddListener(() => player.SetPlayerState ("Upgrading"));
+		Button5.gameObject.SetActive(true);
+		Button5.gameObject.GetComponentInChildren<Text>().text = "Recruit";
+		Button5.onClick.AddListener(() => player.SetPlayerState ("Recruiting"));
+		Button6.gameObject.SetActive(true);
+		Button6.gameObject.GetComponentInChildren<Text>().text = "Repair";
+		Button6.onClick.AddListener(() => player.SetPlayerState ("Repairing"));
+		Button7.gameObject.SetActive(true);
+		Button7.gameObject.GetComponentInChildren<Text>().text = "Capture";
+		Button7.onClick.AddListener(() => player.SetPlayerState ("Capturing"));
 	}
 
 	/// <summary>
 	/// Called when more than one crab is selected.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	public void setMultiButtonsAllCrabs (Player player)
+	public void SetMultiButtonsAllCrabs(Player player)
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
-		button1.onClick.AddListener(() => player.setPlayerState ("Attacking"));
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "Build";
-		button2.onClick.AddListener(() => player.setPlayerState ("Building"));
-		button3.gameObject.SetActive(true);
-		button3.gameObject.GetComponentInChildren<Text>().text = "Upgrade";
-		button3.onClick.AddListener(() => player.setPlayerState ("Upgrading"));
-		button4.gameObject.SetActive(true);
-		button4.gameObject.GetComponentInChildren<Text>().text = "Repair";
-		button4.onClick.AddListener(() => player.setPlayerState ("Repairing"));
-		button5.gameObject.SetActive(true);
-		button5.gameObject.GetComponentInChildren<Text>().text = "Capture";
-		button5.onClick.AddListener(() => player.setPlayerState ("Capturing"));
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
+		Button1.onClick.AddListener(() => player.SetPlayerState ("Attacking"));
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "Build";
+		Button2.onClick.AddListener(() => player.SetPlayerState ("Building"));
+		Button3.gameObject.SetActive(true);
+		Button3.gameObject.GetComponentInChildren<Text>().text = "Upgrade";
+		Button3.onClick.AddListener(() => player.SetPlayerState ("Upgrading"));
+		Button4.gameObject.SetActive(true);
+		Button4.gameObject.GetComponentInChildren<Text>().text = "Repair";
+		Button4.onClick.AddListener(() => player.SetPlayerState ("Repairing"));
+		Button5.gameObject.SetActive(true);
+		Button5.gameObject.GetComponentInChildren<Text>().text = "Capture";
+		Button5.onClick.AddListener(() => player.SetPlayerState ("Capturing"));
 	}
 
 	/// <summary>
@@ -110,30 +110,30 @@ public class ActionViewController : MonoBehaviour {
 	/// </summary>
 	/// <param name="player">Player script.</param>
 	/// <param name="script">Enterable script.</param>
-	public void setSiegeButtons (Player player, Enterable script) 
+	public void SetSiegeButtons(Player player, Enterable script) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
-		button1.onClick.AddListener(() => player.setPlayerState ("Attacking"));
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "Enter";
-		button2.onClick.AddListener(() => player.setPlayerState ("Entering"));
-		button3.gameObject.SetActive(true);
-		button3.gameObject.GetComponentInChildren<Text>().text = "Unload";
-		button3.onClick.AddListener (script.removeOccupant);
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
+		Button1.onClick.AddListener(() => player.SetPlayerState ("Attacking"));
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "Enter";
+		Button2.onClick.AddListener(() => player.SetPlayerState ("Entering"));
+		Button3.gameObject.SetActive(true);
+		Button3.gameObject.GetComponentInChildren<Text>().text = "Unload";
+		Button3.onClick.AddListener (script.RemoveOccupant);
 	}
 
 	/// <summary>
 	/// Called when crabs and siege weapons are selected together.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	public void setMultiButtonsMixed (Player player)
+	public void SetMultiButtonsMixed(Player player)
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
-		button1.onClick.AddListener(() => player.setPlayerState ("Attacking"));
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Attack";
+		Button1.onClick.AddListener(() => player.SetPlayerState ("Attacking"));
 	}
 
 	/// <summary>
@@ -141,77 +141,77 @@ public class ActionViewController : MonoBehaviour {
 	/// </summary>
 	/// <param name="eScript">Enterable script.</param>
 	/// <param name="cScript">Upgradable script.</param>
-	public void setCastleButtons (Enterable eScript, CastleUpgrade cScript) 
+	public void SetCastleButtons(Enterable eScript, CastleUpgrade cScript) 
 	{
 		CastleController castle = cScript.gameObject.GetComponent<CastleController>();
 
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Unload";
-		button1.onClick.AddListener(eScript.removeOccupant);
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "Upgrade";
-        button2.onClick.AddListener(() => cScript.startCastleUpgrade(castle.getWoodPieces(), castle.getStonePieces()));
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Unload";
+		Button1.onClick.AddListener(eScript.RemoveOccupant);
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "Upgrade";
+        Button2.onClick.AddListener(() => cScript.StartCastleUpgrade(castle.GetWoodPieces(), castle.GetStonePieces()));
 	}
 
 	/// <summary>
 	/// Called when craft button is pressed.
 	/// </summary>
 	/// <param name="aScript">Armoury script.</param>
-	public void setWeaponBuildButtons (ArmouryController aScript) 
+	public void SetWeaponBuildButtons(ArmouryController aScript) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Spear";
-		button1.onClick.AddListener(() => aScript.startBuilding("Spear"));
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "Hammer";
-		button2.onClick.AddListener(() => aScript.startBuilding("Hammer"));
-		button3.gameObject.SetActive(true);
-		button3.gameObject.GetComponentInChildren<Text>().text = "Bow";
-		button3.onClick.AddListener(() => aScript.startBuilding("Bow"));
-		button4.gameObject.SetActive(true);
-		button4.gameObject.GetComponentInChildren<Text>().text = "Shield";
-		button4.onClick.AddListener(() => aScript.startBuilding("Shield"));
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Spear";
+		Button1.onClick.AddListener(() => aScript.StartBuilding("Spear"));
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "Hammer";
+		Button2.onClick.AddListener(() => aScript.StartBuilding("Hammer"));
+		Button3.gameObject.SetActive(true);
+		Button3.gameObject.GetComponentInChildren<Text>().text = "Bow";
+		Button3.onClick.AddListener(() => aScript.StartBuilding("Bow"));
+		Button4.gameObject.SetActive(true);
+		Button4.gameObject.GetComponentInChildren<Text>().text = "Shield";
+		Button4.onClick.AddListener(() => aScript.StartBuilding("Shield"));
 	}
 
 	/// <summary>
 	/// Called when a nest is selected.
 	/// </summary>
 	/// <param name="eScript">Enterable script.</param>
-	public void setNestButtons (Enterable eScript) 
+	public void SetNestButtons(Enterable eScript) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Unload";
-		button1.onClick.AddListener(eScript.removeOccupant);
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Unload";
+		Button1.onClick.AddListener(eScript.RemoveOccupant);
 	}
 
 	/// <summary>
 	/// Called when a workshop is selected.
 	/// </summary>
 	/// <param name="wScript">Workshop script.</param>
-	public void setWorkshopButtons (WorkshopController wScript) 
+	public void SetWorkshopButtons(WorkshopController wScript) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Catapult";
-		button1.onClick.AddListener(() => wScript.startBuilding ("Catapult"));
-		button2.gameObject.SetActive(true);
-		button2.gameObject.GetComponentInChildren<Text>().text = "Ballista";
-		button2.onClick.AddListener(() => wScript.startBuilding ("Ballista"));
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Catapult";
+		Button1.onClick.AddListener(() => wScript.StartBuilding ("Catapult"));
+		Button2.gameObject.SetActive(true);
+		Button2.gameObject.GetComponentInChildren<Text>().text = "Ballista";
+		Button2.onClick.AddListener(() => wScript.StartBuilding ("Ballista"));
 	}
 
 	/// <summary>
 	/// Called when a tower is selected.
 	/// </summary>
 	/// <param name="eScript">Enterable script.</param>
-	public void setTowerButtons (Enterable eScript) 
+	public void SetTowerButtons(Enterable eScript) 
 	{
-		deactivateButtons();
-		button1.gameObject.SetActive(true);
-		button1.gameObject.GetComponentInChildren<Text>().text = "Unload";
-		button1.onClick.AddListener (eScript.removeOccupant);
+		DeactivateButtons();
+		Button1.gameObject.SetActive(true);
+		Button1.gameObject.GetComponentInChildren<Text>().text = "Unload";
+		Button1.onClick.AddListener (eScript.RemoveOccupant);
 	}
 
 	/// <summary>
@@ -219,49 +219,55 @@ public class ActionViewController : MonoBehaviour {
 	/// Is called by GUIController every update
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	public void setButtons (Player player) {
-		if (player.selectedList.Count == 1 && player.canCommand)
+	public void SetButtons(Player player) {
+		if (player.SelectedList.Count == 1 && player.CanCommand)
 		{
-			switch (player.selected.tag)
+			switch (player.Selected.tag)
 			{
 			case Tags.Crab:
-				if (player.states.getState("Building"))
-					setBuildButtons(player);
+				if (player.States.GetState("Building"))
+					SetBuildButtons(player);
 				else
-					setCrabButtons(player);
+					SetCrabButtons(player);
 				break;
 			case Tags.Catapult:
 			case Tags.Ballista:
-				setSiegeButtons(player, player.selected.GetComponent<Enterable>());
+				SetSiegeButtons(player, player.Selected.GetComponent<Enterable>());
 				break;
 			case Tags.Armoury:
-				setWeaponBuildButtons(player.selected.GetComponent<ArmouryController>());
+				SetWeaponBuildButtons(player.Selected.GetComponent<ArmouryController>());
 				break;
 			case Tags.Castle:
-				setCastleButtons(player.selected.GetComponent<Enterable>(), player.selected.GetComponent<CastleUpgrade>());
+				SetCastleButtons(player.Selected.GetComponent<Enterable>(), player.Selected.GetComponent<CastleUpgrade>());
 				break;
 			case Tags.Nest:
-				setNestButtons(player.selected.GetComponent<Enterable>());
+				SetNestButtons(player.Selected.GetComponent<Enterable>());
 				break;
 			case Tags.Workshop:
-				setWorkshopButtons(player.selected.GetComponent<WorkshopController>());
+				SetWorkshopButtons(player.Selected.GetComponent<WorkshopController>());
 				break;
 			case Tags.Tower:
-				setTowerButtons(player.selected.GetComponent<Enterable>());
+				SetTowerButtons(player.Selected.GetComponent<Enterable>());
 				break;
 			}
 		}
-		else if (player.selectedList.Count > 1)
+		else if (player.SelectedList.Count > 1)
 		{
-			string type = player.getMultiSelectStatus();
+			string type = player.GetMultiSelectStatus();
 			if (type == "Mixed" || type == "Siege")
-				setMultiButtonsMixed(player);
+            {
+                SetMultiButtonsMixed(player); 
+            }
 			else if (type == "Crab")
 			{
-				if (player.states.getState("Building"))
-					setBuildButtons(player);
+				if (player.States.GetState("Building"))
+                {
+                    SetBuildButtons(player); 
+                }
 				else
-					setMultiButtonsAllCrabs(player);
+                {
+                    SetMultiButtonsAllCrabs(player); 
+                }
 			}
 		}
 	}
@@ -269,23 +275,23 @@ public class ActionViewController : MonoBehaviour {
 	/// <summary>
 	/// Deactivates the buttons.
 	/// </summary>
-	public void deactivateButtons () 
+	public void DeactivateButtons() 
 	{
-		button1.onClick.RemoveAllListeners();
-		button1.gameObject.SetActive(false);
-		button2.onClick.RemoveAllListeners();
-		button2.gameObject.SetActive(false);
-		button3.onClick.RemoveAllListeners();
-		button3.gameObject.SetActive(false);
-		button4.onClick.RemoveAllListeners();
-		button4.gameObject.SetActive(false);
-		button5.onClick.RemoveAllListeners();
-		button5.gameObject.SetActive(false);
-		button6.onClick.RemoveAllListeners();
-		button6.gameObject.SetActive(false);
-		button7.onClick.RemoveAllListeners();
-		button7.gameObject.SetActive(false);
-		button8.onClick.RemoveAllListeners();
-		button8.gameObject.SetActive(false);
+		Button1.onClick.RemoveAllListeners();
+		Button1.gameObject.SetActive(false);
+		Button2.onClick.RemoveAllListeners();
+		Button2.gameObject.SetActive(false);
+		Button3.onClick.RemoveAllListeners();
+		Button3.gameObject.SetActive(false);
+		Button4.onClick.RemoveAllListeners();
+		Button4.gameObject.SetActive(false);
+		Button5.onClick.RemoveAllListeners();
+		Button5.gameObject.SetActive(false);
+		Button6.onClick.RemoveAllListeners();
+		Button6.gameObject.SetActive(false);
+		Button7.onClick.RemoveAllListeners();
+		Button7.gameObject.SetActive(false);
+		Button8.onClick.RemoveAllListeners();
+		Button8.gameObject.SetActive(false);
 	}
 }

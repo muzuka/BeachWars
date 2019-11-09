@@ -2,30 +2,30 @@
 
 public class MessageEventManager : MonoBehaviour {
 
-    public MessageViewController controller;
+    public MessageViewController Controller;
 
-    private static MessageEventManager eventManager;
+    private static MessageEventManager _eventManager;
 
-    public static MessageEventManager instance
+    public static MessageEventManager Instance
     {
         get
         {
-            if (!eventManager)
+            if (!_eventManager)
             {
-                eventManager = FindObjectOfType(typeof(MessageEventManager)) as MessageEventManager;
+                _eventManager = FindObjectOfType(typeof(MessageEventManager)) as MessageEventManager;
 
-                if (!eventManager)
+                if (!_eventManager)
                 {
                     Debug.LogError("There needs to be one active EventManger script on a GameObject in your scene.");
                 }
             }
 
-            return eventManager;
+            return _eventManager;
         }
     }
 
-    public static void addNewMessage(string message)
+    public static void AddNewMessage(string message)
     {
-        instance.controller.addNewMessage(message);
+        Instance.Controller.AddNewMessage(message);
     }
 }

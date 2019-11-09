@@ -9,19 +9,19 @@ using UnityEngine.UI;
 public class Attackable : MonoBehaviour {
 
 	// maximum health of object
-	public float maxHealth { get; set; }
+	public float MaxHealth { get; set; }
 
 	// current health of object
-	public float health { get; set; }
+	public float Health { get; set; }
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () 
+	void Update() 
 	{
-		if (health <= 0) 
+		if (Health <= 0) 
 		{
-			if (GetComponent<DebugComponent>().debug)
+			if (GetComponent<DebugComponent>().Debug)
 				Debug.Log(gameObject.name + " ran out of health.");
 			
 			gameObject.SendMessage("destroyed", SendMessageOptions.DontRequireReceiver);
@@ -33,12 +33,12 @@ public class Attackable : MonoBehaviour {
 	/// Increases health by amount.
 	/// </summary>
 	/// <param name="repairAmount">Repair amount.</param>
-	public void repair (float repairAmount)
+	public void Repair(float repairAmount)
 	{
-		if (health + repairAmount >= maxHealth)
-			health = maxHealth;
+		if (Health + repairAmount >= MaxHealth)
+			Health = MaxHealth;
 		else
-			health += repairAmount;
+			Health += repairAmount;
 	}
 
 	/// <summary>
@@ -46,38 +46,38 @@ public class Attackable : MonoBehaviour {
 	/// For object initialization only.
 	/// </summary>
 	/// <param name="health">Health.</param>
-	public void setHealth (float health) 
+	public void SetHealth(float health) 
 	{
-		this.health = health;
-		maxHealth = health;
+		this.Health = health;
+		MaxHealth = health;
 	}
 
 	/// <summary>
 	/// Returns the current health of object.
 	/// </summary>
 	/// <returns>The health.</returns>
-	public float getHealth () 
+	public float GetHealth() 
 	{
-		return health;
+		return Health;
 	}
 
 	/// <summary>
 	/// Sets the health for slider object.
 	/// </summary>
 	/// <param name="slider">Slider script.</param>
-	public void setHealth (Slider slider) 
+	public void SetHealth(Slider slider) 
 	{
-		slider.value = health;
+		slider.value = Health;
 		slider.minValue = 0;
-		slider.maxValue = maxHealth;
+		slider.maxValue = MaxHealth;
 	}
 
 	/// <summary>
 	/// Decreases health by amount.
 	/// </summary>
 	/// <param name="damage">Damage amount.</param>
-	public void attacked (float damage) 
+	public void Attacked(float damage) 
 	{
-		health = health - damage;
+		Health = Health - damage;
 	}
 }

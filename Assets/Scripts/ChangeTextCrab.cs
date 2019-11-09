@@ -8,30 +8,30 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class ChangeTextCrab : MonoBehaviour {
 
-	string state;
+	string _state;
 
-	Player player;
+	Player _player;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start () {
-		state = gameObject.name;
-		player = FindObjectOfType<Player>();
+	void Start() {
+		_state = gameObject.name;
+		_player = FindObjectOfType<Player>();
 	}
 	
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () {
+	void Update() {
 
-		if (player.hasSelected)
+		if (_player.HasSelected)
 		{
-            if (player.selected != null)
+            if (_player.Selected != null)
             {
-                if (player.selected.tag == Tags.Crab)
+                if (_player.Selected.tag == Tags.Crab)
                 {
-                    GetComponent<Text>().text = state + ": " + player.selected.GetComponent<CrabController>().actionStates.getState(state);
+                    GetComponent<Text>().text = _state + ": " + _player.Selected.GetComponent<CrabController>().ActionStates.GetState(_state);
                 }
             }
 		}

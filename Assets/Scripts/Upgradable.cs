@@ -9,19 +9,19 @@
 public class Upgradable : MonoBehaviour {
 
 	[Tooltip("The amount of time to upgrade object")]
-	public float timeToUpgrade;		// time required to upgrade object
+	public float TimeToUpgrade;		// time required to upgrade object
 
-	protected int otherCrabs;			// amount of crabs selected
+	protected int OtherCrabs;			// amount of crabs selected
 
-	protected bool upgrading;			// is object being upgraded?
-	protected float timeConsumed;		// time that has gone by
+	protected bool Upgrading;			// is object being upgraded?
+	protected float TimeConsumed;		// time that has gone by
 
-	protected bool debug;
+	protected bool Debug;
 
 	/// <summary>
 	/// Upgrades object when time is up.
 	/// </summary>
-	protected virtual void upgrade ()
+	protected virtual void Upgrade()
 	{
 	}
 
@@ -29,8 +29,8 @@ public class Upgradable : MonoBehaviour {
 	/// Sets the number of crabs.
 	/// </summary>
 	/// <param name="crabs">Crabs.</param>
-	public void setCrabs (int crabs)
+	public void SetCrabs(int crabs)
 	{
-		otherCrabs = crabs;
+		OtherCrabs = crabs;
 	}
 }

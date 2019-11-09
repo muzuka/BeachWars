@@ -2,12 +2,12 @@
 
 class TakeWeaponCommand : Command
 {
-    public string weapon { get; set; }
-    public GameObject crab { get; set; }
-    public GameObject armoury { get; set; }
+    public string Weapon { get; set; }
+    public GameObject Crab { get; set; }
+    public GameObject Armoury { get; set; }
 
-    public override void execute()
+    public override void Execute()
     {
-        crab.GetComponent<CrabController>().startTakeWeapon(weapon, armoury);
+        Crab.GetComponent<CrabController>().StartTakeWeapon(Weapon, Armoury);
     }
 }

@@ -9,7 +9,7 @@ public static class Raycaster {
 	/// Returns ray from mouse position.
 	/// </summary>
 	/// <returns>The ray.</returns>
-	public static Ray getRay () 
+	public static Ray GetRay() 
 	{
 		Vector3 mPos = Input.mousePosition;
 		return Camera.main.ScreenPointToRay(mPos);
@@ -19,10 +19,10 @@ public static class Raycaster {
 	/// Casts a ray from mouse position.
 	/// </summary>
 	/// <returns>The RaycastHit object.</returns>
-	public static RaycastHit shootMouseRay ()
+	public static RaycastHit ShootMouseRay()
 	{
 		RaycastHit hit;
-		Physics.Raycast(getRay(), out hit);
+		Physics.Raycast(GetRay(), out hit);
 		return hit;
 	}
 
@@ -30,9 +30,9 @@ public static class Raycaster {
 	/// Gets the object at mouse position.
 	/// </summary>
 	/// <returns>The object.</returns>
-	public static GameObject getObjectAtRay ()
+	public static GameObject GetObjectAtRay()
 	{
-		return shootMouseRay().transform.gameObject;
+		return ShootMouseRay().transform.gameObject;
 	}
 
 	/// <summary>
@@ -40,9 +40,9 @@ public static class Raycaster {
 	/// </summary>
 	/// <returns>true, if mouse is pointing and false, otherwise.</returns>
 	/// <param name="tag">Object tag.</param>
-	public static bool isPointingAt (string tag)
+	public static bool IsPointingAt(string tag)
 	{
-		return shootMouseRay().transform.gameObject.tag == tag;
+		return ShootMouseRay().transform.gameObject.tag == tag;
 	}
 
 	/// <summary>
@@ -50,16 +50,20 @@ public static class Raycaster {
 	/// </summary>
 	/// <returns><c>true</c>, if object is pointed at, <c>false</c> otherwise.</returns>
 	/// <param name="query">Object.</param>
-	public static bool pointingAtObject(GameObject query)
+	public static bool PointingAtObject(GameObject query)
 	{
 		if (!query)
 			return false;
 
-		RaycastHit hit = shootMouseRay();
+		RaycastHit hit = ShootMouseRay();
 
 		if (!hit.transform)
-			return false;
+        {
+            return false; 
+        }
 		else
-			return hit.transform.gameObject == query;
+        {
+            return hit.transform.gameObject == query; 
+        }
 	}
 }

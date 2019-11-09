@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 /// <summary>
@@ -15,205 +16,220 @@ using System;
 public class Player : MonoBehaviour
 {
     [Tooltip("Is lose condition active?")]
-	public bool loseCondition;
+	public bool LoseCondition;
     [Tooltip("Is win condition active?")]
-	public bool winCondition;
+	public bool WinCondition;
 
     [Tooltip("Maximum units allowed to exist.")]
-    public int maxUnitCount;
+    public int MaxUnitCount;
 
     [Tooltip("The min distance between junctions before intermediate blocks are placed")]
-    public float junctionDistanceLimit;
-    [Tooltip("The size of a block (informs distance between each block")]
-    public float blockSize;
+    public float JunctionDistanceLimit;
+    [Tooltip("The size of a block(informs distance between each block")]
+    public float BlockSize;
 
-	Team team;
+	Team _team;
 
 	// reference to gui
-	public GUIController gui { get; set; }
+	public GUIController Gui { get; set; }
 
 	// reference to input
-	public InputController input { get; set; }
+	public InputController Input { get; set; }
 
 	// The currently selected object or the first element of selectedList.
-	public GameObject selected { get; set; }
+	public GameObject Selected { get; set; }
 
 	// The list of selected objects
-	public List<GameObject> selectedList { get; set; }
+	public List<GameObject> SelectedList { get; set; }
 
  	// is something selected?
-	public bool hasSelected { get; set; }
+	public bool HasSelected { get; set; }
 
 	// is more than one thing selected?
-	public bool multiSelect { get; set; }
+	public bool MultiSelect { get; set; }
 
  	// can I command the selected object?
-	public bool canCommand { get; set; }
+	public bool CanCommand { get; set; }
 
 	// The selected objects team
-	public Team selectedTeam { get; set; }
+	public Team SelectedTeam { get; set; }
 
 	// The list of haloes
-	public List<GameObject> haloList { get; set; }
+	public List<GameObject> HaloList { get; set; }
 
 	// action states
 	// Assuming crab is selected
  	// set of states to affect behaviour
-	public StateController states { get; set; }
-	string[] stateList = {"Building", "Attacking", "Entering", "Capturing", "Recruiting", "Upgrading", "Repairing"};
+	public StateController States { get; set; }
+	string[] _stateList = {"Building", "Attacking", "Entering", "Capturing", "Recruiting", "Upgrading", "Repairing"};
 
 	// Designates type selected for building
-	public string buildingType { get; set; }
+	public string BuildingType { get; set; }
 
-	public GhostBuildingManager ghostManager { get; set; }
+	public GhostBuildingManager GhostManager { get; set; }
 
-	public bool paused { get; set; }
+	public bool Paused { get; set; }
 
-	bool debug;
+	bool _debug;
 
-	public bool autoBuild { get; set; }
+	public bool AutoBuild { get; set; }
 
-	Canvas buildingCanvas;
-	Vector3 cameraPos;
-	float cameraXDelta;
-	float cameraZDelta;
+	Canvas _buildingCanvas;
+	Vector3 _cameraPos;
+	float _cameraXDelta;
+	float _cameraZDelta;
 
-	public GameObject targetedArmoury { get; set; }
+	public HoldsWeapons TargetedArmoury { get; set; }
 
-	/// <summary>
-	/// Start this instance.
-	/// </summary>
-	void Start ()
+    public static Player Instance;
+
+    /// <summary>
+    /// Wake this instance
+    /// </summary>
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    /// <summary>
+    /// Start this instance
+    /// </summary>
+    void Start()
 	{
-		input = GetComponent<InputController>();
-		gui = GetComponent<GUIController>();
+		Input = GetComponent<InputController>();
+		Gui = GetComponent<GUIController>();
 
-		team = GetComponent<Team>();
-		states = new StateController(stateList);
-		selectedList = new List<GameObject>();
-		haloList = new List<GameObject>();
+		_team = GetComponent<Team>();
+		States = new StateController(_stateList);
+		SelectedList = new List<GameObject>();
+		HaloList = new List<GameObject>();
 
-		ghostManager = new GhostBuildingManager();
-        ghostManager.junctionDistLimit = junctionDistanceLimit;
-        ghostManager.blockSize = blockSize;
+		GhostManager = new GhostBuildingManager();
+        GhostManager.JunctionDistLimit = JunctionDistanceLimit;
+        GhostManager.BlockSize = BlockSize;
 
-		debug = GetComponent<DebugComponent>().debug;
-		ghostManager.debug = debug;
-		states.debug = debug;
+		_debug = GetComponent<DebugComponent>().Debug;
+		GhostManager.Debug = _debug;
+		States.Debug = _debug;
 
-		paused = false;
+		Paused = false;
 
-		autoBuild = true;
+		AutoBuild = true;
 
-		buildingCanvas = null;
+		_buildingCanvas = null;
 
-		targetedArmoury = null;
+		TargetedArmoury = null;
 
-		gui.startUI();
+		Gui.StartUI();
 
-		if (debug)
+		if (_debug)
 			Debug.Log("Finished starting.");
 	}
 
-	/// <summary>
-	/// Update this instance.
-	/// </summary>
-	void Update ()
+    /// <summary>
+    /// Update this instance
+    /// </summary>
+	void Update()
 	{
-		if (!selected)
-			deselect();
+		if (!Selected)
+			Deselect();
 
-		if(loseCondition)
-			checkLoseCondition();
-		if(winCondition)
-			checkWinCondition();
+		if (LoseCondition)
+			CheckLoseCondition();
+		if (WinCondition)
+			CheckWinCondition();
 
-		if (buildingCanvas)
+		if (_buildingCanvas)
 		{
-			cameraXDelta = GetComponentInParent<Transform>().position.x - cameraPos.x;
-			cameraZDelta = GetComponentInParent<Transform>().position.z - cameraPos.z;
+			_cameraXDelta = GetComponentInParent<Transform>().position.x - _cameraPos.x;
+			_cameraZDelta = GetComponentInParent<Transform>().position.z - _cameraPos.z;
 
-			Vector2 tempPos = getPanel().anchoredPosition;
-			tempPos.x -= cameraXDelta;
-			tempPos.y -= cameraZDelta;
-			getPanel().anchoredPosition = tempPos;
+			Vector2 tempPos = GetPanel().anchoredPosition;
+			tempPos.x -= _cameraXDelta;
+			tempPos.y -= _cameraZDelta;
+			GetPanel().anchoredPosition = tempPos;
 		}
 
-		input.getKeyboardInput(this);
+		Input.GetKeyboardInput(this);
 
-		input.processMouseClick(this, gui);
+		Input.ProcessMouseClick(this, Gui);
 
-		if (selectedList != null)
-			multiSelect = (selectedList.Count > 1);
+		if (SelectedList != null)
+			MultiSelect = (SelectedList.Count > 1);
 
-		gui.updateUI(this);
-		if (hasSelected)
-			updateHalos();
+		Gui.UpdateUI(this);
+		if (HasSelected)
+			UpdateHalos();
 
-		ghostManager.updateGhosts();
+		GhostManager.updateGhosts();
 
-		cameraPos = GetComponentInParent<Transform>().position;
+		_cameraPos = GetComponentInParent<Transform>().position;
 	}
 
 	/// <summary>
 	/// Updates the halos' positions.
 	/// </summary>
-	void updateHalos ()
+	void UpdateHalos()
 	{
-		if (IdUtility.isMoveable(selected.tag))
+		if (IdUtility.IsMoveable(Selected.tag))
 		{
-			for (int i = 0; i < haloList.Count; i++)
+			for (int i = 0; i < HaloList.Count; i++)
 			{
-				haloList[i].SetActive(true);
-				haloList[i].transform.GetChild(0).position = selectedList[i].transform.position;
+				HaloList[i].SetActive(true);
+				HaloList[i].transform.GetChild(0).position = SelectedList[i].transform.position;
 
-                if (selectedList.Count > 1)
+                if (SelectedList.Count > 1)
                 {
-                    if (selectedList[i].tag == Tags.Crab)
+                    if (SelectedList[i].tag == Tags.Crab)
                     {
-                        if (selectedList[i].GetComponent<CrabController>().actionStates.getState("Attacking"))
+                        if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Attacking"))
                         {
-                            haloList[i].GetComponentInChildren<Image>().color = Color.red;
+                            HaloList[i].GetComponentInChildren<Image>().color = Color.red;
                         }
-                        else if (selectedList[i].GetComponent<CrabController>().actionStates.getState("Building"))
+                        else if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Building"))
                         {
-                            haloList[i].GetComponentInChildren<Image>().color = Color.blue;
+                            HaloList[i].GetComponentInChildren<Image>().color = Color.blue;
                         }
-                        else if (selectedList[i].GetComponent<CrabController>().actionStates.getState("Collecting"))
+                        else if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Collecting"))
                         {
-                            haloList[i].GetComponentInChildren<Image>().color = Color.green;
+                            HaloList[i].GetComponentInChildren<Image>().color = Color.green;
                         }
                     }
-                    else if (IdUtility.isSiegeWeapon(selectedList[i].tag))
+                    else if (IdUtility.IsSiegeWeapon(SelectedList[i].tag))
                     {
-                        if (selectedList[i].GetComponent<SiegeController>().isBusy())
+                        if (SelectedList[i].GetComponent<SiegeController>().IsBusy())
                         {
-                            haloList[i].GetComponentInChildren<Image>().color = Color.red;
+                            HaloList[i].GetComponentInChildren<Image>().color = Color.red;
                         }
                     }
                 }
                 else
                 {
-                    if (selected.tag == Tags.Crab)
+                    if (Selected.tag == Tags.Crab)
                     {
-                        if (selected.GetComponent<CrabController>().actionStates.getState("Attacking"))
+                        if (Selected.GetComponent<CrabController>().ActionStates.GetState("Attacking"))
                         {
-                            haloList[0].GetComponentInChildren<Image>().color = Color.red;
+                            HaloList[0].GetComponentInChildren<Image>().color = Color.red;
                         }
-                        else if (selected.GetComponent<CrabController>().actionStates.getState("Building"))
+                        else if (Selected.GetComponent<CrabController>().ActionStates.GetState("Building"))
                         {
-                            haloList[0].GetComponentInChildren<Image>().color = Color.blue;
+                            HaloList[0].GetComponentInChildren<Image>().color = Color.blue;
                         }
-                        else if (selected.GetComponent<CrabController>().actionStates.getState("Collecting"))
+                        else if (Selected.GetComponent<CrabController>().ActionStates.GetState("Collecting"))
                         {
-                            haloList[0].GetComponentInChildren<Image>().color = Color.green;
+                            HaloList[0].GetComponentInChildren<Image>().color = Color.green;
                         }
                     }
-                    else if (IdUtility.isSiegeWeapon(selected.tag))
+                    else if (IdUtility.IsSiegeWeapon(Selected.tag))
                     {
-                        if (selected.GetComponent<SiegeController>().isBusy())
+                        if (Selected.GetComponent<SiegeController>().IsBusy())
                         {
-                            haloList[0].GetComponentInChildren<Image>().color = Color.red;
+                            HaloList[0].GetComponentInChildren<Image>().color = Color.red;
                         }
                     }
                 }
@@ -222,29 +238,24 @@ public class Player : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Gets the main panel.
+	/// Gets the main panel of the building canvas.
 	/// </summary>
 	/// <returns>The panel transform.</returns>
-	RectTransform getPanel ()
+	RectTransform GetPanel()
 	{
-		if (debug)
-			Debug.Assert(buildingCanvas);
+		if (_debug)
+			Debug.Assert(_buildingCanvas);
 
-		RectTransform[] transforms = buildingCanvas.GetComponentsInChildren<RectTransform>();
+		List<RectTransform> transforms = _buildingCanvas.GetComponentsInChildren<RectTransform>().ToList();
 
-		for (int i = 0; i < transforms.Length; i++)
-		{
-			if (transforms[i].gameObject.name == "MainPanel")
-				return transforms[i];
-		}
-		return null;
+        return transforms.Find(x => x.gameObject.name == "MainPanel");
 	}
 
-    public void generalBuildButtonPressed (string buildingType)
+    public void GeneralBuildButtonPressed(string buildingType)
     {
-        setBuildingType(buildingType);
-        setPlayerState("Building");
-        createGhostBuilding();
+        SetBuildingType(buildingType);
+        SetPlayerState("Building");
+        CreateGhostBuilding();
     }
 
 	/// <summary>
@@ -252,83 +263,81 @@ public class Player : MonoBehaviour
 	/// Sets GUI info.
 	/// </summary>
 	/// <param name="obj">Object.</param>
-	public void select (GameObject obj) 
+	public void Select(GameObject obj) 
 	{
-		selected = obj;
-		selectedTeam = obj.GetComponent<Team>();
-		canCommand = (team.team == selectedTeam.team);
-		hasSelected = true;
+		Selected = obj;
+		SelectedTeam = obj.GetComponent<Team>();
+		CanCommand = (_team.team == SelectedTeam.team);
+		HasSelected = true;
 
-		selected.SendMessage("setController", this, SendMessageOptions.DontRequireReceiver);
+		Selected.SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver);
 
 		// set gui
-		gui.setLabel(obj);
-		gui.setActiveGUIComponents(obj.tag);
-		gui.getActionViewController().setButtons(this);
-		gui.selectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
+		Gui.SetLabel(obj);
+		Gui.SetActiveGUIComponents(obj.tag);
+		Gui.GetActionViewController().SetButtons(this);
+		Gui.SelectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
 	}
 
 	/// <summary>
 	/// Selects all objects in list.
 	/// Sets GUI info.
 	/// </summary>
-	public void selectAll () 
+	public void SelectAll() 
 	{
-		selected = selectedList[0];
-		hasSelected = true;
-		selectedTeam = selectedList[0].GetComponent<Team>();
+		Selected = SelectedList[0];
+		HasSelected = true;
+		SelectedTeam = SelectedList[0].GetComponent<Team>();
 
-		for (int i = 0; i < selectedList.Count; i++)
-			selectedList[i].SendMessage("setController", this, SendMessageOptions.DontRequireReceiver);
+		for (int i = 0; i < SelectedList.Count; i++)
+        {
+            SelectedList[i].SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver); 
+        }
 
-		canCommand = (team.team == selectedTeam.team);
+		CanCommand = (_team.team == SelectedTeam.team);
 
-		gui.setActiveGUIComponents("multi");
-		gui.getActionViewController().setButtons(this);
-		gui.setMultiUI();
+		Gui.SetActiveGUIComponents("multi");
+		Gui.GetActionViewController().SetButtons(this);
+		Gui.SetMultiUI();
 	}
 
 	/// <summary>
 	/// Deselects the currently selected object(s).
 	/// </summary>
-	public void deselect ()
+	public void Deselect()
 	{
-		if (hasSelected)
+		if (HasSelected)
 		{
-			for (int i = 0; i < selectedList.Count; i++)
+			for (int i = 0; i < SelectedList.Count; i++)
 			{
-				if (selectedList[i])
-					selectedList[i].SendMessage("toggleSelected", SendMessageOptions.DontRequireReceiver);
+				if (SelectedList[i])
+                {
+                    SelectedList[i].SendMessage("toggleSelected", SendMessageOptions.DontRequireReceiver); 
+                }
 			}
 
-			if (buildingCanvas)
-				Destroy(buildingCanvas);
+			if (_buildingCanvas)
+            {
+                Destroy(_buildingCanvas); 
+            }
 
-			if (targetedArmoury != null)
+			if (TargetedArmoury != null)
 			{
-				Canvas[] canvases = FindObjectsOfType<Canvas>();
-				for (int i = 0; i < canvases.Length; i++)
-				{
-					if (canvases[i].gameObject.name == "WeaponBuildingCanvas")
-					{
-						Destroy(canvases[i].gameObject);
-						break;
-					}
-				}
-
-				targetedArmoury = null;
+				List<Canvas> canvases = FindObjectsOfType<Canvas>().ToList();
+                canvases.RemoveAll(x => x.gameObject.name == "WeaponBuildingCanvas");
+				TargetedArmoury = null;
 			}
 
-			states.clearStates();
-			selectedList.Clear();
-			canCommand = false;
-			hasSelected = false;
-			selected = null;
-			selectedTeam = null;
+			States.ClearStates();
+			SelectedList.Clear();
+			CanCommand = false;
+			HasSelected = false;
+			Selected = null;
+			SelectedTeam = null;
 
-			clearIndicators();
+			ClearIndicators();
 
-			gui.deselect();
+			Gui.Deselect();
 		}
 	}
 
@@ -337,52 +346,62 @@ public class Player : MonoBehaviour
 	/// Searches for it in selected list.
 	/// </summary>
 	/// <param name="obj">Object.</param>
-	public void deselect (GameObject obj)
+	public void Deselect(GameObject obj)
 	{
-		if (!selectedList.Contains(obj))
-			return;
+		if (!SelectedList.Contains(obj))
+        {
+            return; 
+        }
 			
-		if (!multiSelect)
-			deselect();
+		if (!MultiSelect)
+        {
+            Deselect(); 
+        }
 		else
 		{
 			Predicate<GameObject> unitFinder = g => g == obj;
-			int pos = selectedList.FindIndex(unitFinder);
+			int pos = SelectedList.FindIndex(unitFinder);
 
 			if (pos == 0)
-				selected = selectedList[1];
+            {
+                Selected = SelectedList[1]; 
+            }
 
-			selectedList.RemoveAt(pos);
-			Destroy(haloList[pos]);
-			haloList.RemoveAt(pos);
+			SelectedList.RemoveAt(pos);
+			Destroy(HaloList[pos]);
+			HaloList.RemoveAt(pos);
 		}
 	}
 
 	/// <summary>
 	/// Destroys the indicators.
 	/// </summary>
-	public void clearIndicators ()
+	public void ClearIndicators()
 	{
-		for (int i = 0; i < haloList.Count; i++)
-			Destroy(haloList[i]);
-		haloList.Clear();
+		for (int i = 0; i < HaloList.Count; i++)
+        {
+            Destroy(HaloList[i]); 
+        }
+		HaloList.Clear();
 	}
 
 	/// <summary>
 	/// Checks the win condition.
 	/// You win when all castles are under your control.
 	/// </summary>
-	void checkWinCondition ()
+	void CheckWinCondition()
 	{
 		bool foundCastle = false;
 		CastleController[] list = FindObjectsOfType<CastleController>();
 		for (int i = 0; i < list.Length; i++)
-			foundCastle |= list[i].GetComponent<Team>().team != team.team;
+        {
+            foundCastle |= list[i].GetComponent<Team>().team != _team.team; 
+        }
 		
 		if (!foundCastle)
 		{
 			Debug.Log("You win!");
-			gui.winMenu.SetActive(true);
+			Gui.WinMenu.SetActive(true);
 		}
 	}
 
@@ -390,82 +409,90 @@ public class Player : MonoBehaviour
 	/// Checks the lose condition.
 	/// You lose when all castles aren't in your control.
 	/// </summary>
-	void checkLoseCondition ()
+	void CheckLoseCondition()
 	{
 		bool foundCastle = false;
 		CastleController[] list = FindObjectsOfType<CastleController>();
 
 		for (int i = 0; i < list.Length; i++)
-			foundCastle |= list[i].gameObject.GetComponent<Team>().team == team.team;
+        {
+            foundCastle |= list[i].gameObject.GetComponent<Team>().team == _team.team; 
+        }
 
 		if (!foundCastle)
 		{
-				Debug.Log("You lose!");
-				gui.winMenu.SetActive(true);
-				gui.winMenu.GetComponentInChildren<Text>().text = "You Lost!";
+			Debug.Log("You lose!");
+			Gui.WinMenu.SetActive(true);
+			Gui.WinMenu.GetComponentInChildren<Text>().text = "You Lost!";
 		}
 	}
 
-    public void pressedGeneralBuildButton (string type)
+    public void PressedGeneralBuildButton(string type)
     {
-        setBuildingType(type);
-        setPlayerState(stateList[0]);
-        createGhostBuilding();
+        SetBuildingType(type);
+        SetPlayerState(_stateList[0]);
+        CreateGhostBuilding();
     }
 
 	/// <summary>
 	/// Sets the type of the building to build.
 	/// </summary>
 	/// <param name="type">Building tag.</param>
-	public void setBuildingType (string type)
+	public void SetBuildingType(string type)
 	{
-		if (IdUtility.isBuilding(type) || type == Tags.Block || type == Tags.Gate || type == Tags.Junction)
-			buildingType = type;
+		if (IdUtility.IsBuilding(type) || type == Tags.Block || type == Tags.Gate || type == Tags.Junction)
+        {
+            BuildingType = type; 
+        }
 		else
-			buildingType = "none";
+        {
+            BuildingType = "none"; 
+        }
 
-		ghostManager.buildingType = buildingType;
+		GhostManager.BuildingType = BuildingType;
 	}
 
 	/// <summary>
 	/// Tells ghostManager to create a ghost building.
 	/// </summary>
-	public void createGhostBuilding() 
+	public void CreateGhostBuilding() 
 	{
-		if (debug)
-			Debug.Log("Building a " + buildingType);
+		if (_debug)
+			Debug.Log("Building a " + BuildingType);
 
-		ghostManager.createGhostBuilding();
+		GhostManager.CreateGhostBuilding();
 	}
 
 	/// <summary>
 	/// Tells crab to take a weapon.
 	/// </summary>
 	/// <param name="weapon">Hammer, Spear, Bow, or Shield.</param>
-	public void takeWeapon (string weapon)
+	public void TakeWeapon(string weapon)
 	{
-		if (selected.tag == Tags.Crab && canCommand)
-			selected.GetComponent<CrabController>().startTakeWeapon(weapon);
+		if (Selected.tag == Tags.Crab && CanCommand)
+        {
+            Selected.GetComponent<CrabController>().StartTakeWeapon(weapon); 
+        }
 	}
 
 	/// <summary>
 	/// Sets a player state.
 	/// </summary>
 	/// <param name="state">State name.</param>
-	public void setPlayerState (string state)
+	public void SetPlayerState(string state)
 	{
-		states.setState(state, true);
+		States.SetState(state, true);
 	}
 
 	/// <summary>
 	/// Sets the images for each inventory slot.
 	/// </summary>
 	/// <param name="inv">Inventory array.</param>
-	public void getInventory (string[] inv)
+	public void GetInventory(string[] inv)
 	{
-		gui.getInvSlot(1).texture = getTexture(inv[0]);
-		gui.getInvSlot(2).texture = getTexture(inv[1]);
-		gui.getInvSlot(3).texture = getTexture(inv[2]);
+		Gui.GetInvSlot(1).texture = GetTexture(inv[0]);
+		Gui.GetInvSlot(2).texture = GetTexture(inv[1]);
+		Gui.GetInvSlot(3).texture = GetTexture(inv[2]);
 	}
 
 	/// <summary>
@@ -473,15 +500,19 @@ public class Player : MonoBehaviour
 	/// </summary>
 	/// <returns>The texture.</returns>
 	/// <param name="textureName">texture name.</param>
-	Texture getTexture (string textureName)
+	Texture GetTexture(string textureName)
 	{
 		Texture newTexture = Resources.Load<Texture>("Textures/Empty");
 		if (textureName == null)
-			return newTexture;
+        {
+            return newTexture; 
+        }
 
 		newTexture = Resources.Load<Texture>("Textures/" + textureName);
 		if (!newTexture)
-			newTexture = Resources.Load<Texture>("Textures/Empty");
+        {
+            newTexture = Resources.Load<Texture>("Textures/Empty"); 
+        }
 
 		return newTexture;
 	}
@@ -489,12 +520,19 @@ public class Player : MonoBehaviour
 	/// <summary>
 	/// Tells crab to craft item.
 	/// </summary>
-	public void craft ()
+	public void Craft()
 	{
-		if (canCommand)
+        if (Selected.GetComponent<CrabController>() == null)
+        {
+            Debug.LogWarning("Selected object is not a crab.");
+            return;
+        }
+
+		if (CanCommand)
 		{
-			selected.GetComponent<CrabController>().craft(selected.GetComponent<CrabController>().getCraftableType());
-			getInventory(selected.GetComponent<CrabController>().getInventory());
+            CrabController crab = Selected.GetComponent<CrabController>();
+			crab.Craft(crab.GetCraftableType());
+			GetInventory(crab.GetInventory());
 		}
 	}
 
@@ -503,12 +541,19 @@ public class Player : MonoBehaviour
 	/// called by separate button
 	/// separate from craft because of two crafting types at once.
 	/// </summary>
-	public void craftBow ()
+	public void CraftBow()
 	{
-		if (canCommand)
+        if (Selected.GetComponent<CrabController>() == null)
+        {
+            Debug.LogWarning("Selected object is not a crab.");
+            return;
+        }
+
+        if (CanCommand)
 		{
-			selected.GetComponent<CrabController>().craft(Tags.Bow);
-			getInventory(selected.GetComponent<CrabController>().getInventory());
+            CrabController crab = Selected.GetComponent<CrabController>();
+            crab.Craft(Tags.Bow);
+			GetInventory(crab.GetInventory());
 		}
 	}
 
@@ -517,17 +562,17 @@ public class Player : MonoBehaviour
     /// Called by separate button
     /// Assumes a building is selected that has an available destroy button.
     /// </summary>
-    public void startDismantle ()
+    public void StartDismantle()
     {
-        CrabController crab = InfoTool.findIdleCrab(team.team);
+        CrabController crab = InfoTool.FindIdleCrab(_team.team);
 
         if (crab != null)
         {
-            crab.startDismantling(selected);
+            crab.StartDismantling(Selected);
         }
         else
         {
-            if (debug)
+            if (_debug)
                 Debug.Log("No available crab.");
         }
     }
@@ -536,12 +581,14 @@ public class Player : MonoBehaviour
 	/// Moves multiple crabs at once.
 	/// </summary>
 	/// <param name="dest">Destination.</param>
-	public void moveMultiple (Vector3 dest)
+	public void MoveMultiple(Vector3 dest)
 	{
-		for (int i = 1; i < selectedList.Count; i++)
+		for (int i = 1; i < SelectedList.Count; i++)
 		{
-			if (selectedList[i].tag == Tags.Crab)
-                selectedList[i].SendMessage("startMove", dest);
+			if (SelectedList[i].tag == Tags.Crab)
+            {
+                SelectedList[i].SendMessage("startMove", dest); 
+            }
 		}
 	}
 
@@ -550,24 +597,32 @@ public class Player : MonoBehaviour
 	/// Are the selected objects a mix of crabs and siege weapons?
 	/// </summary>
 	/// <returns>Crab for all crabs, Siege for all siege weapons, or Mixed for mixed.</returns>
-	public string getMultiSelectStatus ()
+	public string GetMultiSelectStatus()
 	{
 		string type = "None";
-		for (int i = 0; i < selectedList.Count; i++)
+		for (int i = 0; i < SelectedList.Count; i++)
 		{
-			if (selectedList[i].tag == Tags.Crab)
+			if (SelectedList[i].tag == Tags.Crab)
 			{
 				if (type == "None")
-					type = "Crab";
+                {
+                    type = "Crab"; 
+                }
 				else if (type == "Siege")
-					type = "Mixed";
+                {
+                    type = "Mixed"; 
+                }
 			}
-			if (IdUtility.isSiegeWeapon(selectedList[i].tag))
+			if (IdUtility.IsSiegeWeapon(SelectedList[i].tag))
 			{
 				if (type == "None")
-					type = "Siege";
+                {
+                    type = "Siege"; 
+                }
 				else if (type == "Crab")
-					type = "Mixed";
+                {
+                    type = "Mixed"; 
+                }
 			}
 		}
 		return type;

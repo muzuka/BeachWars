@@ -9,7 +9,7 @@ public class ArmCommand : Command
 	public GameObject crab { get; set; }
 	public GameObject armoury { get; set; }
 
-	public override void execute ()
+	public override void Execute()
 	{
 
 	}

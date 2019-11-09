@@ -4,23 +4,23 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class MainUnitGUITag : MonoBehaviour {
 
-	Text t;
-	string selected;
+	Text _text;
+	string _selected;
 
-	void Start () 
+	void Start() 
 	{
-		selected = "";
-		t = GetComponent<Text>();
+		_selected = "";
+		_text = GetComponent<Text>();
 	}
 
-	void Update () 
+	void Update() 
 	{
-		t.text = selected;
+		_text.text = _selected;
 	}
 
 	// Input: THe new string.
-	public void changeString (string unit) 
+	public void ChangeString(string unit) 
 	{
-		selected = unit;
+		_selected = unit;
 	}
 }

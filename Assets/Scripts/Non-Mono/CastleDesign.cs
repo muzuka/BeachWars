@@ -15,7 +15,7 @@ public class CastleDesign {
 		isBuiltRef = new Dictionary<Vector3, bool>();
 		blocks = list;
 
-		for(int i = 0; i < list.Count; i++) {
+		for (int i = 0; i < list.Count; i++) {
 			isBuiltRef.Add(blocks[i], false);
 		}
 	}
@@ -24,7 +24,7 @@ public class CastleDesign {
 		isBuiltRef = new Dictionary<Vector3, bool>();
 		blocks = new List<Vector3>();
 
-		for(int i = 0; i < list.Length; i++) {
+		for (int i = 0; i < list.Length; i++) {
 			isBuiltRef.Add(list[i], false);
 			blocks.Add(list[i]);
 		}

@@ -8,22 +8,22 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class ChangeTextPlayer : MonoBehaviour {
 
-	string state;
+	string _state;
 
-	Player player;
+	Player _player;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start () {
-		state = gameObject.name;
-		player = FindObjectOfType<Player>();
+	void Start() {
+		_state = gameObject.name;
+		_player = FindObjectOfType<Player>();
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () {
-		GetComponent<Text>().text = state + ": " + player.states.getState(state);
+	void Update() {
+		GetComponent<Text>().text = _state + ": " + _player.States.GetState(_state);
 	}
 }

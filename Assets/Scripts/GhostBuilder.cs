@@ -9,105 +9,102 @@ using System.Collections.Generic;
 public class GhostBuilder : MonoBehaviour {
 
 	[Tooltip("Object to instantiate")]
-	public GameObject original;
+	public GameObject Original;
     [Tooltip("Time to wait until checking for an idle crab.")]
-    public float timeToWait;
+    public float TimeToWait;
 
-	public int woodRequirement { get; set; }
-	public int stoneRequirement { get; set; }
+	public int WoodRequirement { get; set; }
+	public int StoneRequirement { get; set; }
 
-	public bool hasBuilder { get; set; }
-	public bool placed { get; set; }
+	public bool HasBuilder { get; set; }
+	public bool Placed { get; set; }
 
-	public int woodAmount { get; set; }
-	public int stoneAmount { get; set; }
+	public int WoodAmount { get; set; }
+	public int StoneAmount { get; set; }
 
-	bool debug;
+	bool _debug;
 
-	bool waiting;
-	float timeConsumed;
+	bool _waiting;
+	float _timeConsumed;
 
-	List<CrabController> builders;
-
-	Player player;
+	List<CrabController> _builders;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-		builders = new List<CrabController>();
-		player = FindObjectOfType<Player>();
-		waiting = false;
-		timeConsumed = 0.0f;
-		woodAmount = 0;
-		stoneAmount = 0;
-		placed = false;
-		debug = GetComponent<DebugComponent>().debug;
+		_builders = new List<CrabController>();
+		_waiting = false;
+		_timeConsumed = 0.0f;
+		WoodAmount = 0;
+		StoneAmount = 0;
+		Placed = false;
+		_debug = GetComponent<DebugComponent>().Debug;
 
-		woodRequirement = BuildingCost.getWoodRequirement(original.name);
-		stoneRequirement = BuildingCost.getStoneRequirement(original.name);
+		WoodRequirement = BuildingCost.GetWoodRequirement(Original.name);
+		StoneRequirement = BuildingCost.GetStoneRequirement(Original.name);
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update ()
+	void Update()
 	{
-		if (player.autoBuild)
+		if (Player.Instance.AutoBuild)
 		{
-			if (placed)
+			if (Placed)
 			{
-				if(debug)
+				if (_debug)
 				{
-					if(original.name == "Junction")
+					if (Original.name == "Junction")
 						Debug.Log("Junction is searching for crabBuilder");
 				}
 
-				if (hasBuilder)
+				if (HasBuilder)
 				{
-					foreach (GameObject crab in player.selectedList)
+					foreach (GameObject crab in Player.Instance.SelectedList)
 					{
 						CrabController c = crab.GetComponent<CrabController>();
-						if (!builders.Contains(c))
+						if (!_builders.Contains(c))
 						{
-							builders.Add(crab.GetComponent<CrabController>());
+							_builders.Add(crab.GetComponent<CrabController>());
 						}
 					}
-					if (builders.Count > 0)
+					if (_builders.Count > 0)
 					{
-						foreach (CrabController crab in builders)
+						foreach (CrabController crab in _builders)
 						{
-							crab.buildFromGhost(gameObject);
+							crab.BuildFromGhost(gameObject);
 						}
-						placed = false;
-						hasBuilder = false;
+						Placed = false;
+						HasBuilder = false;
 					}
 				}
 				else
 				{
-					if(!waiting)
+					if (!_waiting)
 					{
-						CrabController crab = InfoTool.findIdleCrab(GetComponent<Team>().team);
-						if(crab)
+						CrabController crab = InfoTool.FindIdleCrab(GetComponent<Team>().team);
+						if (crab)
 						{
-							builders.Add(crab);
-							crab.buildFromGhost(gameObject);
-							placed = false;
+							_builders.Add(crab);
+							crab.BuildFromGhost(gameObject);
+							Placed = false;
 						}
 						else
 						{
-							waiting = true;
-							timeConsumed = 0.0f;
+							_waiting = true;
+							_timeConsumed = 0.0f;
 						}
 					}
 					else
 					{
-						timeConsumed += Time.deltaTime;
-						if(timeConsumed >= timeToWait)
+						_timeConsumed += Time.deltaTime;
+						if (_timeConsumed >= TimeToWait)
 						{
-							waiting = false;
-							timeConsumed = 0.0f;
+							_waiting = false;
+							_timeConsumed = 0.0f;
 						}
 					}
 				}
@@ -118,19 +115,19 @@ public class GhostBuilder : MonoBehaviour {
 	/// <summary>
 	/// Call when ghost is destroyed.
 	/// </summary>
-	public void destroyed ()
+	public void Destroyed()
 	{
-		if(debug)
+		if (_debug)
 			Debug.Log(gameObject.name + " has been destroyed.");
 
-        if (builders != null)
+        if (_builders != null)
         {
-            if (builders.Count > 0)
+            if (_builders.Count > 0)
             {
-                foreach (CrabController crab in builders)
+                foreach (CrabController crab in _builders)
                 {
-                    crab.GetComponent<CrabController>().actionStates.clearStates();
-                    crab.GetComponent<CrabController>().stopMove();
+                    crab.ActionStates.ClearStates();
+                    crab.StopMove();
                 }
             }
         }
@@ -140,33 +137,45 @@ public class GhostBuilder : MonoBehaviour {
 	/// Is there enough resources to build?
 	/// </summary>
 	/// <returns><c>true</c>, if there are enough resources, <c>false</c> otherwise.</returns>
-	public bool canBuild ()
+	public bool CanBuild()
 	{
-		return (woodAmount >= woodRequirement) && (stoneAmount >= stoneRequirement);
+		return (WoodAmount >= WoodRequirement) && (StoneAmount >= StoneRequirement);
 	}
 
-	public bool needsWood ()
+    /// <summary>
+    /// Does the building need more wood?
+    /// </summary>
+    /// <returns>Is the requirement met?</returns>
+	public bool NeedsWood()
 	{
-		return woodAmount < woodRequirement;
+		return WoodAmount < WoodRequirement;
 	}
 
-	public bool needsStone ()
+    /// <summary>
+    /// Does the building need more stone?
+    /// </summary>
+    /// <returns>Is the requirement met?</returns>
+	public bool NeedsStone()
 	{
-		return stoneAmount < stoneRequirement;
+		return StoneAmount < StoneRequirement;
 	}
 
 	/// <summary>
-	/// Build the building.
+	/// Instantiates the building.
 	/// </summary>
-	public void build ()
+	public void Build()
 	{
-		Instantiate(original, transform.position, transform.rotation);
+		Instantiate(Original, transform.position, transform.rotation);
 		Destroy(gameObject);
 	}
 
-	public void updateUI (GUIController gui)
+    /// <summary>
+    /// Updates the UI. Called by the GUI controller.
+    /// </summary>
+    /// <param name="gui"></param>
+	public void UpdateUI(GUIController gui)
 	{
-		gui.woodCount.text = "Wood: " + woodAmount + "/" + woodRequirement;
-		gui.stoneCount.text = "Stone: " + stoneAmount + "/" + stoneRequirement;
+		gui.WoodCount.text = "Wood: " + WoodAmount + "/" + WoodRequirement;
+		gui.StoneCount.text = "Stone: " + StoneAmount + "/" + StoneRequirement;
 	}
 }

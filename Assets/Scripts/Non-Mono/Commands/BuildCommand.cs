@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
+
 /// <summary>
 /// Build building command.
 /// </summary>
 public class BuildCommand : Command
 {
+	public GameObject Crab { get; set; }
+	public Vector3 Location { get; set; }
+	public string BuildingType { get; set; }
 
-	public GameObject crab { get; set; }
-	public Vector3 location { get; set; }
-	public string buildingType { get; set; }
-
-	public override void execute ()
+	public override void Execute()
 	{
-		crab.GetComponent<CrabController> ().startBuild (buildingType, location);
+		Crab.GetComponent<CrabController> ().StartBuild (BuildingType, Location);
 	}
 }

@@ -5,63 +5,63 @@ using UnityEngine;
 public class CastleUpgrade : Upgradable {
 
 	[Tooltip("The max upgrade of the object")]
-	public int maxLevel;
+	public int MaxLevel;
 	[Tooltip("The amount of resources to upgrade")]
-	public int upgradeCost;
+	public int UpgradeCost;
 
-	int level;				// current level
-	int nextLevel;			// next level to upgrade to. Used to check for ability to upgrade.
+	int _level;				// current level
+	int _nextLevel;			// next level to upgrade to. Used to check for ability to upgrade.
 
 	// Use this for initialization
-	void Start () {
-		level = 1;
-		nextLevel = 0;
-		upgrading = false;
-		timeConsumed = 0.0f;
-		otherCrabs = 1;
-		debug = GetComponent<DebugComponent>().debug;
+	void Start() {
+		_level = 1;
+		_nextLevel = 0;
+		Upgrading = false;
+		TimeConsumed = 0.0f;
+		OtherCrabs = 1;
+		Debug = GetComponent<DebugComponent>().Debug;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (upgrading)
-			upgrade();
+	void Update() {
+		if (Upgrading)
+			Upgrade();
 	}
 
 	/// <summary>
 	/// Starts the castle upgrade.
 	/// </summary>
-	public void startCastleUpgrade (int woodAmount, int stoneAmount)
+	public void StartCastleUpgrade(int woodAmount, int stoneAmount)
 	{
-		if (canUpgrade(level + 1, woodAmount, stoneAmount))
+		if (CanUpgrade(_level + 1, woodAmount, stoneAmount))
 		{
-			nextLevel = level + 1;
-			upgrading = true;
-			timeConsumed = 0.0f;
+			_nextLevel = _level + 1;
+			Upgrading = true;
+			TimeConsumed = 0.0f;
 		}
-		else if (debug)
-			Debug.Log("Couldn't upgrade castle!");
+		else if (Debug)
+            UnityEngine.Debug.Log("Couldn't upgrade castle!");
 	}
 
 	/// <summary>
 	/// Upgrades castle when time is up.
 	/// </summary>
-	protected override void upgrade () 
+	protected override void Upgrade() 
 	{
-		if (debug)
-			Debug.Log("Upgrading " + gameObject.tag + ": " + timeConsumed + " / " + (timeToUpgrade / otherCrabs));
+		if (Debug)
+            UnityEngine.Debug.Log("Upgrading " + gameObject.tag + ": " + TimeConsumed + " / " + (TimeToUpgrade / OtherCrabs));
 
-		timeConsumed += Time.deltaTime;
-		if (timeConsumed > (timeToUpgrade / otherCrabs))
+		TimeConsumed += Time.deltaTime;
+		if (TimeConsumed > (TimeToUpgrade / OtherCrabs))
 		{
-			if (debug)
-				Debug.Log("Upgrade complete!");
+			if (Debug)
+                UnityEngine.Debug.Log("Upgrade complete!");
 
-			level = nextLevel;
-			timeConsumed = 0.0f;
-			upgrading = false;
-			otherCrabs = 1;
-			gameObject.SendMessage("upgradeFinished", nextLevel, SendMessageOptions.DontRequireReceiver);
+			_level = _nextLevel;
+			TimeConsumed = 0.0f;
+			Upgrading = false;
+			OtherCrabs = 1;
+			gameObject.SendMessage("UpgradeFinished", _nextLevel, SendMessageOptions.DontRequireReceiver);
 		}
 	}
 
@@ -72,17 +72,17 @@ public class CastleUpgrade : Upgradable {
 	/// <param name="testLevel">The next level.</param>
 	/// <param name="woodAmount">Amount of wood</param>
 	/// <param name="stoneAmount">Amount of stone</param>
-	bool canUpgrade (int testLevel, int woodAmount, int stoneAmount)
+	bool CanUpgrade(int testLevel, int woodAmount, int stoneAmount)
 	{
-		return testLevel <= maxLevel && (woodAmount >= upgradeCost && stoneAmount >= upgradeCost);
+		return testLevel <= MaxLevel && (woodAmount >= UpgradeCost && stoneAmount >= UpgradeCost);
 	}
 
 	/// <summary>
 	/// Gets the current level.
 	/// </summary>
 	/// <returns>The current level.</returns>
-	public int getLevel ()
+	public int GetLevel()
 	{
-		return level;
+		return _level;
 	}
 }

@@ -1,10 +1,16 @@
-﻿
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
 public static class BuildingCost
 {
-	public static bool canBuild (string type, int woodAmount, int stoneAmount)
+    /// <summary>
+    /// Determines if the resources for a building are enough.
+    /// </summary>
+    /// <param name="type">Building type</param>
+    /// <param name="woodAmount">Amount of wood</param>
+    /// <param name="stoneAmount">Amount of stone</param>
+    /// <returns></returns>
+	public static bool CanBuild(string type, int woodAmount, int stoneAmount)
 	{
 		BuildingCosts buildingCosts = BuildingCosts.load(Path.Combine(Application.dataPath, "GameData/buildingCosts.xml"));
 
@@ -20,13 +26,23 @@ public static class BuildingCost
 			}
 		}
 
-		if(woodAmount >= woodCost && stoneAmount >= stoneCost)
-			return true;
+		if (woodAmount >= woodCost && stoneAmount >= stoneCost)
+        {
+            return true; 
+        }
 		else
-			return false;
+        {
+            return false; 
+        }
 	}
 
-	public static int getWoodRequirement(string type) {
+    /// <summary>
+    /// Gets wood requirement
+    /// </summary>
+    /// <param name="type">Building type</param>
+    /// <returns>Amount of wood required</returns>
+	public static int GetWoodRequirement(string type)
+    {
 		BuildingCosts buildingCosts = BuildingCosts.load(Path.Combine(Application.dataPath, "GameData/buildingCosts.xml"));
 
 		for (int i = 0; i < buildingCosts.WoodCost.Count; i++) {
@@ -39,7 +55,13 @@ public static class BuildingCost
 		return -1;
 	}
 
-	public static int getStoneRequirement(string type) {
+    /// <summary>
+    /// Gets stone requirement
+    /// </summary>
+    /// <param name="type">Building type</param>
+    /// <returns>Amount of stone required</returns>
+	public static int GetStoneRequirement(string type)
+    {
 		BuildingCosts buildingCosts = BuildingCosts.load(Path.Combine(Application.dataPath, "GameData/buildingCosts.xml"));
 
 		for (int i = 0; i < buildingCosts.WoodCost.Count; i++) {

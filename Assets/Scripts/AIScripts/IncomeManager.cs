@@ -11,134 +11,147 @@ using UnityEngine;
 public class IncomeManager : MonoBehaviour {
 
     [Tooltip("Starting wood goal amount.")]
-	public int woodGoal;
+	public int WoodGoal;
     [Tooltip("Starting stone goal amount.")]
-    public int stoneGoal;
+    public int StoneGoal;
 
     [Tooltip("Ratio of wood to stone to follow.")]
-    public float woodToStoneRatio;
+    public float WoodToStoneRatio;
 
-	StrategyManager strategyManager;
-    EnemyKnowledge knowledge;
+	StrategyManager _strategyManager;
+    EnemyKnowledge _knowledge;
 
-	List<GameObject> crabs;
-	List<GameObject> woodCrabs;
-	List<GameObject> stoneCrabs;
-	List<GameObject> idleCrabs;
+	List<GameObject> _crabs;
+	List<GameObject> _woodCrabs;
+	List<GameObject> _stoneCrabs;
+	List<GameObject> _idleCrabs;
 
-    GameObject currentWoodResource;
-    GameObject currentStoneResource;
+    GameObject _currentWoodResource;
+    GameObject _currentStoneResource;
 
-    int currentCrabCount;
+    int _currentCrabCount;
 
-    bool initialSetupFinished = false;
+    bool _initialSetupFinished = false;
 
-	// Use this for initialization
-	void Start ()
+	/// <summary>
+    /// Start this instance.
+    /// </summary>
+	void Start()
     {
-		crabs = new List<GameObject>();
-		woodCrabs = new List<GameObject>();
-		stoneCrabs = new List<GameObject>();
+		_crabs = new List<GameObject>();
+		_woodCrabs = new List<GameObject>();
+		_stoneCrabs = new List<GameObject>();
 
-		strategyManager = GetComponent<StrategyManager>();
-        knowledge = GetComponent<EnemyKnowledge>();
+		_strategyManager = GetComponent<StrategyManager>();
+        _knowledge = GetComponent<EnemyKnowledge>();
 
-		woodGoal = strategyManager.strategy.woodGoal;
-		stoneGoal = strategyManager.strategy.stoneGoal;
-        woodToStoneRatio = strategyManager.strategy.woodToStoneRatio;
+		WoodGoal = _strategyManager.Strategy.WoodGoal;
+		StoneGoal = _strategyManager.Strategy.StoneGoal;
+        WoodToStoneRatio = _strategyManager.Strategy.WoodToStoneRatio;
 	}
 
     private void OnEnable()
     {
-        EventManager.StartListening("FinishedBuilding", reassignCrabs);
+        EventManager.StartListening("FinishedBuilding", ReassignCrabs);
     }
 
     private void OnDisable()
     {
-        EventManager.StopListening("FinishedBuilding", reassignCrabs);
+        EventManager.StopListening("FinishedBuilding", ReassignCrabs);
     }
 
-    // Update is called once per frame
-    void Update ()
+    /// <summary>
+    /// Update this instance.
+    /// </summary>
+    void Update()
     {
-        if (currentWoodResource == null)
+        if (_currentWoodResource == null)
         {
-            if (strategyManager.knowledge.aiCastleList.Count > 0 && strategyManager.knowledge.resourceList.Count > 0)
+            if (_strategyManager.Knowledge.AICastleList.Count > 0 && _strategyManager.Knowledge.ResourceList.Count > 0)
             {
-                currentWoodResource = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Wood, strategyManager.knowledge.resourceList);
-                List<GameObject> tempList = new List<GameObject>(woodCrabs);
+                _currentWoodResource = InfoTool.ClosestObject(_knowledge.AICastleList[0].transform.position, _knowledge.ResourceList.FindAll(x => (x != null && x.tag == Tags.Wood)));
+                List<GameObject> tempList = new List<GameObject>(_woodCrabs);
                 foreach (GameObject crab in tempList)
                 {
                     CrabController crabController = crab.GetComponent<CrabController>();
-                    crabController.goIdle();
-                    placeCrab(crabController);
+                    crabController.GoIdle();
+                    PlaceCrab(crabController);
                 }
             }
         }
-        if (currentStoneResource == null)
+        if (_currentStoneResource == null)
         {
-            if (strategyManager.knowledge.aiCastleList.Count > 0 && strategyManager.knowledge.resourceList.Count > 0)
+            if (_strategyManager.Knowledge.AICastleList.Count > 0 && _strategyManager.Knowledge.ResourceList.Count > 0)
             {
-                currentStoneResource = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Stone, strategyManager.knowledge.resourceList);
-                List<GameObject> tempList = new List<GameObject>(stoneCrabs);
+                _currentStoneResource = InfoTool.ClosestObject(_knowledge.AICastleList[0].transform.position, _knowledge.ResourceList.FindAll(x => (x != null && x.tag == Tags.Stone)));
+                List<GameObject> tempList = new List<GameObject>(_stoneCrabs);
                 foreach (GameObject crab in tempList)
                 {
                     CrabController crabController = crab.GetComponent<CrabController>();
-                    crabController.goIdle();
-                    placeCrab(crabController);
+                    crabController.GoIdle();
+                    PlaceCrab(crabController);
                 }
             }
         }
 
-        if (!initialSetupFinished)
+        if (!_initialSetupFinished)
         {
-            initializeIncomeManager();
-            currentCrabCount = knowledge.aiCrabList.Count;
+            InitializeIncomeManager();
+            _currentCrabCount = _knowledge.AICrabList.Count;
         }
 
-        if (currentCrabCount != knowledge.aiCrabList.Count)
+        if (_currentCrabCount != _knowledge.AICrabList.Count)
         {
-            HashSet<GameObject> newCrabs = new HashSet<GameObject>(crabs);
-            newCrabs.IntersectWith(knowledge.aiCrabSet);
-            crabs.AddRange(newCrabs);
+            HashSet<GameObject> newCrabs = new HashSet<GameObject>(_crabs);
+            newCrabs.IntersectWith(_knowledge.AICrabSet);
+            _crabs.AddRange(newCrabs);
             foreach (GameObject crab in newCrabs)
             {
-                placeCrab(crab.GetComponent<CrabController>());
+                PlaceCrab(crab.GetComponent<CrabController>());
             }
-            currentCrabCount = knowledge.aiCrabSet.Count;
+            _currentCrabCount = _knowledge.AICrabSet.Count;
         }
 	}
 
-    void initializeIncomeManager ()
+    /// <summary>
+    /// Finds resources and assigns crabs to it.
+    /// </summary>
+    void InitializeIncomeManager()
     {
-        if (strategyManager.knowledge.aiCrabList.Count > 0)
+        if (_strategyManager.Knowledge.AICrabList.Count > 0)
         {
-            crabs = strategyManager.knowledge.aiCrabList;
-            woodCrabs.Clear();
-            stoneCrabs.Clear();
-            currentWoodResource = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Wood, strategyManager.knowledge.resourceList);
-            currentStoneResource = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Stone, strategyManager.knowledge.resourceList);
+            _crabs = _strategyManager.Knowledge.AICrabList;
+            _woodCrabs.Clear();
+            _stoneCrabs.Clear();
+            _currentWoodResource = InfoTool.ClosestObject(_knowledge.AICastleList[0].transform.position, _knowledge.ResourceList.FindAll(x => (x != null && x.tag == Tags.Wood)));
+            _currentStoneResource = InfoTool.ClosestObject(_knowledge.AICastleList[0].transform.position, _knowledge.ResourceList.FindAll(x => (x != null && x.tag == Tags.Stone)));
 
-            foreach (GameObject crab in crabs)
+            foreach (GameObject crab in _crabs)
             {
                 CrabController crabController = crab.GetComponent<CrabController>();
-                placeCrab(crabController);
-                initialSetupFinished = true;
+                PlaceCrab(crabController);
+                _initialSetupFinished = true;
             }
         }
     }
 
-    public void crabEnteredBuilding(GameObject crab)
+    /// <summary>
+    /// Remove crab from control group when it enters a building.
+    /// </summary>
+    /// <param name="crab">Crab</param>
+    public void CrabEnteredBuilding(GameObject crab)
     {
-        if (crabs.Contains(crab))
+        if (_crabs.Contains(crab))
         {
-            crabs.Remove(crab);
-        } else if (woodCrabs.Contains(crab))
+            _crabs.Remove(crab);
+        }
+        else if (_woodCrabs.Contains(crab))
         {
-            woodCrabs.Remove(crab);
-        } else if (stoneCrabs.Contains(crab))
+            _woodCrabs.Remove(crab);
+        }
+        else if (_stoneCrabs.Contains(crab))
         {
-            stoneCrabs.Remove(crab);
+            _stoneCrabs.Remove(crab);
         }
     }
 
@@ -146,21 +159,21 @@ public class IncomeManager : MonoBehaviour {
     /// Returns a crab if either stone or wood gathering crabs have more than one.
     /// </summary>
     /// <returns>The spare crab.</returns>
-	public GameObject getSpareCrab ()
+	public GameObject GetSpareCrab()
 	{
         GameObject crab = null;
 
-        if (stoneCrabs.Count > 1)
+        if (_stoneCrabs.Count > 1)
         {
-            crab = stoneCrabs[0];
-            stoneCrabs.RemoveAt(0);
+            crab = _stoneCrabs[0];
+            _stoneCrabs.RemoveAt(0);
             return crab;
         }
 
-        if (woodCrabs.Count > 1)
+        if (_woodCrabs.Count > 1)
         {
-            crab = woodCrabs[0];
-            woodCrabs.RemoveAt(0);
+            crab = _woodCrabs[0];
+            _woodCrabs.RemoveAt(0);
             return crab;
         }
 
@@ -171,39 +184,39 @@ public class IncomeManager : MonoBehaviour {
     /// For a given idle crab, decides which resource to gather.
     /// </summary>
     /// <param name="crab">Crab.</param>
-    void placeCrab(CrabController crab)
+    void PlaceCrab(CrabController crab)
     {
-        if (crab.actionStates.isIdle())
+        if (crab.ActionStates.IsIdle())
         {
-            if (woodCrabs.Count > 0 && stoneCrabs.Count > 0)
+            if (_woodCrabs.Count > 0 && _stoneCrabs.Count > 0)
             {
-                if ((float)woodCrabs.Count / (float)stoneCrabs.Count > woodToStoneRatio)
+                if ((float)_woodCrabs.Count / (float)_stoneCrabs.Count > WoodToStoneRatio)
                 {
-                    stoneCrabs.Add(crab.gameObject);
-                    strategyManager.startCollect(crab.gameObject, currentStoneResource);
+                    _stoneCrabs.Add(crab.gameObject);
+                    _strategyManager.StartCollect(crab.gameObject, _currentStoneResource);
                 }
-                else if ((float)woodCrabs.Count / (float)stoneCrabs.Count < woodToStoneRatio)
+                else if ((float)_woodCrabs.Count / (float)_stoneCrabs.Count < WoodToStoneRatio)
                 {
-                    woodCrabs.Add(crab.gameObject);
-                    strategyManager.startCollect(crab.gameObject, currentWoodResource);
+                    _woodCrabs.Add(crab.gameObject);
+                    _strategyManager.StartCollect(crab.gameObject, _currentWoodResource);
                 }
                 else
                 {
-                    stoneCrabs.Add(crab.gameObject);
-                    strategyManager.startCollect(crab.gameObject, currentStoneResource);
+                    _stoneCrabs.Add(crab.gameObject);
+                    _strategyManager.StartCollect(crab.gameObject, _currentStoneResource);
                 }
             }
             else
             {
-                if (woodCrabs.Count == 0)
+                if (_woodCrabs.Count == 0)
                 {
-                    woodCrabs.Add(crab.gameObject);
-                    strategyManager.startCollect(crab.gameObject, currentWoodResource);
+                    _woodCrabs.Add(crab.gameObject);
+                    _strategyManager.StartCollect(crab.gameObject, _currentWoodResource);
                 }
-                else if (stoneCrabs.Count == 0)
+                else if (_stoneCrabs.Count == 0)
                 {
-                    stoneCrabs.Add(crab.gameObject);
-                    strategyManager.startCollect(crab.gameObject, currentStoneResource);
+                    _stoneCrabs.Add(crab.gameObject);
+                    _strategyManager.StartCollect(crab.gameObject, _currentStoneResource);
                 }
             }
         }
@@ -212,12 +225,12 @@ public class IncomeManager : MonoBehaviour {
     /// <summary>
     /// When done building, find idle crabs and make them start collecting.
     /// </summary>
-    void reassignCrabs()
+    void ReassignCrabs()
     {
-        foreach (GameObject crab in crabs)
+        foreach (GameObject crab in _crabs)
         {
             CrabController crabController = crab.GetComponent<CrabController>();
-            placeCrab(crabController);
+            PlaceCrab(crabController);
         }
     }
 }

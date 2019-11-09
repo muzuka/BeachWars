@@ -21,124 +21,126 @@ public enum Stage {START, MID, END};
 public class StrategyManager : MonoBehaviour {
 
     [Tooltip("Distance from castle to raise caution")]
-    public float warningDistance;
+    public float WarningDistance;
     [Tooltip("Distance from castle to raise alert")]
-    public float dangerDistance;
+    public float DangerDistance;
 
     [Tooltip("Stage of game to start on")]
-	public Stage startMode;
+	public Stage StartMode;
 
 	[Header("Activity flags:")]
 	[Tooltip("Should the enemy gather resources?")]
-	public bool gathering;
+	public bool Gathering;
 	[Tooltip("Should the enemy build buildings?")]
-	public bool building;
+	public bool Building;
 	[Tooltip("Should the enemy make more crabs?")]
-	public bool makingCrabs;
+	public bool MakingCrabs;
 	[Tooltip("Should the enemy attack the player?")]
-	public bool harassing;
+	public bool Harassing;
 	[Tooltip("Should the enemy retaliate against attack?")]
-	public bool defending;
+	public bool Defending;
 
 	[Header("Gathering variables:")]
-	public int lowResourceCount;
-	public int maxGatheringCrabs;
+	public int LowResourceCount;
+	public int MaxGatheringCrabs;
 
 	[Header("Building variables:")]
-	public int maxBuildingCrabs;
+	public int MaxBuildingCrabs;
 
     [Header("Build order:")]
-    public int initialWoodGoal;
-    public int initialStoneGoal;
-    public List<string> buildingQueue;
-    public float woodToStoneRatio;
+    public int InitialWoodGoal;
+    public int InitialStoneGoal;
+    public List<string> BuildingQueue;
+    public float WoodToStoneRatio;
 
 	// The main queue of commands to execute
-	public Queue<Command> commands { get; set; }
+	public Queue<Command> Commands { get; set; }
 
-	public EnemyKnowledge knowledge { get; set; }
-    public TacticsManager tacticsManager { get; set; }
-    public ProductionManager productionManager { get; set; }
+	public EnemyKnowledge Knowledge { get; set; }
+    public TacticsManager TacticsManager { get; set; }
+    public ProductionManager ProductionManager { get; set; }
 
-    public CastleController mainCastle { get; set; }
+    public CastleController MainCastle { get; set; }
 
-	public Strategy strategy;
+	public Strategy Strategy;
 
-    Timer circleTimer;
-    int circleLifeTime = 10;
+    Timer _circleTimer;
+    int _circleLifeTime = 10;
 
-    const int neutral = -1;
+    const int _neutral = -1;
 
-	Stage currentMode;
+	Stage _currentMode;
 
-	bool debug;
+	bool _debug;
 
 	/// <summary>
-	/// Awake this instance.
+	/// Wake this instance.
 	/// </summary>
-	void Awake () 
+	void Awake() 
 	{
-        generateBuildOrder();
+        GenerateBuildOrder();
 
-		currentMode = startMode;
+		_currentMode = StartMode;
 
-        commands = new Queue<Command>();
-        knowledge = GetComponent<EnemyKnowledge>();
-        tacticsManager = GetComponent<TacticsManager>();
-        productionManager = GetComponent<ProductionManager>();
-		debug = GetComponent<DebugComponent>().debug;
+        Commands = new Queue<Command>();
+        Knowledge = GetComponent<EnemyKnowledge>();
+        TacticsManager = GetComponent<TacticsManager>();
+        ProductionManager = GetComponent<ProductionManager>();
+		_debug = GetComponent<DebugComponent>().Debug;
 	}
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-        if (debug) {
+        if (_debug) {
             Debug.Log("Started Thinker.");
         }
 
-        circleTimer = new Timer(circleLifeTime);
+        _circleTimer = new Timer(_circleLifeTime);
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () 
+	void Update() 
 	{
-        if (knowledge.aiCastleList.Count > 0 && mainCastle == null)
-            mainCastle = knowledge.aiCastleList[0].GetComponent<CastleController>();
+        if (Knowledge.AICastleList.Count > 0 && MainCastle == null)
+            MainCastle = Knowledge.AICastleList[0].GetComponent<CastleController>();
 
-        if (debug)
+        if (_debug)
         {
-            circleTimer.update(drawCircles);
+            _circleTimer.update(DrawCircles);
         }
 
-        if (beingAttacked())
+        if (BeingAttacked())
         {
-            tacticsManager.launchAttack(1, knowledge.dangerZoneCrabList[0]);
+            TacticsManager.LaunchAttack(1, Knowledge.DangerZoneCrabList[0]);
         }
     }
 
-    // build standard build order
-    void generateBuildOrder ()
+    /// <summary>
+    /// Generates the build order
+    /// </summary>
+    void GenerateBuildOrder()
     {
         // initial list: {Nest, Nest, Armoury, Workshop}
-        strategy = new Strategy(initialWoodGoal, initialStoneGoal);
-        foreach (string building in buildingQueue)
+        Strategy = new Strategy(InitialWoodGoal, InitialStoneGoal);
+        foreach (string building in BuildingQueue)
         {
-            strategy.buildingQueue.Enqueue(building);
+            Strategy.BuildingQueue.Enqueue(building);
         }
-        strategy.woodToStoneRatio = woodToStoneRatio;
+        Strategy.WoodToStoneRatio = WoodToStoneRatio;
     }
 
 	/// <summary>
 	/// Is base being attacked?
 	/// </summary>
 	/// <returns><c>true</c>, if base is attacked, <c>false</c> otherwise.</returns>
-	bool beingAttacked ()
+	bool BeingAttacked()
 	{
-        return knowledge.dangerZoneCrabSet.Count > 0;
+        return Knowledge.DangerZoneCrabSet.Count > 0;
 	}
 
     #region Crab Commands
@@ -149,13 +151,13 @@ public class StrategyManager : MonoBehaviour {
     /// <param name="crab">Crab.</param>
     /// <param name="buildingType">Building type.</param>
     /// <param name="location">Location.</param>
-    public void startBuild (GameObject crab, string buildingType, Vector3 location)
+    public void StartBuild(GameObject crab, string buildingType, Vector3 location)
 	{
         BuildCommand command = new BuildCommand();
-		command.crab = crab;
-		command.buildingType = buildingType;
-		command.location = location;
-		commands.Enqueue(command);
+		command.Crab = crab;
+		command.BuildingType = buildingType;
+		command.Location = location;
+		Commands.Enqueue(command);
 	}
 
     /// <summary>
@@ -163,12 +165,12 @@ public class StrategyManager : MonoBehaviour {
     /// </summary>
     /// <param name="crab">Crab.</param>
     /// <param name="ghost">Ghost.</param>
-    public void startBuildFromGhost(GameObject crab, GameObject ghost)
+    public void StartBuildFromGhost(GameObject crab, GameObject ghost)
     {
         BuildFromGhostCommand command = new BuildFromGhostCommand();
-        command.crab = crab;
-        command.ghostBuilding = ghost;
-        commands.Enqueue(command);
+        command.Crab = crab;
+        command.GhostBuilding = ghost;
+        Commands.Enqueue(command);
     }
 
     /// <summary>
@@ -176,23 +178,23 @@ public class StrategyManager : MonoBehaviour {
     /// </summary>
     /// <param name="crab">Crab.</param>
     /// <param name="resource">Resource.</param>
-	public void startCollect (GameObject crab, GameObject resource) 
+	public void StartCollect(GameObject crab, GameObject resource) 
 	{
         CollectCommand command = new CollectCommand();
-		command.crab = crab;
-		command.resource = resource;
-		commands.Enqueue(command);
+		command.Crab = crab;
+		command.Resource = resource;
+		Commands.Enqueue(command);
 	}
 
     /// <summary>
     /// Stops all activity of the crab.
     /// </summary>
     /// <param name="crab">Crab.</param>
-    public void stopCrab (GameObject crab)
+    public void StopCrab(GameObject crab)
     {
         StopCommand command = new StopCommand();
-        command.crab = crab;
-        commands.Enqueue(command);
+        command.Crab = crab;
+        Commands.Enqueue(command);
     }
 
     /// <summary>
@@ -200,12 +202,12 @@ public class StrategyManager : MonoBehaviour {
     /// </summary>
     /// <param name="crab">Crab.</param>
     /// <param name="building">Building.</param>
-    public void enterBuilding (GameObject crab, GameObject building)
+    public void EnterBuilding(GameObject crab, GameObject building)
     {
         EnterCommand command = new EnterCommand();
-        command.crab = crab;
-        command.building = building;
-        commands.Enqueue(command);
+        command.Crab = crab;
+        command.Building = building;
+        Commands.Enqueue(command);
     }
 
     /// <summary>
@@ -213,12 +215,12 @@ public class StrategyManager : MonoBehaviour {
     /// </summary>
     /// <param name="workshop"></param>
     /// <param name="type"></param>
-    public void startBuildingSiegeWeapon(GameObject workshop, string type) 
+    public void StartBuildingSiegeWeapon(GameObject workshop, string type) 
     {
         SiegeCommand command = new SiegeCommand();
-        command.siegeWorkshop = workshop;
-        command.buildingType = type;
-        commands.Enqueue(command);
+        command.SiegeWorkshop = workshop;
+        command.BuildingType = type;
+        Commands.Enqueue(command);
     }
 
     /// <summary>
@@ -227,29 +229,26 @@ public class StrategyManager : MonoBehaviour {
     /// <param name="crab"></param>
     /// <param name="armoury"></param>
     /// <param name="weapon"></param>
-    public void startTakeWeapon(GameObject crab, GameObject armoury, string weapon)
+    public void StartTakeWeapon(GameObject crab, GameObject armoury, string weapon)
     {
         TakeWeaponCommand command = new TakeWeaponCommand();
-        command.crab = crab;
-        command.armoury = armoury;
-        command.weapon = weapon;
-        commands.Enqueue(command);
+        command.Crab = crab;
+        command.Armoury = armoury;
+        command.Weapon = weapon;
+        Commands.Enqueue(command);
     }
 
     #endregion
 
-    #region command functions
-
-
-
-    #endregion
-
-    void drawCircles()
+    /// <summary>
+    /// Draws debug circles of the various distances the AI watches.
+    /// </summary>
+    void DrawCircles()
     {
-        if (knowledge.aiCastleList.Count > 0)
+        if (Knowledge.AICastleList.Count > 0)
         {
-            DebugTools.DrawCircle(knowledge.aiCastleList[0].transform.position, dangerDistance, circleLifeTime);
-            DebugTools.DrawCircle(knowledge.aiCastleList[0].transform.position, warningDistance, circleLifeTime);
+            DebugTools.DrawCircle(Knowledge.AICastleList[0].transform.position, DangerDistance, _circleLifeTime);
+            DebugTools.DrawCircle(Knowledge.AICastleList[0].transform.position, WarningDistance, _circleLifeTime);
         }
     }
 
@@ -258,8 +257,8 @@ public class StrategyManager : MonoBehaviour {
     /// </summary>
     /// <param name="playerCrabs">Player crabs.</param>
     /// <param name="enemyCrabs">Enemy crabs.</param>
-    void getRatio (int playerCrabs, int enemyCrabs)
+    void GetRatio(int playerCrabs, int enemyCrabs)
 	{
-		knowledge.troopRatio = (float)playerCrabs/(float)enemyCrabs;
+		Knowledge.TroopRatio = (float)playerCrabs/(float)enemyCrabs;
 	}
 }

@@ -6,34 +6,34 @@
 [RequireComponent(typeof(MeshRenderer))]
 public class GhostColorChanger : MonoBehaviour {
 
-	MeshRenderer meshRenderer;
+	MeshRenderer _meshRenderer;
 
-	public bool canBuild { get; set; }
+	public bool CanBuild { get; set; }
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-		canBuild = true;
-		meshRenderer = GetComponent<MeshRenderer>();
+		CanBuild = true;
+		_meshRenderer = GetComponent<MeshRenderer>();
 	}
 
 	/// <summary>
 	/// Raises the trigger enter event.
 	/// </summary>
-	void OnTriggerEnter ()
+	void OnTriggerEnter()
 	{
-		meshRenderer.material = Resources.Load<Material>("Materials/Denial");
-		canBuild = false;
+		_meshRenderer.material = Resources.Load<Material>("Materials/Denial");
+		CanBuild = false;
 	}
 
 	/// <summary>
 	/// Raises the trigger exit event.
 	/// </summary>
-	void OnTriggerExit ()
+	void OnTriggerExit()
 	{
-		meshRenderer.material = Resources.Load<Material>("Materials/GhostBlock");
-		canBuild = true;
+		_meshRenderer.material = Resources.Load<Material>("Materials/GhostBlock");
+		CanBuild = true;
 	}
 }

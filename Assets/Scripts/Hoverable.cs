@@ -7,33 +7,35 @@
 [RequireComponent(typeof(Renderer))]
 public class Hoverable : MonoBehaviour {
 
-	protected bool hover;
+	protected bool Hover;
 
-	protected Color originalColor;
-	protected Color altColor;
-	protected Material mat;
+	protected Color OriginalColor;
+	protected Color AltColor;
+	protected Material Mat;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start () {
-		mat = GetComponent<Renderer>().material;
-		originalColor = mat.color;
-		altColor = originalColor + new Color(0.2f, 0.2f, 0.2f);
+	void Start() {
+		Mat = GetComponent<Renderer>().material;
+		OriginalColor = Mat.color;
+		AltColor = OriginalColor + new Color(0.2f, 0.2f, 0.2f);
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () {
+	void Update() {
 
-		hover = Raycaster.pointingAtObject(gameObject);
-		if (hover)
-			mat.color = altColor;
+		Hover = Raycaster.PointingAtObject(gameObject);
+		if (Hover)
+			Mat.color = AltColor;
 		else
 		{
-			if (mat.color == altColor)
-				mat.color = originalColor;
+			if (Mat.color == AltColor)
+            {
+                Mat.color = OriginalColor; 
+            }
 		}
 	}
 }

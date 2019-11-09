@@ -7,26 +7,26 @@
 [RequireComponent(typeof(StrategyManager))]
 public class EnemyAIActor : MonoBehaviour {
 
-	StrategyManager controller;
+	StrategyManager _controller;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-		controller = GetComponent<StrategyManager>();
+		_controller = GetComponent<StrategyManager>();
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () 
+	void Update() 
 	{
-		if(controller.commands.Count > 0)
+		if (_controller.Commands.Count > 0)
 		{
-			if (GetComponent<DebugComponent>().debug)
-				Debug.Log("Executing command " + controller.commands.Peek().GetType());
-			controller.commands.Dequeue().execute();
+			if (GetComponent<DebugComponent>().Debug)
+				Debug.Log("Executing command " + _controller.Commands.Peek().GetType());
+			_controller.Commands.Dequeue().Execute();
 		}
 
 	}

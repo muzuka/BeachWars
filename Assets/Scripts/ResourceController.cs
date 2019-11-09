@@ -8,28 +8,28 @@ using System.Collections.Generic;
 public class ResourceController : MonoBehaviour {
 
 	[Tooltip("Amount of resource")]
-	public int resourceCount;			// amount of resource available(set by level design)
+	public int ResourceCount;			// amount of resource available(set by level design)
 
-	List<GameObject> crabs;		// list of crabs collecting from resource
+	List<GameObject> _crabs;		// list of crabs collecting from resource
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-		crabs = new List<GameObject>();
+		_crabs = new List<GameObject>();
 	}
 
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update ()
+	void Update()
 	{
-		if (resourceCount <= 0)
+		if (ResourceCount <= 0)
 		{
-			for(int i = 0; i < crabs.Count; i++)
+			for (int i = 0; i < _crabs.Count; i++)
 			{
-				crabs[i].SendMessage("stopCollecting", SendMessageOptions.DontRequireReceiver);
+				_crabs[i].SendMessage("stopCollecting", SendMessageOptions.DontRequireReceiver);
 			}
 			Destroy(gameObject);
 		}
@@ -38,27 +38,27 @@ public class ResourceController : MonoBehaviour {
 	/// <summary>
 	/// Placeholder so SendMessage doesn't return null.
 	/// </summary>
-	public void setController () {}
+	public void SetController() {}
 
 	/// <summary>
 	/// Placeholder so SendMessage doesn't return null.
 	/// </summary>
-	public void updateUI () {}
+	public void UpdateUI() {}
 
 	/// <summary>
 	/// Sets the crabs that are taking resources.
 	/// </summary>
 	/// <param name="crabs">Crab list.</param>
-	public void setCrabs (List<GameObject> crabs)
+	public void SetCrabs(List<GameObject> crabs)
 	{
-		this.crabs = crabs;
+		this._crabs = crabs;
 	}
 
 	/// <summary>
 	/// Crab takes a resource.
 	/// </summary>
-	public void take ()
+	public void Take()
 	{
-		resourceCount--;
+		ResourceCount--;
 	}
 }

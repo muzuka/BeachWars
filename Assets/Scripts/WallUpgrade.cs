@@ -6,74 +6,84 @@ public enum wallUpgradeType {NORMAL, WOOD, STONE}
 
 public class WallUpgrade : Upgradable {
 
-	public wallUpgradeType currentLevel { get; set; }
-	wallUpgradeType targetLevel;
+	public wallUpgradeType CurrentLevel { get; set; }
+	wallUpgradeType _targetLevel;
 
-	// Use this for initialization
-	void Start () {
-		targetLevel = wallUpgradeType.NORMAL;
-		currentLevel = wallUpgradeType.NORMAL;
-		upgrading = false;
-		timeConsumed = 0.0f;
-		otherCrabs = 1;
-		debug = GetComponent<DebugComponent>().debug;
+	/// <summary>
+    /// Start this instance
+    /// </summary>
+	void Start() {
+		_targetLevel = wallUpgradeType.NORMAL;
+		CurrentLevel = wallUpgradeType.NORMAL;
+		Upgrading = false;
+		TimeConsumed = 0.0f;
+		OtherCrabs = 1;
+		Debug = GetComponent<DebugComponent>().Debug;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		if (upgrading)
-			upgrade();
+	/// <summary>
+    /// Update this instance
+    /// </summary>
+	void Update() {
+		if (Upgrading)
+        {
+            Upgrade(); 
+        }
 	}
 
 	/// <summary>
 	/// Starts the wall upgrade.
 	/// </summary>
 	/// <param name="targetLevel">Target level.</param>
-	public void startWallUpgrade (wallUpgradeType targetLevel, Inventory crabInventory)
+	public void StartWallUpgrade(wallUpgradeType targetLevel, Inventory crabInventory)
 	{
-		if (canUpgrade(targetLevel, crabInventory))
+		if (CanUpgrade(targetLevel, crabInventory))
 		{
-			upgrading = true;
-			timeConsumed = 0.0f;
-			this.targetLevel = targetLevel;
+			Upgrading = true;
+			TimeConsumed = 0.0f;
+			this._targetLevel = targetLevel;
 		}
-		else if(debug)
-			Debug.Log("Couldn't upgrade wall!");
+		else if (Debug)
+            UnityEngine.Debug.Log("Couldn't upgrade wall!");
 	}
 
 	/// <summary>
 	/// Upgrades wall when time is up.
 	/// </summary>
-	protected override void upgrade ()
+	protected override void Upgrade()
 	{
-		if (debug)
-			Debug.Log("Upgrading " + gameObject.tag + ": " + timeConsumed + " / " + (timeToUpgrade / otherCrabs));
+		if (Debug)
+            UnityEngine.Debug.Log("Upgrading " + gameObject.tag + ": " + TimeConsumed + " / " + (TimeToUpgrade / OtherCrabs));
 
-		timeConsumed += Time.deltaTime;
-		if (timeConsumed > (timeToUpgrade / otherCrabs))
+		TimeConsumed += Time.deltaTime;
+		if (TimeConsumed > (TimeToUpgrade / OtherCrabs))
 		{
-			if (debug)
-				Debug.Log("Upgrade complete!");
+			if (Debug)
+                UnityEngine.Debug.Log("Upgrade complete!");
 
-			timeConsumed = 0.0f;
-			upgrading = false;
-			otherCrabs = 1;
-			gameObject.SendMessage("upgradeFinished", targetLevel, SendMessageOptions.DontRequireReceiver);
-			currentLevel = targetLevel;
+			TimeConsumed = 0.0f;
+			Upgrading = false;
+			OtherCrabs = 1;
+			gameObject.SendMessage("UpgradeFinished", _targetLevel, SendMessageOptions.DontRequireReceiver);
+			CurrentLevel = _targetLevel;
 		}
 	}
 
 	/// <summary>
 	/// Does the crab have the proper resources to upgrade this wall?
 	/// </summary>
-	bool canUpgrade (wallUpgradeType targetType, Inventory crabInventory)
+	bool CanUpgrade(wallUpgradeType targetType, Inventory crabInventory)
 	{
-		if (crabInventory.full()) 
+		if (crabInventory.Full()) 
 		{
 			if (targetType == wallUpgradeType.STONE)
-				return crabInventory.isAllOneType(Tags.Stone);
+            {
+                return crabInventory.IsAllOneType(Tags.Stone); 
+            }
 			else if (targetType == wallUpgradeType.WOOD)
-				return crabInventory.isAllOneType(Tags.Wood);
+            {
+                return crabInventory.IsAllOneType(Tags.Wood); 
+            }
 		}
 		return false;
 	}

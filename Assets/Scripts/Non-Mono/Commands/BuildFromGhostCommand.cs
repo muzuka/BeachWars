@@ -2,12 +2,11 @@
 
 public class BuildFromGhostCommand : Command
 {
+    public GameObject Crab { get; set; }
+    public GameObject GhostBuilding { get; set; }
 
-    public GameObject crab { get; set; }
-    public GameObject ghostBuilding { get; set; }
-
-    public override void execute()
+    public override void Execute()
     {
-        crab.GetComponent<CrabController>().buildFromGhost(ghostBuilding);
+        Crab.GetComponent<CrabController>().BuildFromGhost(GhostBuilding);
     }
 }

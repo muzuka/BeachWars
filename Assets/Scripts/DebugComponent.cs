@@ -4,5 +4,5 @@
 /// Debug component for toggling debug mode.
 /// </summary>
 public class DebugComponent : MonoBehaviour {
-	public bool debug;
+	public bool Debug;
 }

@@ -12,110 +12,119 @@ using System.Collections.Generic;
 /// </summary>
 public class TacticsManager : MonoBehaviour {
 
-    public int smallUnitSize;
+    public int SmallUnitSize;
 
-    public CastleController mainCastle { get; set; }
+    public CastleController MainCastle { get; set; }
 
-    List<Unit> smallUnits;
+    List<Unit> _smallUnits;
 
-    EnemyKnowledge knowledge;
-    StrategyManager strategyManager;
-    IncomeManager incomeManager;
+    EnemyKnowledge _knowledge;
+    StrategyManager _strategyManager;
+    IncomeManager _incomeManager;
 
-    int crabCount = 0;
+    int _crabCount = 0;
 
-    bool debug;
+    bool _debug;
 
+    /// <summary>
+    /// Wake this instance
+    /// </summary>
     void Awake()
     {
-        smallUnits = new List<Unit>();
-        knowledge = GetComponent<EnemyKnowledge>();
-        strategyManager = GetComponent<StrategyManager>();
-        incomeManager = GetComponent<IncomeManager>();
-        debug = GetComponent<DebugComponent>().debug;
-    }
-
-    // Use this for initialization
-    void Start ()
-    {   
-        
+        _smallUnits = new List<Unit>();
+        _knowledge = GetComponent<EnemyKnowledge>();
+        _strategyManager = GetComponent<StrategyManager>();
+        _incomeManager = GetComponent<IncomeManager>();
+        _debug = GetComponent<DebugComponent>().Debug;
     }
 	
-	// Update is called once per frame
-	void Update ()
+	/// <summary>
+    /// Update this instance
+    /// </summary>
+	void Update()
     {
-        if (knowledge.aiCastleList.Count > 0 && mainCastle == null)
-            mainCastle = knowledge.aiCastleList[0].GetComponent<CastleController>();
+        if (_knowledge.AICastleList.Count > 0 && MainCastle == null)
+            MainCastle = _knowledge.AICastleList[0].GetComponent<CastleController>();
 
-        if (crabCount == 0 && knowledge.aiCrabList.Count != crabCount)
-        {
-            sortCrabsIntoUnits();
-        }
-        else if (knowledge.aiCrabList.Count < crabCount)
+        if (_knowledge.AICrabList.Count < _crabCount)
         {
             // crabs have been destroyed
             // Clean out units
-            for (int i = 0; i < smallUnits.Count; i++) {
-                Unit currentUnit = smallUnits[i];
-                int killedUnits = currentUnit.countKilledUnits();
+            for (int i = 0; i < _smallUnits.Count; i++) {
+                Unit currentUnit = _smallUnits[i];
+                int killedUnits = currentUnit.CountKilledUnits();
                 if (killedUnits > 0)
                 {
-                    currentUnit.cleanUnit();
+                    currentUnit.CleanUnit();
                 }
             }
         }
-        else if (knowledge.aiCrabList.Count > crabCount)
+        else if (_knowledge.AICrabList.Count > _crabCount)
         {
             // new crabs have been created.
-            smallUnits.Clear();
-            sortCrabsIntoUnits();
+            _smallUnits.Clear();
+            SortCrabsIntoUnits();
         }
     }
 
-    public void launchAttack(int numberOfUnits, GameObject target)
+    /// <summary>
+    /// Launches attack on a target
+    /// </summary>
+    /// <param name="numberOfUnits">Number of small units to attack</param>
+    /// <param name="target">Target</param>
+    public void LaunchAttack(int numberOfUnits, GameObject target)
     {
-        if (numberOfUnits > smallUnits.Count)
+        if (numberOfUnits > _smallUnits.Count)
         {
-            foreach (Unit unit in smallUnits)
+            foreach (Unit unit in _smallUnits)
             {
-                unit.attack(target);
+                unit.Attack(target);
             }
         }
         else
         {
             for (int i = 0; i < numberOfUnits; i++)
             {
-                smallUnits[i].attack(target);
+                _smallUnits[i].Attack(target);
             }
         }
     }
 
-    public void equipUnit(int unitNum, string weapon, GameObject armoury)
+    /// <summary>
+    /// Commands crabs to grab a weapon
+    /// </summary>
+    /// <param name="unitNum">Number of crabs to command</param>
+    /// <param name="weapon">The kind of weapon to equip</param>
+    /// <param name="armoury">The armoury with the weapons</param>
+    public void EquipUnit(int unitNum, string weapon, GameObject armoury)
     {
         if (armoury.GetComponent<HoldsWeapons>() == null)
         {
             return;
         }
 
-        if (unitNum < smallUnits.Count && unitNum >= 0)
+        if (unitNum < _smallUnits.Count && unitNum >= 0)
         {
-            smallUnits[unitNum].equip(weapon, armoury);
+            _smallUnits[unitNum].Equip(weapon, armoury);
         }
     }
     
-    void sortCrabsIntoUnits() {
-        int unitCount = knowledge.aiCrabList.Count / smallUnitSize;
+    /// <summary>
+    /// Divides the crabs into units.
+    /// </summary>
+    void SortCrabsIntoUnits() {
+        int unitCount = _knowledge.AICrabList.Count / SmallUnitSize;
 
         int crabPos = 0;
         for (int i = 0; i < unitCount; i++) 
         {
-            Unit newUnit = new Unit(smallUnitSize);
-            for (int j = 0; j < smallUnitSize; j++)
+            Unit newUnit = new Unit(SmallUnitSize);
+            for (int j = 0; j < SmallUnitSize; j++)
             {
-                newUnit.AddCrab(knowledge.aiCrabList[crabPos]);
+                newUnit.AddCrab(_knowledge.AICrabList[crabPos]);
                 crabPos++;
             }
-            smallUnits.Add(newUnit);
+            _smallUnits.Add(newUnit);
         }
     }
 }

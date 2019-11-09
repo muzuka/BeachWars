@@ -34,7 +34,7 @@ public class BuildingCosts
 	{
 		try
         {
-			XmlSerializer serializer = new XmlSerializer (typeof (BuildingCosts));
+			XmlSerializer serializer = new XmlSerializer(typeof (BuildingCosts));
             using (FileStream stream = new FileStream(path, FileMode.Open))
             {
                 return serializer.Deserialize(stream) as BuildingCosts;

@@ -5,90 +5,92 @@ using UnityEngine.UI;
 
 public class NeutralCrab : MonoBehaviour {
 
-	protected CrabSpecies type;
+	protected CrabSpecies Type;
 
-	protected CrabController crab;
+	protected CrabController Crab;
 
 	// recruitment variables
-	protected string recruitmentUIName;					// name of the prefab file for the respective recruitment UI
-	protected GameObject recruitmentUI;					// Canvas of ui that appears when player approaches
-	protected bool playerIsNear;						// is player nearby?
-	protected bool uiOpen;								// is the UI open
+	protected string RecruitmentUIName;					// name of the prefab file for the respective recruitment UI
+	protected GameObject RecruitmentUI;					// Canvas of ui that appears when player approaches
+	protected bool PlayerIsNear;						// is player nearby?
+	protected bool UIOpen;								// is the UI open
 
 	// Use this for initialization
-	void Start () {
-		crab = GetComponent<CrabController>();
-		type = crab.type;
+	void Start() {
+		Crab = GetComponent<CrabController>();
+		Type = Crab.Type;
 
-		uiOpen = false;
-		playerIsNear = false;
-		recruitmentUI = null;
-		setRecruitmentUI();
+		UIOpen = false;
+		PlayerIsNear = false;
+		RecruitmentUI = null;
+		SetRecruitmentUI();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		runRecruitUI();
+	void Update() {
+		RunRecruitUI();
 	}
 
 	/// <summary>
 	/// Runs the recruit UI.
 	/// Opens menu when player approaches.
 	/// </summary>
-	protected void runRecruitUI ()
+	protected void RunRecruitUI()
 	{
-		playerIsNear = GetComponent<CrabController>().isCrabNear();
+		PlayerIsNear = GetComponent<CrabController>().IsCrabNear();
 
-		if (playerIsNear)
+		if (PlayerIsNear)
 		{
-			if (GetComponent<DebugComponent>().debug)
+			if (GetComponent<DebugComponent>().Debug)
 				Debug.Log("Player is near!");
 
-			if (uiOpen)
-				recruitmentUI.GetComponentInChildren<Image>().gameObject.transform.position = gameObject.transform.position + new Vector3(0.0f, 5.0f, 0.0f);
+			if (UIOpen)
+            {
+                RecruitmentUI.GetComponentInChildren<Image>().gameObject.transform.position = gameObject.transform.position + new Vector3(0.0f, 5.0f, 0.0f); 
+            }
 			else
 			{
-				if (GetComponent<DebugComponent>().debug)
+				if (GetComponent<DebugComponent>().Debug)
 					Debug.Log("Opened recruitment panel!");
 
-				recruitmentUI = Instantiate(Resources.Load<GameObject>("Prefabs/GUI/RecruitmentPanels/" + recruitmentUIName), gameObject.transform.position, Quaternion.identity);
-				uiOpen = true;
+				RecruitmentUI = Instantiate(Resources.Load<GameObject>("Prefabs/GUI/RecruitmentPanels/" + RecruitmentUIName), gameObject.transform.position, Quaternion.identity);
+				UIOpen = true;
 			}
 		}
 		else
 		{
-			uiOpen = false;
-			Destroy(recruitmentUI);
+			UIOpen = false;
+			Destroy(RecruitmentUI);
 		}
 	}
 
 	/// <summary>
 	/// Sets the recruitment UI to prefab name.
 	/// </summary>
-	protected void setRecruitmentUI ()
+	protected void SetRecruitmentUI()
 	{
-		switch (type) {
+		switch (Type) {
 		case CrabSpecies.FIDDLER:
-			recruitmentUIName = "FiddlerCrabRecruitUI";
+			RecruitmentUIName = "FiddlerCrabRecruitUI";
 			break;
 		case CrabSpecies.TGIANT:
-			recruitmentUIName = "TGiantCrabRecruitUI";
+			RecruitmentUIName = "TGiantCrabRecruitUI";
 			break;
 		case CrabSpecies.SPIDER:
-			recruitmentUIName = "SpiderCrabRecruitUI";
+			RecruitmentUIName = "SpiderCrabRecruitUI";
 			break;
 		case CrabSpecies.COCONUT:
-			recruitmentUIName = "CoconutCrabRecruitUI";
+			RecruitmentUIName = "CoconutCrabRecruitUI";
 			break;
 		case CrabSpecies.HORSESHOE:
-			recruitmentUIName = "HorseshoeCrabRecruitUI";
+			RecruitmentUIName = "HorseshoeCrabRecruitUI";
 			break;
 		case CrabSpecies.SEAWEED:
 		case CrabSpecies.CALICO:
 		case CrabSpecies.KAKOOTA:
 		case CrabSpecies.TRILOBITE:
 		case CrabSpecies.ROCK:
-			recruitmentUIName = "AutoSuccessRecruitUI";
+			RecruitmentUIName = "AutoSuccessRecruitUI";
 			break;
 		}
 	}

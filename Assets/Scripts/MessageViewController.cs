@@ -5,52 +5,52 @@ using UnityEngine.UI;
 
 public class MessageViewController : MonoBehaviour {
 
-    public float timeToDisappear;
+    public float TimeToDisappear;
 
-    public Text textRef;
+    public Text TextRef;
 
-    Queue<Text> messages;
+    Queue<Text> _messages;
 
-    bool isVisible;
-    float timeConsumed;
+    bool _isVisible;
+    float _timeConsumed;
 
     // Use this for initialization
-    void Start () {
-        messages = new Queue<Text>();
-        timeConsumed = 0f;
+    void Start() {
+        _messages = new Queue<Text>();
+        _timeConsumed = 0f;
         gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (isVisible)
+	void Update() {
+        if (_isVisible)
         {
-            timeConsumed += Time.deltaTime;
-            if (timeConsumed > timeToDisappear)
+            _timeConsumed += Time.deltaTime;
+            if (_timeConsumed > TimeToDisappear)
             {
-                isVisible = false;
+                _isVisible = false;
                 gameObject.SetActive(false);
-                timeConsumed = 0f;
-                foreach(Text message in messages)
+                _timeConsumed = 0f;
+                foreach(Text message in _messages)
                 {
                     Destroy(message.gameObject);
                 }
-                messages.Clear();
+                _messages.Clear();
             }
         }
 	}
 
-    public void addNewMessage(string message)
+    public void AddNewMessage(string message)
     {
        
-        Text text = Instantiate(textRef, transform);
-        text.transform.Translate(0.0f, -text.GetComponent<RectTransform>().rect.height * messages.Count, 0.0f);
+        Text text = Instantiate(TextRef, transform);
+        text.transform.Translate(0.0f, -text.GetComponent<RectTransform>().rect.height * _messages.Count, 0.0f);
         text.text = message;
-        messages.Enqueue(text);
+        _messages.Enqueue(text);
 
-        isVisible = true;
+        _isVisible = true;
         gameObject.SetActive(true);
         gameObject.SetActive(true);
-        timeConsumed = 0f;
+        _timeConsumed = 0f;
     }
 }

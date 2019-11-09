@@ -8,7 +8,7 @@ public static class IdUtility {
 	/// </summary>
 	/// <returns><c>true</c>, if weapon, <c>false</c> otherwise.</returns>
 	/// <param name="weaponTag">tag</param>
-	public static bool isWeapon(string weaponTag)
+	public static bool IsWeapon(string weaponTag)
 	{
 		return weaponTag == Tags.Spear || weaponTag == Tags.Bow || weaponTag == Tags.Hammer || weaponTag == Tags.Shield;
 	}
@@ -18,7 +18,7 @@ public static class IdUtility {
 	/// </summary>
 	/// <returns><c>true</c>, if resource, <c>false</c> otherwise.</returns>
 	/// <param name="resourceTag">tag</param>
-	public static bool isResource(string resourceTag)
+	public static bool IsResource(string resourceTag)
 	{
 		return resourceTag == Tags.Stone || resourceTag == Tags.Wood;
 	}
@@ -28,7 +28,7 @@ public static class IdUtility {
 	/// </summary>
 	/// <returns><c>true</c>, if siege weapon, <c>false</c> otherwise.</returns>
 	/// <param name="siegeTag">tag</param>
-	public static bool isSiegeWeapon(string siegeTag)
+	public static bool IsSiegeWeapon(string siegeTag)
 	{
 		return (siegeTag == Tags.Ballista || siegeTag == Tags.Catapult);
 	}
@@ -38,7 +38,7 @@ public static class IdUtility {
 	/// </summary>
 	/// <returns><c>true</c>, if building, <c>false</c> otherwise.</returns>
 	/// <param name="buildingTag">tag</param>
-	public static bool isBuilding(string buildingTag)
+	public static bool IsBuilding(string buildingTag)
 	{
 		return (buildingTag == Tags.Nest || buildingTag == Tags.Workshop || buildingTag == Tags.Tower ||  buildingTag == Tags.Armoury);
 	}
@@ -48,8 +48,8 @@ public static class IdUtility {
 	/// </summary>
 	/// <returns><c>true</c>, if moveable, <c>false</c> otherwise.</returns>
 	/// <param name="unitTag">tag</param>
-	public static bool isMoveable(string unitTag)
+	public static bool IsMoveable(string unitTag)
 	{
-		return (isSiegeWeapon(unitTag) || unitTag == Tags.Crab);
+		return (IsSiegeWeapon(unitTag) || unitTag == Tags.Crab);
 	}
 }

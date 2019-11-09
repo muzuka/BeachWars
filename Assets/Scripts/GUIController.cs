@@ -15,134 +15,134 @@ public class GUIController : MonoBehaviour {
 	public GameObject MainGUI;		// public reference to main GUI
 
     [Tooltip("Reference to Toggle that indicates whether mouse is on gui or not.")]
-    public Toggle onGUI;
+    public Toggle OnGUI;
 
     #region UI variables
 
     // Multi-Select UI elements
-    RectTransform multiUITransform;
+    RectTransform _multiUITransform;
 
-	public RawImage mainProfile { get; set; }
+	public RawImage MainProfile { get; set; }
 
-	public Slider mainSlider { get; set; }
+	public Slider MainSlider { get; set; }
 
-	public Button mainSelectButton { get; set; }
+	public Button MainSelectButton { get; set; }
 
-	public RawImage[] miniProfiles { get; set; }
+	public RawImage[] MiniProfiles { get; set; }
 
 
 	// Single-Select UI elements
-	RectTransform singleUITransform;
+	RectTransform _singleUITransform;
 
-	public Text labelText { get; set; }
+	public Text LabelText { get; set; }
 
-	public Text stoneCount { get; set; }
+	public Text StoneCount { get; set; }
 
-	public Text woodCount { get; set; }
+	public Text WoodCount { get; set; }
 
-	public Text levelText { get; set; }
+	public Text LevelText { get; set; }
 
-	public Text crabLevelText { get; set; }
+	public Text CrabLevelText { get; set; }
 
-	public Slider healthSlider { get; set; }
+	public Slider HealthSlider { get; set; }
 
-	public Slider expSlider { get; set; }
+	public Slider ExpSlider { get; set; }
 
-	public RawImage selectedImage { get; set; }
+	public RawImage SelectedImage { get; set; }
 
-	public RawImage invSlot1 { get; set; }
+	public RawImage InvSlot1 { get; set; }
 
-	public RawImage invSlot2 { get; set; }
+	public RawImage InvSlot2 { get; set; }
 
-	public RawImage invSlot3 { get; set; }
+	public RawImage InvSlot3 { get; set; }
 
-	public Image actionView { get; set; }
+	public Image ActionView { get; set; }
 
-	public Button craftButton { get; set; }
+	public Button CraftButton { get; set; }
 
-	public Button subCraftButton { get; set; }
+	public Button SubCraftButton { get; set; }
 
-	public GameObject pauseMenu { get; set; }
+	public GameObject PauseMenu { get; set; }
 
-	public GameObject saveMenu { get; set; }
+	public GameObject SaveMenu { get; set; }
 
-	public GameObject winMenu { get; set; }
+	public GameObject WinMenu { get; set; }
 
-	public GameObject saveConfirmMenu { get; set; }
+	public GameObject SaveConfirmMenu { get; set; }
 
-	public GameObject towerPanel { get; set; }
+	public GameObject TowerPanel { get; set; }
 
-	public GameObject wallPanel { get; set; }
+	public GameObject WallPanel { get; set; }
 
-	public GameObject selectBox { get; set; }
+	public GameObject SelectBox { get; set; }
 
-	public Text spearText { get; set; }
+	public Text SpearText { get; set; }
 
-	public Text hammerText { get; set; }
+	public Text HammerText { get; set; }
 
-	public Text bowText { get; set; }
+	public Text BowText { get; set; }
 
-	public Text shieldText { get; set; }
+	public Text ShieldText { get; set; }
 
-    public Button dismantleButton { get; set; }
+    public Button DismantleButton { get; set; }
 
-	RectTransform selectBoxTransform;
+	RectTransform _selectBoxTransform;
 
     #endregion
 
-    Vector2 anchor;
+    Vector2 _anchor;
 
-	UnityAction gateButton;
-	UnityAction towerButton;
-	UnityAction junctionTowerButton;
+	UnityAction _gateButton;
+	UnityAction _towerButton;
+	UnityAction _junctionTowerButton;
 
-	const string EmptyString = "Nothing";
+	const string _emptyString = "Nothing";
 
-	int miniProfileCount = 16;
+	int _miniProfileCount = 16;
 
-	bool debug;
+	bool _debug;
 
 	/// <summary>
 	/// Initializes the UI.
 	/// </summary>
-	public void startUI ()
+	public void StartUI()
 	{
-		debug = GetComponent<DebugComponent>().debug;
+		_debug = GetComponent<DebugComponent>().Debug;
 
-		connectGUI();
+		ConnectGUI();
 
 		if (!GUIHookedIn())
 			Debug.Log("GUI isn't completely connected.");
 
-		setActiveGUIComponents("none");
+		SetActiveGUIComponents("none");
 		
-		selectBoxTransform = selectBox.GetComponent<RectTransform>();
-        clearBox();
+		_selectBoxTransform = SelectBox.GetComponent<RectTransform>();
+        ClearBox();
 
-		selectedImage.texture = null;
-		craftButton.gameObject.SetActive(false);
-		subCraftButton.gameObject.SetActive(false);
+		SelectedImage.texture = null;
+		CraftButton.gameObject.SetActive(false);
+		SubCraftButton.gameObject.SetActive(false);
 
-		labelText.text = EmptyString;
-		stoneCount.text = "";
-		woodCount.text = "";
+		LabelText.text = _emptyString;
+		StoneCount.text = "";
+		WoodCount.text = "";
 
-		gateButton = () => 
+		_gateButton = () => 
 		{
-			GetComponent<Player>().selected.GetComponent<BlockController>().convertTo("Gate");
-			wallPanel.SetActive(false);
+			GetComponent<Player>().Selected.GetComponent<BlockController>().ConvertTo("Gate");
+			WallPanel.SetActive(false);
 		};
 
-		towerButton = () =>
+		_towerButton = () =>
 		{
-			GetComponent<Player>().selected.GetComponent<BlockController>().convertTo("Tower");
-			wallPanel.SetActive(false);
+			GetComponent<Player>().Selected.GetComponent<BlockController>().ConvertTo("Tower");
+			WallPanel.SetActive(false);
 		};
 
-		junctionTowerButton = () =>
+		_junctionTowerButton = () =>
 		{
-			GetComponent<Player>().selected.GetComponent<JunctionController>().convertToTower();			  
-			towerPanel.SetActive(false);
+			GetComponent<Player>().Selected.GetComponent<JunctionController>().ConvertToTower();			  
+			TowerPanel.SetActive(false);
 		};
 	}
 
@@ -150,20 +150,24 @@ public class GUIController : MonoBehaviour {
 	/// Updates the UI.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	public void updateUI (Player player)
+	public void UpdateUI(Player player)
 	{
-		if (debug)
+		if (_debug)
 			Debug.Assert(player);
 
-		if (player.hasSelected)
+		if (player.HasSelected)
 		{
-			multiUITransform.gameObject.SetActive(player.multiSelect);
-			singleUITransform.gameObject.SetActive(!player.multiSelect);
+			_multiUITransform.gameObject.SetActive(player.MultiSelect);
+			_singleUITransform.gameObject.SetActive(!player.MultiSelect);
 
-			if (!player.multiSelect)
-				singleUIUpdate(player);
+			if (!player.MultiSelect)
+            {
+                SingleUIUpdate(player); 
+            }
 			else
-				multiUIUpdate(player);
+            {
+                MultiUIUpdate(player); 
+            }
 		}
 	}
 
@@ -171,129 +175,131 @@ public class GUIController : MonoBehaviour {
 	/// Updates UI when single crab is selected.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	void singleUIUpdate (Player player) 
+	void SingleUIUpdate(Player player) 
 	{
-		if (debug)
+		if (_debug)
 		{
 			Debug.Assert(player);
-			Debug.Assert(player.selected);
+			Debug.Assert(player.Selected);
 		}
 
-		player.selected.SendMessage("updateUI", this, SendMessageOptions.DontRequireReceiver);
+		player.Selected.SendMessage("UpdateUI", this, SendMessageOptions.DontRequireReceiver);
 
-		getActionViewController().setButtons(player);
+		GetActionViewController().SetButtons(player);
 	}
 
 	/// <summary>
 	/// Updates UI when multiple crabs are selected.
 	/// </summary>
 	/// <param name="player">Player.</param>
-	void multiUIUpdate (Player player)
+	void MultiUIUpdate(Player player)
 	{
-		if (debug)
+		if (_debug)
 		{
 			Debug.Assert(player);
-			Debug.Assert(player.selectedList.Count >= 1);
+			Debug.Assert(player.SelectedList.Count >= 1);
 		}
 
-		if (player.selectedList.Count <= miniProfiles.Length) 
+		if (player.SelectedList.Count <= MiniProfiles.Length) 
 		{
-			for (int i = 0; i < player.selectedList.Count; i++)
-				player.selectedList [i].GetComponent<Attackable>().setHealth(miniProfiles [i].GetComponentInChildren<Slider>());
+			for (int i = 0; i < player.SelectedList.Count; i++)
+            {
+                player.SelectedList[i].GetComponent<Attackable>().SetHealth(MiniProfiles[i].GetComponentInChildren<Slider>()); 
+            }
 		}
 
-		getActionViewController().setButtons(player);
+		GetActionViewController().SetButtons(player);
 	}
 
 	/// <summary>
 	/// Called when deselection occurs.
 	/// </summary>
-	public void deselect ()
+	public void Deselect()
 	{
-		getActionViewController().deactivateButtons();
-		deactivateGUIComponents();
-		selectedImage.GetComponent<RawImage>().texture = null;
-		labelText.text = EmptyString;
-		stoneCount.text = "";
-		woodCount.text = "";
+		GetActionViewController().DeactivateButtons();
+		DeactivateGUIComponents();
+		SelectedImage.GetComponent<RawImage>().texture = null;
+		LabelText.text = _emptyString;
+		StoneCount.text = "";
+		WoodCount.text = "";
 	}
 
 	/// <summary>
 	/// Are all GUI components instantiated?
 	/// </summary>
 	/// <returns><c>true</c>, if GUI is hooked in, <c>false</c> otherwise.</returns>
-	public bool GUIHookedIn ()
+	public bool GUIHookedIn()
 	{
-		bool count = (stoneCount && woodCount);
-		bool invSlots = (invSlot1 && invSlot2 && invSlot3);
-		bool buttons = (craftButton && subCraftButton && dismantleButton);
-		bool multiSelect = areAllProfilesHookedIn();
-		bool uiTransforms = (multiUITransform && singleUITransform);
-		bool menus = (saveMenu && saveConfirmMenu && winMenu && pauseMenu);
+		bool count = (StoneCount && WoodCount);
+		bool invSlots = (InvSlot1 && InvSlot2 && InvSlot3);
+		bool buttons = (CraftButton && SubCraftButton && DismantleButton);
+		bool multiSelect = AreAllProfilesHookedIn();
+		bool uiTransforms = (_multiUITransform && _singleUITransform);
+		bool menus = (SaveMenu && SaveConfirmMenu && WinMenu && PauseMenu);
 
-		if (!labelText)
+		if (!LabelText)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("LabelText isn't hooked up!");
 			return false;
 		}
 		if (!count)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("Stone or wood count isn't hooked up!");
 			return false;
 		}
-		if (!healthSlider)
+		if (!HealthSlider)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("Health slider isn't hooked up!");
 			return false;
 		}
-		if (!selectedImage)
+		if (!SelectedImage)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("Selected image isn't hooked up!");
 			return false;
 		}
 		if (!invSlots)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("One of the inventory slots isn't hooked up!");
 			return false;
 		}
-		if (!actionView)
+		if (!ActionView)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("stone or wood count isn't hooked up!");
 			return false;
 		}
 		if (!buttons)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("A button isn't hooked up!");
 			return false;
 		}
-		if (!selectBox)
+		if (!SelectBox)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("Select box isn't hooked up!");
 			return false;
 		}
 		if (!multiSelect)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("A multi-select element isn't hooked up!");
 			return false;
 		}
 		if (!uiTransforms)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("A transform isn't hooked up!");
 			return false;
 		}
-		if(!menus)
+		if (!menus)
 		{
-			if(debug)
+			if (_debug)
 				Debug.Log("A menu isn't hooked up!");
 			return false;
 		}
@@ -301,11 +307,11 @@ public class GUIController : MonoBehaviour {
 		return true;
 	}
 
-	bool areAllProfilesHookedIn () 
+	bool AreAllProfilesHookedIn() 
 	{
-		for (int i = 0; i < miniProfileCount; i++)
+		for (int i = 0; i < _miniProfileCount; i++)
         {
-			if (miniProfiles[i] == null)
+			if (MiniProfiles[i] == null)
 			{
 				Debug.Log ("Profile " + i + " isn't hooked up");
 				return false;
@@ -317,88 +323,96 @@ public class GUIController : MonoBehaviour {
 	/// <summary>
 	/// Deactivates the GUI components.
 	/// </summary>
-	public void deactivateGUIComponents ()
+	public void DeactivateGUIComponents()
 	{
-		labelText.gameObject.SetActive(false);
-		healthSlider.gameObject.SetActive(false);
-		selectedImage.gameObject.SetActive(false);
-		invSlot1.gameObject.SetActive(false);
-		invSlot2.gameObject.SetActive(false);
-		invSlot3.gameObject.SetActive(false);
-		woodCount.gameObject.SetActive(false);
-		stoneCount.gameObject.SetActive(false);
-		levelText.gameObject.SetActive(false);
-		craftButton.gameObject.SetActive(false);
-		subCraftButton.gameObject.SetActive(false);
-		crabLevelText.gameObject.SetActive(false);
-		expSlider.gameObject.SetActive(false);
-		spearText.gameObject.SetActive(false);
-		hammerText.gameObject.SetActive(false);
-		bowText.gameObject.SetActive(false);
-		shieldText.gameObject.SetActive(false);
-		towerPanel.gameObject.SetActive(false);
-		wallPanel.gameObject.SetActive(false);
-        dismantleButton.gameObject.SetActive(false);
+		LabelText.gameObject.SetActive(false);
+		HealthSlider.gameObject.SetActive(false);
+		SelectedImage.gameObject.SetActive(false);
+		InvSlot1.gameObject.SetActive(false);
+		InvSlot2.gameObject.SetActive(false);
+		InvSlot3.gameObject.SetActive(false);
+		WoodCount.gameObject.SetActive(false);
+		StoneCount.gameObject.SetActive(false);
+		LevelText.gameObject.SetActive(false);
+		CraftButton.gameObject.SetActive(false);
+		SubCraftButton.gameObject.SetActive(false);
+		CrabLevelText.gameObject.SetActive(false);
+		ExpSlider.gameObject.SetActive(false);
+		SpearText.gameObject.SetActive(false);
+		HammerText.gameObject.SetActive(false);
+		BowText.gameObject.SetActive(false);
+		ShieldText.gameObject.SetActive(false);
+		TowerPanel.gameObject.SetActive(false);
+		WallPanel.gameObject.SetActive(false);
+        DismantleButton.gameObject.SetActive(false);
 
-		for(int i = 0; i < miniProfiles.Length; i++)
-			miniProfiles[i].gameObject.SetActive(false);
+		for (int i = 0; i < MiniProfiles.Length; i++)
+        {
+            MiniProfiles[i].gameObject.SetActive(false); 
+        }
 	}
 
 	/// <summary>
 	/// Sets the active GUI components based on tag.
 	/// </summary>
 	/// <param name="tag">Tag.</param>
-	public void setActiveGUIComponents (string tag)
+	public void SetActiveGUIComponents(string tag)
 	{
-		Button[] wallButtons = wallPanel.GetComponentsInChildren<Button>();
-		Button[] towerButtons = towerPanel.GetComponentsInChildren<Button>();
+		Button[] wallButtons = WallPanel.GetComponentsInChildren<Button>();
+		Button[] towerButtons = TowerPanel.GetComponentsInChildren<Button>();
 
-		deactivateGUIComponents();
+		DeactivateGUIComponents();
 
         if (tag != "none")
         {
-            labelText.gameObject.SetActive(true);
-            selectedImage.gameObject.SetActive(true);
+            LabelText.gameObject.SetActive(true);
+            SelectedImage.gameObject.SetActive(true);
         }
 
 		switch (tag) 
 		{
 		case Tags.Crab:
-			healthSlider.gameObject.SetActive(true);
-			invSlot1.gameObject.SetActive(true);
-			invSlot2.gameObject.SetActive(true);
-			invSlot3.gameObject.SetActive(true);
-			crabLevelText.gameObject.SetActive(true);
-			expSlider.gameObject.SetActive(true);
+			HealthSlider.gameObject.SetActive(true);
+			InvSlot1.gameObject.SetActive(true);
+			InvSlot2.gameObject.SetActive(true);
+			InvSlot3.gameObject.SetActive(true);
+			CrabLevelText.gameObject.SetActive(true);
+			ExpSlider.gameObject.SetActive(true);
 			break;
 		case Tags.Castle:
-			healthSlider.gameObject.SetActive(true);
-			levelText.gameObject.SetActive(true);
-			woodCount.gameObject.SetActive(true);
-			stoneCount.gameObject.SetActive(true);
+			HealthSlider.gameObject.SetActive(true);
+			LevelText.gameObject.SetActive(true);
+			WoodCount.gameObject.SetActive(true);
+			StoneCount.gameObject.SetActive(true);
 			break;
 		case Tags.Ghost:
-			woodCount.gameObject.SetActive(true);
-			stoneCount.gameObject.SetActive(true);
+			WoodCount.gameObject.SetActive(true);
+			StoneCount.gameObject.SetActive(true);
 			break;
 		case Tags.Block:
-			wallPanel.SetActive(true);
-            dismantleButton.gameObject.SetActive(true);
+			WallPanel.SetActive(true);
+            DismantleButton.gameObject.SetActive(true);
 			for (int i = 0; i < wallButtons.Length; i++)
 			{
 				if (wallButtons[i].name == "GateButton")
-					wallButtons[i].onClick.AddListener(gateButton);
+                {
+                    wallButtons[i].onClick.AddListener(_gateButton); 
+                }
 				if (wallButtons[i].name == "TowerButton")
-					wallButtons[i].onClick.AddListener(towerButton);
+                {
+                    wallButtons[i].onClick.AddListener(_towerButton); 
+                }
 			}
 			break;
 		case Tags.Junction:
-			towerPanel.SetActive(true);
-            dismantleButton.gameObject.SetActive(true);
+			TowerPanel.SetActive(true);
+            DismantleButton.gameObject.SetActive(true);
 			for (int i = 0; i < towerButtons.Length; i++)
 			{
 				if (towerButtons[i].name == "TowerButton")
-					towerButtons[i].onClick.AddListener(junctionTowerButton);
+                {
+                    towerButtons[i].onClick.AddListener(_junctionTowerButton); 
+                }
 			}
 			break;
             case Tags.Armoury:
@@ -409,28 +423,33 @@ public class GUIController : MonoBehaviour {
 		case Tags.Nest:
 			if (tag == Tags.Armoury)
 			{
-				spearText.gameObject.SetActive(true);
-				hammerText.gameObject.SetActive(true);
-				bowText.gameObject.SetActive(true);
-				shieldText.gameObject.SetActive(true);
+				SpearText.gameObject.SetActive(true);
+				HammerText.gameObject.SetActive(true);
+				BowText.gameObject.SetActive(true);
+				ShieldText.gameObject.SetActive(true);
 			}
-			healthSlider.gameObject.SetActive(true);
-            dismantleButton.gameObject.SetActive(true);
+			HealthSlider.gameObject.SetActive(true);
+            DismantleButton.gameObject.SetActive(true);
 			break;
 		case "multi":
-			if (debug)
+			if (_debug)
 				Debug.Log("Activated objects");
 
 			Player player = GetComponent<Player>();
 
-			if (player.selectedList.Count > miniProfiles.Length)
+			if (player.SelectedList.Count > MiniProfiles.Length)
 			{
-				for (int i = 0; i < miniProfiles.Length; i++)
-					miniProfiles [i].gameObject.SetActive (true);
-			} else 
+				for (int i = 0; i < MiniProfiles.Length; i++)
+                {
+                    MiniProfiles[i].gameObject.SetActive(true); 
+                }
+			}
+            else 
 			{
-				for (int i = 0; i < player.selectedList.Count; i++)
-					miniProfiles [i].gameObject.SetActive (true);
+				for (int i = 0; i < player.SelectedList.Count; i++)
+                {
+                    MiniProfiles[i].gameObject.SetActive(true); 
+                }
 			}
 
 			break;
@@ -440,21 +459,21 @@ public class GUIController : MonoBehaviour {
 	/// <summary>
 	/// Sets the UI for multiple selected units.
 	/// </summary>
-	public void setMultiUI ()
+	public void SetMultiUI()
 	{
 		Player player = GetComponent<Player>();
 
-		for(int i = 0; i < player.selectedList.Count; i++)
+		for (int i = 0; i < player.SelectedList.Count; i++)
 		{
-            if (i >= miniProfileCount)
+            if (i >= _miniProfileCount)
             {
                 break;
             }
 
 			Debug.Log(i);
-			miniProfiles[i].texture = Resources.Load<Texture>("Textures/" + player.selectedList[i].tag);
+			MiniProfiles[i].texture = Resources.Load<Texture>("Textures/" + player.SelectedList[i].tag);
 
-			player.selectedList[i].GetComponent<Attackable>().setHealth(miniProfiles[i].GetComponentInChildren<Slider>());
+			player.SelectedList[i].GetComponent<Attackable>().SetHealth(MiniProfiles[i].GetComponentInChildren<Slider>());
 		}
 	}
 
@@ -462,160 +481,160 @@ public class GUIController : MonoBehaviour {
 	/// Sets the profile button.
 	/// </summary>
 	/// <param name="pos">Position.</param>
-	public void setProfileButton (int pos)
+	public void SetProfileButton(int pos)
 	{
 		Player player = GetComponent<Player>();
-		GameObject crab = player.selectedList[pos];
+		GameObject crab = player.SelectedList[pos];
 
-		if (debug)
-			Debug.Log(player.selectedList.Count + " trying to access " + pos);
+		if (_debug)
+			Debug.Log(player.SelectedList.Count + " trying to access " + pos);
 		
-		player.deselect();
-		player.selectedList.Add(crab);
-		player.haloList.Add(Instantiate(Resources.Load<GameObject>("Prefabs/GUI/HaloCanvas")));
-		player.select(crab);
+		player.Deselect();
+		player.SelectedList.Add(crab);
+		player.HaloList.Add(Instantiate(Resources.Load<GameObject>("Prefabs/GUI/HaloCanvas")));
+		player.Select(crab);
 	}
 
 	/// <summary>
 	/// Connects the GUI components to the proper references.
 	/// </summary>
-	public void connectGUI ()
+	public void ConnectGUI()
 	{
 		if (!MainGUI)
 		{
-			if (debug)
+			if (_debug)
 				Debug.Log("Connect the GUI!");
 			return;
 		}
 
-		miniProfiles = new RawImage[miniProfileCount];
+		MiniProfiles = new RawImage[_miniProfileCount];
 		RectTransform[] menus = MainGUI.GetComponentsInChildren<RectTransform>();
-		Regex regexObject = new Regex ("(\\d\\d*)");
+		Regex regexObject = new Regex("(\\d\\d*)");
 
 
-		for(int i = 0; i < menus.Length; i++)
+		for (int i = 0; i < menus.Length; i++)
 		{
 			GameObject menuItem = menus[i].gameObject;
 			switch (menuItem.name) {
 			case "Label Text":
 				if (menuItem.GetComponent<Text>())
-					labelText = menuItem.GetComponent<Text>();
+					LabelText = menuItem.GetComponent<Text>();
 				break;
 			case "Stone Text":
 				if (menuItem.GetComponent<Text>())
-					stoneCount = menuItem.GetComponent<Text>();
+					StoneCount = menuItem.GetComponent<Text>();
 				break;
 			case "Wood Text":
 				if (menuItem.GetComponent<Text>())
-					woodCount = menuItem.GetComponent<Text>();
+					WoodCount = menuItem.GetComponent<Text>();
 				break;
 			case "Level Text":
 				if (menuItem.GetComponent<Text>())
-					levelText = menuItem.GetComponent<Text>();
+					LevelText = menuItem.GetComponent<Text>();
 				break;
 			case "Crab Level Text":
 				if (menuItem.GetComponent<Text>())
-					crabLevelText = menuItem.GetComponent<Text>();
+					CrabLevelText = menuItem.GetComponent<Text>();
 				break;
 			case "Health Slider":
 				if (menuItem.GetComponent<Slider>())
-					healthSlider = menuItem.GetComponent<Slider>();
+					HealthSlider = menuItem.GetComponent<Slider>();
 				break;
 			case "Exp Slider":
 				if (menuItem.GetComponent<Slider>())
-					expSlider = menuItem.GetComponent<Slider>();
+					ExpSlider = menuItem.GetComponent<Slider>();
 				break;
 			case "SelectedImage":
 				if (menuItem.GetComponent<RawImage>())
-					selectedImage = menuItem.GetComponent<RawImage>();
+					SelectedImage = menuItem.GetComponent<RawImage>();
 				break;
 			case "InventorySlot1":
 				if (menuItem.GetComponent<RawImage>())
-					invSlot1 = menuItem.GetComponent<RawImage>();
+					InvSlot1 = menuItem.GetComponent<RawImage>();
 				break;
 			case "InventorySlot2":
 				if (menuItem.GetComponent<RawImage>())
-					invSlot2 = menuItem.GetComponent<RawImage>();
+					InvSlot2 = menuItem.GetComponent<RawImage>();
 				break;
 			case "InventorySlot3":
 				if (menuItem.GetComponent<RawImage>())
-					invSlot3 = menuItem.GetComponent<RawImage>();
+					InvSlot3 = menuItem.GetComponent<RawImage>();
 				break;
 			case "MainCraftButton":
 				if (menuItem.GetComponent<Button>())
-					craftButton = menuItem.GetComponent<Button>();
+					CraftButton = menuItem.GetComponent<Button>();
 				break;
 			case "SubCraftButton":
 				if (menuItem.GetComponent<Button>())
-					subCraftButton = menuItem.GetComponent<Button>();
+					SubCraftButton = menuItem.GetComponent<Button>();
 				break;
             case "DismantleButton":
                 if (menuItem.GetComponent<Button>())
-                    dismantleButton = menuItem.GetComponent<Button>();
+                    DismantleButton = menuItem.GetComponent<Button>();
                 break;
 			case "Unit Action View":
 				if (menuItem.GetComponent<Image>())
-					actionView = menuItem.GetComponent<Image>();
+					ActionView = menuItem.GetComponent<Image>();
 				break;
 			case "Spear Text":
 				if (menuItem.GetComponent<Text>())
-					spearText = menuItem.GetComponent<Text>();
+					SpearText = menuItem.GetComponent<Text>();
 				break;
 			case "Hammer Text":
 				if (menuItem.GetComponent<Text>())
-					hammerText = menuItem.GetComponent<Text>();
+					HammerText = menuItem.GetComponent<Text>();
 				break;
 			case "Bow Text":
 				if (menuItem.GetComponent<Text>())
-					bowText = menuItem.GetComponent<Text>();
+					BowText = menuItem.GetComponent<Text>();
 				break;
 			case "Shield Text":
 				if (menuItem.GetComponent<Text>())
-					shieldText = menuItem.GetComponent<Text>();
+					ShieldText = menuItem.GetComponent<Text>();
 				break;
 			case "Pause Menu":
-				pauseMenu = menuItem;
-				pauseMenu.SetActive(false);
+				PauseMenu = menuItem;
+				PauseMenu.SetActive(false);
 				break;
 			case "Save Menu":
-				saveMenu = menuItem;
-				saveMenu.SetActive(false);
+				SaveMenu = menuItem;
+				SaveMenu.SetActive(false);
 				break;
 			case "Win Menu":
-				winMenu = menuItem;
-				winMenu.SetActive(false);
+				WinMenu = menuItem;
+				WinMenu.SetActive(false);
 				break;
 			case "Confirmation Menu":
-				saveConfirmMenu = menuItem;
-				saveConfirmMenu.SetActive(false);
+				SaveConfirmMenu = menuItem;
+				SaveConfirmMenu.SetActive(false);
 				break;
 			case "Tower Panel":
-				towerPanel = menuItem;
-				towerPanel.SetActive(false);
+				TowerPanel = menuItem;
+				TowerPanel.SetActive(false);
 				break;
 			case "Wall Panel":
-				wallPanel = menuItem;
-				wallPanel.SetActive(false);
+				WallPanel = menuItem;
+				WallPanel.SetActive(false);
 				break;
 			case "SelectBox":
-				selectBox = menuItem;
-				selectBoxTransform = selectBox.GetComponent<RectTransform>();
+				SelectBox = menuItem;
+				_selectBoxTransform = SelectBox.GetComponent<RectTransform>();
 				break;
 			case "MultiSelectUI":
-				multiUITransform = menus[i];
+				_multiUITransform = menus[i];
 				break;
 			case "SingleSelectUI":
-				singleUITransform = menus[i];
+				_singleUITransform = menus[i];
 				break;
 			case "MainProfile":
 				if (menuItem.GetComponent<RawImage>())
-					mainProfile = menuItem.GetComponent<RawImage>();
+					MainProfile = menuItem.GetComponent<RawImage>();
 				if (menuItem.GetComponent<Button>())
-					mainSelectButton = menuItem.GetComponent<Button>();
+					MainSelectButton = menuItem.GetComponent<Button>();
 				break;
 			case "MainSlider":
 				if (menuItem.GetComponent<Slider>())
-					mainSlider = menuItem.GetComponent<Slider>();
+					MainSlider = menuItem.GetComponent<Slider>();
 				break;
 			default:
 				string menuName = menuItem.name;
@@ -624,10 +643,12 @@ public class GUIController : MonoBehaviour {
 					if (regexObject.IsMatch (menuName))
 					{
 						Match match = regexObject.Match (menuName);
-						miniProfiles[int.Parse(match.Captures[0].Value)] = menuItem.GetComponent<RawImage>();
+						MiniProfiles[int.Parse(match.Captures[0].Value)] = menuItem.GetComponent<RawImage>();
 					}
 					else
-						miniProfiles[0] = menuItem.gameObject.GetComponent<RawImage>();
+                    {
+                        MiniProfiles[0] = menuItem.gameObject.GetComponent<RawImage>(); 
+                    }
 				}
 				break;
 			}
@@ -638,29 +659,37 @@ public class GUIController : MonoBehaviour {
 	/// Sets the label text.
 	/// </summary>
 	/// <param name="selected">Selected object.</param>
-	public void setLabel (GameObject selected)
+	public void SetLabel(GameObject selected)
 	{
-		if (debug)
+		if (_debug)
 			Debug.Assert(selected);
 
 		if (selected.tag == Tags.Crab)
-			labelText.text = selected.GetComponent<CrabController>().type.ToString().ToLower() + " crab";
+        {
+            LabelText.text = selected.GetComponent<CrabController>().Type.ToString().ToLower() + " crab"; 
+        }
 		else if (selected.tag == Tags.Ghost)
-			labelText.text = selected.tag + " " + selected.GetComponent<GhostBuilder>().original.tag;
+        {
+            LabelText.text = selected.tag + " " + selected.GetComponent<GhostBuilder>().Original.tag; 
+        }
 		else
-			labelText.text = selected.tag;
+        {
+            LabelText.text = selected.tag; 
+        }
 
-		if (!GetComponent<Player>().canCommand && !IdUtility.isResource(selected.tag))
-			labelText.text = "Enemy " + labelText.text;
+		if (!GetComponent<Player>().CanCommand && !IdUtility.IsResource(selected.tag))
+        {
+            LabelText.text = "Enemy " + LabelText.text; 
+        }
 	}
 
 	/// <summary>
 	/// Gets the action view controller.
 	/// </summary>
 	/// <returns>The action view controller.</returns>
-	public ActionViewController getActionViewController ()
+	public ActionViewController GetActionViewController()
 	{
-		return actionView.GetComponent<ActionViewController>();
+		return ActionView.GetComponent<ActionViewController>();
 	}
 
 	/// <summary>
@@ -668,39 +697,47 @@ public class GUIController : MonoBehaviour {
 	/// </summary>
 	/// <returns>The inv slot image.</returns>
 	/// <param name="slot">Slot number.</param>
-	public RawImage getInvSlot (int slot)
+	public RawImage GetInvSlot(int slot)
 	{
 		if (slot == 1)
-			return invSlot1;
+        {
+            return InvSlot1; 
+        }
 		else if (slot == 2)
-			return invSlot2;
+        {
+            return InvSlot2; 
+        }
 		else if (slot == 3)
-			return invSlot3;
+        {
+            return InvSlot3; 
+        }
 		else
-			return null;
+        {
+            return null; 
+        }
 	}
 
 	/// <summary>
 	/// Is mouse over a GUI object?
 	/// </summary>
 	/// <returns><c>true</c>, if mouse is over GUI, <c>false</c> otherwise.</returns>
-	public bool mouseOnGUI ()
+	public bool MouseOnGUI()
 	{
 		// for each gui component
 		foreach(RectTransform rectTrans in FindObjectsOfType<RectTransform>())
 		{
 			// ignore maingui that takes whole screen
-			if (rectTrans.gameObject.GetInstanceID() != MainGUI.GetInstanceID() && rectTrans.gameObject.GetInstanceID() != selectBox.GetInstanceID()) 
+			if (rectTrans.gameObject.GetInstanceID() != MainGUI.GetInstanceID() && rectTrans.gameObject.GetInstanceID() != SelectBox.GetInstanceID()) 
 			{
 				// gui is active and mouse is in gui
 				if (RectTransformUtility.RectangleContainsScreenPoint(rectTrans, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && rectTrans.gameObject.activeSelf) 
 				{
-                    onGUI.isOn = true;
+                    OnGUI.isOn = true;
 					return true;
 				}
 			}
 		}
-        onGUI.isOn = false;
+        OnGUI.isOn = false;
 		return false;
 	}
 
@@ -708,51 +745,51 @@ public class GUIController : MonoBehaviour {
 	/// Creates the select box.
 	/// </summary>
 	/// <param name="anchor">Anchor position.</param>
-	public void StartSelectBox (Vector3 anchor)
+	public void StartSelectBox(Vector3 anchor)
 	{
-		selectBox.SetActive(true);
+		SelectBox.SetActive(true);
 
-		this.anchor = anchor;
+		this._anchor = anchor;
 
-		selectBoxTransform.position = new Vector3(this.anchor.x, this.anchor.y, selectBoxTransform.position.z);
+		_selectBoxTransform.position = new Vector3(this._anchor.x, this._anchor.y, _selectBoxTransform.position.z);
 	}
 
 	/// <summary>
 	/// Drags the select box.
 	/// </summary>
 	/// <param name="outer">Outer position.</param>
-	public void DragSelectBox (Vector3 outer)
+	public void DragSelectBox(Vector3 outer)
 	{
 		var newSize = new Vector2();
-		var newPosition = new Vector3(anchor.x, anchor.y, selectBoxTransform.position.z);
+		var newPosition = new Vector3(_anchor.x, _anchor.y, _selectBoxTransform.position.z);
 
 		// if anchor is right of mouse
-		if (outer.x - anchor.x < 0)
+		if (outer.x - _anchor.x < 0)
 		{
 			// move location
-			newSize.x = (anchor.x - outer.x);
+			newSize.x = (_anchor.x - outer.x);
 			newPosition.x = outer.x;
 		}
 		else
         {
-            newSize.x = (outer.x - anchor.x);
+            newSize.x = (outer.x - _anchor.x);
         }
 
 
         // if anchor is below mouse
-        if (outer.y - anchor.y < 0)
+        if (outer.y - _anchor.y < 0)
         {
             // move location
-            newSize.y = (anchor.y - outer.y);
+            newSize.y = (_anchor.y - outer.y);
             newPosition.y = outer.y;
         }
         else
         {
-            newSize.y = (outer.y - anchor.y);
+            newSize.y = (outer.y - _anchor.y);
         }
 
-		selectBoxTransform.sizeDelta = newSize;
-		selectBoxTransform.position = newPosition;
+		_selectBoxTransform.sizeDelta = newSize;
+		_selectBoxTransform.position = newPosition;
 	}
 
 	/// <summary>
@@ -771,11 +808,11 @@ public class GUIController : MonoBehaviour {
 	/// <summary>
 	/// Clears the select box.
 	/// </summary>
-	public void clearBox ()
+	public void ClearBox()
 	{
-		if (debug)
+		if (_debug)
 			Debug.Log("Cleared Box.");
-		selectBox.SetActive(false);
-		selectBoxTransform.sizeDelta = new Vector2(0, 0);
+		SelectBox.SetActive(false);
+		_selectBoxTransform.sizeDelta = new Vector2(0, 0);
 	}
 }

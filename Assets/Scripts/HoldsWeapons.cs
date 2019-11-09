@@ -7,41 +7,44 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Team))]
 public class HoldsWeapons : MonoBehaviour {
 
-    public Dictionary<string, int> weapons { get; set; }
+    public Dictionary<string, int> Weapons { get; set; }
 
-    public int[] weaponAmounts;
+    public int[] WeaponAmounts;
 
-	public const int capacity = 20;
+	public static int Capacity = 20;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-		weapons = new Dictionary<string, int>();
-		weapons.Add(Tags.Spear, 0);
-		weapons.Add(Tags.Hammer, 0);
-		weapons.Add(Tags.Bow, 0);
-		weapons.Add(Tags.Shield, 0);
+		Weapons = new Dictionary<string, int>();
+		Weapons.Add(Tags.Spear, 0);
+		Weapons.Add(Tags.Hammer, 0);
+		Weapons.Add(Tags.Bow, 0);
+		Weapons.Add(Tags.Shield, 0);
 
-        weaponAmounts = new int[weapons.Count];
+        WeaponAmounts = new int[Weapons.Count];
 	}
 
+    /// <summary>
+    /// Update this instance
+    /// </summary>
     void Update()
     {
-        weaponAmounts[0] = weapons[Tags.Spear];
-        weaponAmounts[1] = weapons[Tags.Hammer];
-        weaponAmounts[2] = weapons[Tags.Bow];
-        weaponAmounts[3] = weapons[Tags.Shield];
+        WeaponAmounts[0] = Weapons[Tags.Spear];
+        WeaponAmounts[1] = Weapons[Tags.Hammer];
+        WeaponAmounts[2] = Weapons[Tags.Bow];
+        WeaponAmounts[3] = Weapons[Tags.Shield];
     }
 
     /// <summary>
     /// Builds the weapon.
     /// </summary>
     /// <param name="weapon">Hammer, Spear, Bow, or Shield tags.</param>
-    public void buildWeapon (string weapon)
+    public void BuildWeapon(string weapon)
 	{
-		weapons[weapon]++;
+		Weapons[weapon]++;
 	}
 
 	/// <summary>
@@ -50,23 +53,25 @@ public class HoldsWeapons : MonoBehaviour {
 	/// <returns><c>true</c>, if crab is correct team, <c>false</c> otherwise.</returns>
 	/// <param name="crab">Crab object.</param>
 	/// <param name="weapon">Hammer, Spear, Bow, or Shield tags.</param>
-	public bool requestWeapon (GameObject crab, string weapon)
+	public bool RequestWeapon(GameObject crab, string weapon)
 	{
-		if (crab.GetComponent<Team>().team == GetComponent<Team>().team && weapons[weapon] > 0)
+		if (crab.GetComponent<Team>().team == GetComponent<Team>().team && Weapons[weapon] > 0)
 		{
-			weapons[weapon]--;
+			Weapons[weapon]--;
 			return true;
 		}
 		else
-			return false;
+        {
+            return false; 
+        }
 	}
 
 	/// <summary>
 	/// Empty the armoury.
 	/// </summary>
-	public bool empty ()
+	public bool Empty()
 	{
-		return (weapons[Tags.Spear] == 0 && weapons[Tags.Hammer] == 0 && weapons[Tags.Bow] == 0 && weapons[Tags.Shield] == 0);
+		return (Weapons[Tags.Spear] == 0 && Weapons[Tags.Hammer] == 0 && Weapons[Tags.Bow] == 0 && Weapons[Tags.Shield] == 0);
 	}
 
 	/// <summary>
@@ -74,17 +79,17 @@ public class HoldsWeapons : MonoBehaviour {
 	/// </summary>
 	/// <returns><c>true</c>, if armoury has room, <c>false</c> otherwise.</returns>
 	/// <param name="weapon">Hammer, Spear, Bow, or Shield tags.</param>
-	public bool hasRoom (string weapon)
+	public bool HasRoom(string weapon)
 	{
-		return weapons[weapon] != capacity;
+		return Weapons[weapon] != Capacity;
 	}
 
 	/// <summary>
 	/// Percent the armoury is full.
 	/// </summary>
 	/// <returns>The percentage.</returns>
-	public float percentFull ()
+	public float PercentFull()
 	{
-		return ((weapons[Tags.Spear] + weapons[Tags.Hammer] + weapons[Tags.Bow] + weapons[Tags.Shield]) / 80.0f) * 100.0f;
+		return ((Weapons[Tags.Spear] + Weapons[Tags.Hammer] + Weapons[Tags.Bow] + Weapons[Tags.Shield]) / 80.0f) * 100.0f;
 	}
 }

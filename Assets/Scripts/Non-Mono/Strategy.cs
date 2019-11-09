@@ -5,23 +5,23 @@ using System.Collections.Generic;
 public class Strategy
 {
 	// target resources
-	public int woodGoal { get; set; }
-	public int stoneGoal { get; set; }
+	public int WoodGoal { get; set; }
+	public int StoneGoal { get; set; }
 
-    public float woodToStoneRatio { get; set; }
+    public float WoodToStoneRatio { get; set; }
 
-	public Queue<string> buildingQueue { get; set; }
+	public Queue<string> BuildingQueue { get; set; }
 
 	public Strategy()
 	{
-		woodGoal = 0;
-		stoneGoal = 0;
-		buildingQueue = new Queue<string>();
+		WoodGoal = 0;
+		StoneGoal = 0;
+		BuildingQueue = new Queue<string>();
 	}
 
 	public Strategy(int wood, int stone) {
-		woodGoal = wood;
-		stoneGoal = stone;
-		buildingQueue = new Queue<string>();
+		WoodGoal = wood;
+		StoneGoal = stone;
+		BuildingQueue = new Queue<string>();
 	}
 }

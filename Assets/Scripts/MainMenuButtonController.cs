@@ -5,25 +5,25 @@
 /// </summary>
 public class MainMenuButtonController : MonoBehaviour {
 
-	public GameObject main;
-	public GameObject load;
-	public GameObject scenario;
-	public GameObject settings;
-	public GameObject credits;
+	public GameObject Main;
+	public GameObject Load;
+	public GameObject Scenario;
+	public GameObject Settings;
+	public GameObject Credits;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start ()
+	void Start()
 	{
-		deactivateMenus();
-		main.SetActive(true);
+		DeactivateMenus();
+		Main.SetActive(true);
 	}
 
 	/// <summary>
 	/// Loads level.
 	/// </summary>
-	public void CampaignButton ()
+	public void CampaignButton()
 	{
 		UnityEngine.SceneManagement.SceneManager.LoadScene(2);
 	}
@@ -31,57 +31,57 @@ public class MainMenuButtonController : MonoBehaviour {
 	/// <summary>
 	/// Opens load menu.
 	/// </summary>
-	public void LoadGame ()
+	public void LoadGame()
 	{
-		deactivateMenus();
-		load.SetActive(true);
+		DeactivateMenus();
+		Load.SetActive(true);
 	}
 
 	/// <summary>
 	/// Opens scenario menu.
 	/// </summary>
-	public void Scenario ()
+	public void OpenScenario()
 	{
-		deactivateMenus();
-		scenario.SetActive(true);
+		DeactivateMenus();
+		Scenario.SetActive(true);
 	}
 
 	/// <summary>
 	/// Opens the settings menu.
 	/// </summary>
-	public void Settings ()
+	public void OpenSettings()
 	{
-		deactivateMenus();
-		settings.SetActive(true);
+		DeactivateMenus();
+		Settings.SetActive(true);
 	}
 
 	/// <summary>
 	/// Opens the credits menu.
 	/// </summary>
-	public void Credits ()
+	public void OpenCredits()
 	{
-		deactivateMenus();
-		credits.SetActive(true);
+		DeactivateMenus();
+		Credits.SetActive(true);
 	}
 
 	/// <summary>
 	/// Opens main menu.
 	/// </summary>
-	public void MainMenu ()
+	public void OpenMainMenu()
 	{
-		deactivateMenus();
-		main.SetActive(true);
+		DeactivateMenus();
+		Main.SetActive(true);
 	}
 
 	/// <summary>
 	/// Deactivates the menus.
 	/// </summary>
-	void deactivateMenus ()
+	void DeactivateMenus()
 	{
-		main.SetActive(false);
-		load.SetActive(false);
-		scenario.SetActive(false);
-		settings.SetActive(false);
-		credits.SetActive(false);
+		Main.SetActive(false);
+		Load.SetActive(false);
+		Scenario.SetActive(false);
+		Settings.SetActive(false);
+		Credits.SetActive(false);
 	}
 }

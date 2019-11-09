@@ -2,10 +2,10 @@
 
 class StopCommand : Command
 {
-    public GameObject crab { get; set; }
+    public GameObject Crab { get; set; }
 
-    public override void execute ()
+    public override void Execute()
     {
-        crab.GetComponent<CrabController>().goIdle();
+        Crab.GetComponent<CrabController>().GoIdle();
     }
 }

@@ -4,15 +4,18 @@
 /// </summary>
 public class AttackCommand : Command
 {
+	public GameObject Attacker { get; set; }
+	public GameObject Target { get; set; }
 
-	public GameObject attacker { get; set; }
-	public GameObject target { get; set; }
-
-	public override void execute ()
+	public override void Execute()
 	{
-		if (attacker.tag == "Crab")
-			attacker.GetComponent<CrabController> ().startAttack (target);
+		if (Attacker.tag == "Crab")
+        {
+            Attacker.GetComponent<CrabController>().StartAttack(Target); 
+        }
 		else
-			attacker.GetComponent<SiegeController> ().startAttack (target);
+        {
+            Attacker.GetComponent<SiegeController>().StartAttack(Target); 
+        }
 	}
 }

@@ -3,32 +3,34 @@
 public class ProjectileController : MonoBehaviour {
 
     [Tooltip("Speed of projectile")]
-	public float speed;
-	public Vector3 destination { get; set; }
-	public bool moving { get; set; }
+	public float Speed;
+	public Vector3 Destination { get; set; }
+	public bool Moving { get; set; }
 
-	Quaternion velocity;
+	Quaternion _velocity;
 
-	void Start () {
-		moving = false;
-		destination = new Vector3();
-		velocity = new Quaternion();
+	void Start() {
+		Moving = false;
+		Destination = new Vector3();
+		_velocity = new Quaternion();
 	}
 
-	void Update () {
-		if (moving)
+	void Update() {
+		if (Moving)
 		{
-			if (Vector3.Distance(transform.position, destination) < 0.1f)
-				Destroy(gameObject);
+			if (Vector3.Distance(transform.position, Destination) < 0.1f)
+            {
+                Destroy(gameObject); 
+            }
 			else
 			{
 				// get new velocity
-				moveProjectile();
+				MoveProjectile();
 			}
 		}
 	}
 
-	void moveProjectile ()
+	void MoveProjectile()
 	{
 		//transform.position += velocity * speed;
 	}

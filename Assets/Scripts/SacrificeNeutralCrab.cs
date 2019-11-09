@@ -5,96 +5,102 @@ using UnityEngine.UI;
 
 public class SacrificeNeutralCrab : NeutralCrab {
 
-	public int sacrificesRequired { get; set; }
+	public int SacrificesRequired { get; set; }
 
-	List<RawImage> checkmarks;
+	List<RawImage> _checkmarks;
 
-	GameObject target;
-	bool sacrificing;
-	int sacrifices;
+	GameObject _target;
+	bool _sacrificing;
+	int _sacrifices;
 
-	void Start ()
+    /// <summary>
+    /// Start this instance
+    /// </summary>
+	void Start()
 	{
-		crab = GetComponent<CrabController>();
-		type = crab.type;
+		Crab = GetComponent<CrabController>();
+		Type = Crab.Type;
 
-		checkmarks = new List<RawImage>();
+		_checkmarks = new List<RawImage>();
 
-		sacrificing = false;
-		uiOpen = false;
-		playerIsNear = false;
-		recruitmentUI = null;
-		setRecruitmentUI();
+		_sacrificing = false;
+		UIOpen = false;
+		PlayerIsNear = false;
+		RecruitmentUI = null;
+		SetRecruitmentUI();
 
-		target = null;
-		sacrifices = 0;
+		_target = null;
+		_sacrifices = 0;
 	}
 
-	void Update ()
+    /// <summary>
+    /// Update this instance
+    /// </summary>
+	void Update()
 	{
-		if (sacrificing && crab.getDistanceToObject(target) < crab.attackRange)
+		if (_sacrificing && Crab.GetDistanceToObject(_target) < Crab.AttackRange)
 		{
-			eatSacrifice();
+			EatSacrifice();
 		}
 
-		runRecruitUI();
-		checkmarks.Clear();
+		RunRecruitUI();
+		_checkmarks.Clear();
 
-		if (recruitmentUI != null)
+		if (RecruitmentUI != null)
 		{
-			GameObject panel = recruitmentUI.GetComponentInChildren<Image>().gameObject;
+			GameObject panel = RecruitmentUI.GetComponentInChildren<Image>().gameObject;
 			RawImage[] checks = panel.GetComponentsInChildren<RawImage>(true);
 			for (int i = 0; i < checks.Length; i++)
 			{
 				if (checks[i].name.Contains("Checkmark"))
 				{
-					checkmarks.Add(checks[i]);
+					_checkmarks.Add(checks[i]);
 				}
 			}
 
-			if (checkmarks.Count > 0)
+			if (_checkmarks.Count > 0)
 			{
-				for (int i = 0; i < sacrifices; i++)
+				for (int i = 0; i < _sacrifices; i++)
 				{
-					checkmarks[i].gameObject.SetActive(true);
+					_checkmarks[i].gameObject.SetActive(true);
 				}
-				for (int i = sacrifices; i < checkmarks.Count; i++)
+				for (int i = _sacrifices; i < _checkmarks.Count; i++)
 				{
-					checkmarks[i].gameObject.SetActive(false);
+					_checkmarks[i].gameObject.SetActive(false);
 				}
 			}
 		}
 	}
 
-	public void startSacrifice (GameObject target)
+	public void StartSacrifice(GameObject target)
 	{
-		sacrificing = true;
-		this.target = target;
+		_sacrificing = true;
+		this._target = target;
 
-		crab.startMove(target.transform.position);
+		Crab.StartMove(target.transform.position);
 	}
 
-	public void eatSacrifice () 
+	public void EatSacrifice() 
 	{
-		int team = target.GetComponent<Team>().team;
+		int team = _target.GetComponent<Team>().team;
 
-		target.GetComponent<CrabController>().destroyed();
-		Destroy(target);
+		_target.GetComponent<CrabController>().Destroyed();
+		Destroy(_target);
 
-		sacrifices++;
+		_sacrifices++;
 
-		sacrificing = false;
+		_sacrificing = false;
 
-		if (canRecruit())
+		if (CanRecruit())
 		{
-			Destroy(recruitmentUI);
+			Destroy(RecruitmentUI);
 			GetComponent<Team>().team = team;
 			Destroy(this);
 		}
 	}
 
-	public bool canRecruit ()
+	public bool CanRecruit()
 	{
-		return sacrifices == sacrificesRequired;
+		return _sacrifices == SacrificesRequired;
 	}
 }

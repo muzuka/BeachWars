@@ -3,7 +3,7 @@
 	public string resourceType { get; set; }
 	int resourceAmount;
 
-	public CollectResourceGoal (string resource, int amount)
+	public CollectResourceGoal(string resource, int amount)
 	{
 		resourceType = resource;
 		resourceAmount = amount;
@@ -11,7 +11,7 @@
 
 	}
 
-	public bool isFinished (int newAmount)
+	public bool isFinished(int newAmount)
 	{
 		return newAmount >= resourceAmount;
 	}

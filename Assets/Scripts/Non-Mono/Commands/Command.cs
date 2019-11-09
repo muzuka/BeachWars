@@ -5,5 +5,5 @@
 /// </summary>
 public class Command {
 
-	public virtual void execute() {}
+	public virtual void Execute() {}
 }

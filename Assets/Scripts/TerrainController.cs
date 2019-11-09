@@ -2,41 +2,41 @@
 
 public class TerrainController : MonoBehaviour {
 
-	public Terrain terrain;
-	public int strength;
+	public Terrain Terrain;
+	public int Strength;
 
-	int heightMapWidth;
-	int heightMapHeight;
-	float[,] heights;
-	TerrainData terrainData;
+	int _heightMapWidth;
+	int _heightMapHeight;
+	float[,] _heights;
+	TerrainData _terrainData;
 
 	
-	void Start () 
+	void Start() 
 	{
-		terrainData = terrain.terrainData;
-		heightMapWidth = terrainData.heightmapWidth;
-		heightMapHeight = terrainData.heightmapHeight;
-		heights = terrainData.GetHeights(0, 0, heightMapWidth, heightMapHeight);
+		_terrainData = Terrain.terrainData;
+		_heightMapWidth = _terrainData.heightmapWidth;
+		_heightMapHeight = _terrainData.heightmapHeight;
+		_heights = _terrainData.GetHeights(0, 0, _heightMapWidth, _heightMapHeight);
 	}
 	
-	public void lowerTerrain (Vector3 point) 
+	public void LowerTerrain(Vector3 point) 
 	{
 		// gets positions on terrain.
-		int mouseX = (int)((point.x / terrainData.size.x) * heightMapWidth);
-		int mouseY = (int)((point.z / terrainData.size.z) * heightMapHeight);
+		int mouseX = (int)((point.x / _terrainData.size.x) * _heightMapWidth);
+		int mouseY = (int)((point.z / _terrainData.size.z) * _heightMapHeight);
 
 		// get height at point
 		var modifiedHeights = new float[1,1];
-		float y = heights[mouseX, mouseY];
-		y -= strength;
+		float y = _heights[mouseX, mouseY];
+		y -= Strength;
 
-		if (y < terrainData.size.y)
+		if (y < _terrainData.size.y)
 		{
-			y = terrainData.size.y;
+			y = _terrainData.size.y;
 		}
 
 		modifiedHeights[0,0] = y;
-		heights[mouseX, mouseY] = y;
-		terrainData.SetHeights(mouseX, mouseY, modifiedHeights);
+		_heights[mouseX, mouseY] = y;
+		_terrainData.SetHeights(mouseX, mouseY, modifiedHeights);
 	}
 }

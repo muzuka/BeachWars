@@ -5,12 +5,12 @@
 /// </summary>
 public class EnterCommand : Command
 {
-    public GameObject crab { get; set; }
-    public GameObject building { get; set; }
+    public GameObject Crab { get; set; }
+    public GameObject Building { get; set; }
 
-    public override void execute()
+    public override void Execute()
     {
-        crab.GetComponent<CrabController>().goIdle();
-        crab.GetComponent<CrabController>().startEnter(building);
+        Crab.GetComponent<CrabController>().GoIdle();
+        Crab.GetComponent<CrabController>().StartEnter(Building);
     }
 }

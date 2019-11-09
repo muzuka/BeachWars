@@ -8,202 +8,201 @@ using UnityEngine;
 [RequireComponent(typeof(DebugComponent))]
 public class EnemyKnowledge : MonoBehaviour {
 
-	int team;
+	int _team;
 
-	const int neutral = -1;
+	const int _neutral = -1;
 
 	// World info
-	public HashSet<GameObject> neutralCrabSet { get; set; }			// All neutral crabs
-	public HashSet<GameObject> aiCrabSet { get; set; }			// All allied crabs
-	public HashSet<GameObject> unarmedCrabSet { get; set; }			// All unarmed allied crabs
-	public HashSet<GameObject> armedCrabSet { get; set; }			// All armed allied crabs
-	public HashSet<GameObject> dangerZoneCrabSet { get; set; }		// All enemy crabs in the danger zone
-    public HashSet<GameObject> warningZoneCrabSet { get; set; }     // All enemy crabs in the warning zone
-	public HashSet<GameObject> enemyCrabSet { get; set; }			// All enemy crabs
-	public List<GameObject> neutralCrabList { get; set; }
-	public List<GameObject> aiCrabList { get; set; }
-	public List<GameObject> unarmedCrabList { get; set; }
-	public List<GameObject> armedCrabList { get; set; }
-    public List<GameObject> dangerZoneCrabList { get; set; }
-    public List<GameObject> warningZoneCrabList { get; set; }
-	public List<GameObject> enemyCrabList { get; set; }
+	public HashSet<GameObject> NeutralCrabSet { get; set; }			// All neutral crabs
+	public HashSet<GameObject> AICrabSet { get; set; }			// All allied crabs
+	public HashSet<GameObject> UnarmedCrabSet { get; set; }			// All unarmed allied crabs
+	public HashSet<GameObject> ArmedCrabSet { get; set; }			// All armed allied crabs
+	public HashSet<GameObject> DangerZoneCrabSet { get; set; }		// All enemy crabs in the danger zone
+    public HashSet<GameObject> WarningZoneCrabSet { get; set; }     // All enemy crabs in the warning zone
+	public HashSet<GameObject> EnemyCrabSet { get; set; }			// All enemy crabs
+	public List<GameObject> NeutralCrabList { get; set; }
+	public List<GameObject> AICrabList { get; set; }
+	public List<GameObject> UnarmedCrabList { get; set; }
+	public List<GameObject> ArmedCrabList { get; set; }
+    public List<GameObject> DangerZoneCrabList { get; set; }
+    public List<GameObject> WarningZoneCrabList { get; set; }
+	public List<GameObject> EnemyCrabList { get; set; }
 
-	public Dictionary<GameObject, bool> isBusyDict { get; set; }	// The busyness of allied crabs
+	public Dictionary<GameObject, bool> IsBusyDict { get; set; }	// The busyness of allied crabs
 
-	public HashSet<GameObject> aiNestSet { get; set; }			// All allied nests
-	public HashSet<GameObject> aiWorkshopSet { get; set; }		// All allied workshops
-	public HashSet<GameObject> aiArmourySet { get; set; }		// All allied armouries
-	public HashSet<GameObject> aiTowerSet { get; set; }			// All allied towers
-	public HashSet<GameObject> aiCastleSet { get; set; }		// All allied castles
-	public HashSet<GameObject> aiSiegeSet { get; set; }			// All allied siege weapons
-	public HashSet<GameObject> aiBlockSet { get; set; }			// All allied walls
-	
+	public HashSet<GameObject> AINestSet { get; set; }			// All allied nests
+	public HashSet<GameObject> AIWorkshopSet { get; set; }		// All allied workshops
+	public HashSet<GameObject> AIArmourySet { get; set; }		// All allied armouries
+	public HashSet<GameObject> AITowerSet { get; set; }			// All allied towers
+	public HashSet<GameObject> AICastleSet { get; set; }		// All allied castles
+	public HashSet<GameObject> AISiegeSet { get; set; }			// All allied siege weapons
+	public HashSet<GameObject> AIBlockSet { get; set; }			// All allied walls
 
-    public HashSet<GameObject> enemyNestSet { get; set; }           // All enemy nests
-    public HashSet<GameObject> enemyWorkshopSet { get; set; }       // All enemy workshops
-    public HashSet<GameObject> enemyArmourySet { get; set; }        // All enemy armouries
-    public HashSet<GameObject> enemyTowerSet { get; set; }          // All enemy towers
-    public HashSet<GameObject> enemyCastleSet { get; set; }         // All enemy castles
-    public HashSet<GameObject> enemySiegeSet { get; set; }          // All enemy siege weapons
-    public HashSet<GameObject> enemyBlockSet { get; set; }          // All enemy walls
+    public HashSet<GameObject> EnemyNestSet { get; set; }           // All enemy nests
+    public HashSet<GameObject> EnemyWorkshopSet { get; set; }       // All enemy workshops
+    public HashSet<GameObject> EnemyArmourySet { get; set; }        // All enemy armouries
+    public HashSet<GameObject> EnemyTowerSet { get; set; }          // All enemy towers
+    public HashSet<GameObject> EnemyCastleSet { get; set; }         // All enemy castles
+    public HashSet<GameObject> EnemySiegeSet { get; set; }          // All enemy siege weapons
+    public HashSet<GameObject> EnemyBlockSet { get; set; }          // All enemy walls
 
-    public HashSet<GameObject> resourceSet { get; set; }            // All resources
-    public List<GameObject> resourceList { get; set; }
+    public HashSet<GameObject> ResourceSet { get; set; }            // All resources
+    public List<GameObject> ResourceList { get; set; }
 
-    public List<GameObject> aiNestList { get; set; }
-    public List<GameObject> aiWorkshopList { get; set; }
-    public List<GameObject> aiArmouryList { get; set; }
-	public List<GameObject> aiTowerList { get; set; }
-	public List<GameObject> aiCastleList { get; set; }
-	public List<GameObject> aiSiegeList { get; set; }
-	public List<GameObject> aiBlockList { get; set; }
+    public List<GameObject> AINestList { get; set; }
+    public List<GameObject> AIWorkshopList { get; set; }
+    public List<GameObject> AIArmouryList { get; set; }
+	public List<GameObject> AITowerList { get; set; }
+	public List<GameObject> AICastleList { get; set; }
+	public List<GameObject> AISiegeList { get; set; }
+	public List<GameObject> AIBlockList { get; set; }
 
-    public List<GameObject> enemyNestList { get; set; }
-    public List<GameObject> enemyWorkshopList { get; set; }
+    public List<GameObject> EnemyNestList { get; set; }
+    public List<GameObject> EnemyWorkshopList { get; set; }
     public List<GameObject> enemyArmouryList { get; set; }
-    public List<GameObject> enemyTowerList { get; set; }
-    public List<GameObject> enemyCastleList { get; set; }
-    public List<GameObject> enemySiegeList { get; set; }
-    public List<GameObject> enemyBlockList { get; set; }
+    public List<GameObject> EnemyTowerList { get; set; }
+    public List<GameObject> EnemyCastleList { get; set; }
+    public List<GameObject> EnemySiegeList { get; set; }
+    public List<GameObject> EnemyBlockList { get; set; }
 
 	// Defending State Info
-	public float distanceToClosestEnemyCrab { get; set; }
+	public float DistanceToClosestEnemyCrab { get; set; }
 	//private HashSet<GameObject> emptyEnemyCastles;
 
 	// Attacking and Defending State Info
-	public float troopRatio { get; set; } // player to enemy crab ratio
+	public float TroopRatio { get; set; } // player to enemy crab ratio
 
 	// Collecting State Info
-	public int totalWood { get; set; }
-	public int totalStone { get; set; }
+	public int TotalWood { get; set; }
+	public int TotalStone { get; set; }
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start () {
+	void Start() {
 		Debug.Log("Started knowledge.");
 
-		team = GetComponent<Team>().team;
+		_team = GetComponent<Team>().team;
 
-		neutralCrabSet = new HashSet<GameObject>();
-		aiCrabSet = new HashSet<GameObject>();
-		unarmedCrabSet = new HashSet<GameObject>();
-		armedCrabSet = new HashSet<GameObject>();
-		dangerZoneCrabSet = new HashSet<GameObject>();
-        warningZoneCrabSet = new HashSet<GameObject>();
-		enemyCrabSet = new HashSet<GameObject>();
+		NeutralCrabSet = new HashSet<GameObject>();
+		AICrabSet = new HashSet<GameObject>();
+		UnarmedCrabSet = new HashSet<GameObject>();
+		ArmedCrabSet = new HashSet<GameObject>();
+		DangerZoneCrabSet = new HashSet<GameObject>();
+        WarningZoneCrabSet = new HashSet<GameObject>();
+		EnemyCrabSet = new HashSet<GameObject>();
 
-		neutralCrabList = new List<GameObject>();
-		aiCrabList = new List<GameObject>();
-		unarmedCrabList = new List<GameObject>();
-		armedCrabList = new List<GameObject>();
-		dangerZoneCrabList = new List<GameObject>();
-        warningZoneCrabList = new List<GameObject>();
-		enemyCrabList = new List<GameObject>();
+		NeutralCrabList = new List<GameObject>();
+		AICrabList = new List<GameObject>();
+		UnarmedCrabList = new List<GameObject>();
+		ArmedCrabList = new List<GameObject>();
+		DangerZoneCrabList = new List<GameObject>();
+        WarningZoneCrabList = new List<GameObject>();
+		EnemyCrabList = new List<GameObject>();
 
-		isBusyDict = new Dictionary<GameObject, bool>();
+		IsBusyDict = new Dictionary<GameObject, bool>();
 
-		aiNestSet = new HashSet<GameObject>();
-		aiArmourySet = new HashSet<GameObject>();
-		aiWorkshopSet = new HashSet<GameObject>();
-		aiTowerSet = new HashSet<GameObject>();
-		aiCastleSet = new HashSet<GameObject>();
-		aiSiegeSet = new HashSet<GameObject>();
-		aiBlockSet = new HashSet<GameObject>();
+		AINestSet = new HashSet<GameObject>();
+		AIArmourySet = new HashSet<GameObject>();
+		AIWorkshopSet = new HashSet<GameObject>();
+		AITowerSet = new HashSet<GameObject>();
+		AICastleSet = new HashSet<GameObject>();
+		AISiegeSet = new HashSet<GameObject>();
+		AIBlockSet = new HashSet<GameObject>();
 		
-        enemyNestSet = new HashSet<GameObject>();
-        enemyArmourySet = new HashSet<GameObject>();
-        enemyWorkshopSet = new HashSet<GameObject>();
-        enemyTowerSet = new HashSet<GameObject>();
-        enemyCastleSet = new HashSet<GameObject>();
-        enemySiegeSet = new HashSet<GameObject>();
-        enemyBlockSet = new HashSet<GameObject>();
+        EnemyNestSet = new HashSet<GameObject>();
+        EnemyArmourySet = new HashSet<GameObject>();
+        EnemyWorkshopSet = new HashSet<GameObject>();
+        EnemyTowerSet = new HashSet<GameObject>();
+        EnemyCastleSet = new HashSet<GameObject>();
+        EnemySiegeSet = new HashSet<GameObject>();
+        EnemyBlockSet = new HashSet<GameObject>();
 
-		aiNestList = new List<GameObject>();
-		aiArmouryList = new List<GameObject>();
-		aiWorkshopList = new List<GameObject>();
-		aiTowerList = new List<GameObject>();
-		aiCastleList = new List<GameObject>();
-		aiSiegeList = new List<GameObject>();
-		aiBlockList = new List<GameObject>();
+		AINestList = new List<GameObject>();
+		AIArmouryList = new List<GameObject>();
+		AIWorkshopList = new List<GameObject>();
+		AITowerList = new List<GameObject>();
+		AICastleList = new List<GameObject>();
+		AISiegeList = new List<GameObject>();
+		AIBlockList = new List<GameObject>();
 
-        enemyNestList = new List<GameObject>();
+        EnemyNestList = new List<GameObject>();
         enemyArmouryList = new List<GameObject>();
-        enemyWorkshopList = new List<GameObject>();
-        enemyTowerList = new List<GameObject>();
-        enemyCastleList = new List<GameObject>();
-        enemySiegeList = new List<GameObject>();
-        enemyBlockList = new List<GameObject>();
+        EnemyWorkshopList = new List<GameObject>();
+        EnemyTowerList = new List<GameObject>();
+        EnemyCastleList = new List<GameObject>();
+        EnemySiegeList = new List<GameObject>();
+        EnemyBlockList = new List<GameObject>();
 
-        resourceSet = new HashSet<GameObject>();
-        resourceList = new List<GameObject>();
+        ResourceSet = new HashSet<GameObject>();
+        ResourceList = new List<GameObject>();
 	}
 	
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
-	void Update () 
+	void Update() 
 	{
-		totalWood = 0;
-		totalStone = 0;
+		TotalWood = 0;
+		TotalStone = 0;
 
-		gatherData();
+		GatherData();
 	}
 
 	/// <summary>
 	/// Gathers data.
 	/// </summary>
-	void gatherData() 
+	void GatherData() 
 	{
 		GameObject[] everything = FindObjectsOfType<GameObject>();
-		for(int i = 0; i < everything.Length; i++) 
+		for (int i = 0; i < everything.Length; i++) 
 		{
 			switch (everything[i].tag) {
 			case Tags.Crab:
-				processCrab(everything[i]);
+				ProcessCrab(everything[i]);
 				break;
 			case Tags.Castle:
-                totalWood += everything[i].GetComponent<CastleController>().getWoodPieces();
-                totalStone += everything[i].GetComponent<CastleController>().getStonePieces();
-				if(everything[i].GetComponent<Team>().team == team)
-					processStructure(everything[i], aiCastleList, aiCastleSet);
+                TotalWood += everything[i].GetComponent<CastleController>().GetWoodPieces();
+                TotalStone += everything[i].GetComponent<CastleController>().GetStonePieces();
+				if (everything[i].GetComponent<Team>().team == _team)
+					ProcessStructure(everything[i], AICastleList, AICastleSet);
 				else
-					processStructure(everything[i], enemyCastleList, enemyCastleSet);
+					ProcessStructure(everything[i], EnemyCastleList, EnemyCastleSet);
 				break;
 			case Tags.Nest:
-				if(everything[i].GetComponent<Team>().team == team)
-					processStructure(everything[i], aiNestList, aiNestSet);
+				if (everything[i].GetComponent<Team>().team == _team)
+					ProcessStructure(everything[i], AINestList, AINestSet);
 				else
-					processStructure(everything[i], enemyNestList, enemyNestSet);
+					ProcessStructure(everything[i], EnemyNestList, EnemyNestSet);
 				break;
 			case Tags.Armoury:
-				if(everything[i].GetComponent<Team>().team == team)
-					processStructure(everything[i], aiArmouryList, aiArmourySet);
+				if (everything[i].GetComponent<Team>().team == _team)
+					ProcessStructure(everything[i], AIArmouryList, AIArmourySet);
 				else
-					processStructure(everything[i], enemyArmouryList, enemyArmourySet);
+					ProcessStructure(everything[i], enemyArmouryList, EnemyArmourySet);
 				break;
 			case Tags.Workshop:
-				if(everything[i].GetComponent<Team>().team == team)
-					processStructure(everything[i], aiWorkshopList, aiWorkshopSet);
+				if (everything[i].GetComponent<Team>().team == _team)
+					ProcessStructure(everything[i], AIWorkshopList, AIWorkshopSet);
 				else
-					processStructure(everything[i], enemyWorkshopList, enemyWorkshopSet);
+					ProcessStructure(everything[i], EnemyWorkshopList, EnemyWorkshopSet);
 				break;
 			case Tags.Block:
-				if(everything[i].GetComponent<Team>().team == team)
-					processStructure(everything[i], aiBlockList, aiBlockSet);
+				if (everything[i].GetComponent<Team>().team == _team)
+					ProcessStructure(everything[i], AIBlockList, AIBlockSet);
 				else
-					processStructure(everything[i], enemyBlockList, enemyBlockSet);
+					ProcessStructure(everything[i], EnemyBlockList, EnemyBlockSet);
 				break;
 			case Tags.Catapult:
 			case Tags.Ballista:
-				if(everything[i].GetComponent<Team>().team == team)
-					processStructure(everything[i], aiSiegeList, aiSiegeSet);
+				if (everything[i].GetComponent<Team>().team == _team)
+					ProcessStructure(everything[i], AISiegeList, AISiegeSet);
 				else
-					processStructure(everything[i], enemySiegeList, enemySiegeSet);
+					ProcessStructure(everything[i], EnemySiegeList, EnemySiegeSet);
 				break;
 			case Tags.Stone:
 			case Tags.Wood:
-				processResource(everything[i]);
+				ProcessResource(everything[i]);
 				break;
 			}
 		}
@@ -213,28 +212,36 @@ public class EnemyKnowledge : MonoBehaviour {
 	/// Evaluates crab and places it in the correct collection.
 	/// </summary>
 	/// <param name="crab">Crab object.</param>
-	void processCrab (GameObject crab)
+	void ProcessCrab(GameObject crab)
 	{
 		int crabTeam = crab.GetComponent<Team>().team;
 
-		if (crabTeam == team && !isBusyDict.ContainsKey(crab))
-			isBusyDict.Add(crab, crab.GetComponent<CrabController>().isBusy());
-		else if (crabTeam == team)
-			isBusyDict[crab] = crab.GetComponent<CrabController>().isBusy();
+		if (crabTeam == _team && !IsBusyDict.ContainsKey(crab))
+        {
+            IsBusyDict.Add(crab, crab.GetComponent<CrabController>().IsBusy()); 
+        }
+		else if (crabTeam == _team)
+        {
+            IsBusyDict[crab] = crab.GetComponent<CrabController>().IsBusy(); 
+        }
 
-		if (crabTeam == team) 
-			processFriendlyCrab(crab);
-		else if ((crabTeam != team && crabTeam != neutral))
-			processEnemyCrab(crab);
-		else if (crabTeam == neutral)
+		if (crabTeam == _team)
+        {
+            ProcessFriendlyCrab(crab); 
+        }
+		else if ((crabTeam != _team && crabTeam != _neutral))
+        {
+            ProcessEnemyCrab(crab); 
+        }
+		else if (crabTeam == _neutral)
 		{
-			if (!neutralCrabSet.Contains(crab))
+			if (!NeutralCrabSet.Contains(crab))
 			{
-				neutralCrabSet.Add(crab);
-				neutralCrabList.Add(crab);
+				NeutralCrabSet.Add(crab);
+				NeutralCrabList.Add(crab);
 			}
 		}
-		else if (GetComponent<DebugComponent>().debug)
+		else if (GetComponent<DebugComponent>().Debug)
 			Debug.Log("Crab has no valid team.");
 	}
 
@@ -242,45 +249,45 @@ public class EnemyKnowledge : MonoBehaviour {
 	/// Processes the friendly crab.
 	/// </summary>
 	/// <param name="crab">Friendly Crab.</param>
-	void processFriendlyCrab (GameObject crab)
+	void ProcessFriendlyCrab(GameObject crab)
 	{
-		if (!aiCrabSet.Contains(crab)) 
+		if (!AICrabSet.Contains(crab)) 
 		{
-			aiCrabSet.Add(crab);
-			aiCrabList.Add(crab);
-			if (crab.GetComponent<CrabController>().inventory.isArmed())
+			AICrabSet.Add(crab);
+			AICrabList.Add(crab);
+			if (crab.GetComponent<CrabController>().Inventory.IsArmed())
 			{
-				if(!armedCrabSet.Contains(crab))
+				if (!ArmedCrabSet.Contains(crab))
 				{
-					armedCrabSet.Add(crab);
-					armedCrabList.Add(crab);
+					ArmedCrabSet.Add(crab);
+					ArmedCrabList.Add(crab);
 				}
 			}
 			else
 			{
-				if(!unarmedCrabSet.Contains(crab))
+				if (!UnarmedCrabSet.Contains(crab))
 				{
-					unarmedCrabSet.Add(crab);
-					unarmedCrabList.Add(crab);
+					UnarmedCrabSet.Add(crab);
+					UnarmedCrabList.Add(crab);
 				}
 			}
 		}
 		else
 		{
-			if (crab.GetComponent<CrabController>().inventory.isArmed())
+			if (crab.GetComponent<CrabController>().Inventory.IsArmed())
 			{
-				if(unarmedCrabSet.Contains(crab))
+				if (UnarmedCrabSet.Contains(crab))
 				{
-					unarmedCrabSet.Remove(crab);
-					unarmedCrabList.Remove(crab);
+					UnarmedCrabSet.Remove(crab);
+					UnarmedCrabList.Remove(crab);
 				}
 			}
 			else 
 			{
-				if(armedCrabSet.Contains(crab))
+				if (ArmedCrabSet.Contains(crab))
 				{
-					armedCrabSet.Remove(crab);
-					armedCrabList.Remove(crab);
+					ArmedCrabSet.Remove(crab);
+					ArmedCrabList.Remove(crab);
 				}
 			}
 		}
@@ -290,52 +297,54 @@ public class EnemyKnowledge : MonoBehaviour {
 	/// Processes the enemy crab.
 	/// </summary>
 	/// <param name="crab">Enemy Crab.</param>
-	void processEnemyCrab (GameObject crab)
+	void ProcessEnemyCrab(GameObject crab)
 	{
-		GameObject closestCastle = InfoTool.closestObject(crab, aiCastleList);
+		GameObject closestCastle = InfoTool.ClosestObject(crab.transform.position, AICastleList);
 		float dist = float.MaxValue;
 
-		if(closestCastle)
-			dist = Vector3.Distance(crab.transform.position, closestCastle.transform.position);
+		if (closestCastle)
+        {
+            dist = Vector3.Distance(crab.transform.position, closestCastle.transform.position); 
+        }
 
-		if (!enemyCrabSet.Contains(crab)) 
+		if (!EnemyCrabSet.Contains(crab)) 
 		{
-			enemyCrabSet.Add(crab);
-			enemyCrabList.Add(crab);
+			EnemyCrabSet.Add(crab);
+			EnemyCrabList.Add(crab);
 		}
 
-		if(closestCastle)
+		if (closestCastle)
         {
-            if (dist < GetComponent<StrategyManager>().dangerDistance)
+            if (dist < GetComponent<StrategyManager>().DangerDistance)
             {
-                if (!dangerZoneCrabSet.Contains(crab))
+                if (!DangerZoneCrabSet.Contains(crab))
                 {
-                    dangerZoneCrabSet.Add(crab);
-                    dangerZoneCrabList.Add(crab);
+                    DangerZoneCrabSet.Add(crab);
+                    DangerZoneCrabList.Add(crab);
                 }
             }
-            else if (dist > GetComponent<StrategyManager>().dangerDistance)
+            else if (dist > GetComponent<StrategyManager>().DangerDistance)
             {
-                if (dangerZoneCrabSet.Contains(crab))
+                if (DangerZoneCrabSet.Contains(crab))
                 {
-                    dangerZoneCrabSet.Remove(crab);
-                    dangerZoneCrabList.Remove(crab);
+                    DangerZoneCrabSet.Remove(crab);
+                    DangerZoneCrabList.Remove(crab);
                 }
             }
-            else if (dist < GetComponent<StrategyManager>().warningDistance)
+            else if (dist < GetComponent<StrategyManager>().WarningDistance)
 			{
-				if (!warningZoneCrabSet.Contains(crab))
+				if (!WarningZoneCrabSet.Contains(crab))
 				{
-					warningZoneCrabSet.Add(crab);
-					warningZoneCrabList.Add(crab);
+					WarningZoneCrabSet.Add(crab);
+					WarningZoneCrabList.Add(crab);
 				}
 			}
-			else if (dist > GetComponent<StrategyManager>().warningDistance)
+			else if (dist > GetComponent<StrategyManager>().WarningDistance)
 			{
-				if (warningZoneCrabSet.Contains(crab))
+				if (WarningZoneCrabSet.Contains(crab))
 				{
-					warningZoneCrabSet.Remove(crab);
-					warningZoneCrabList.Remove(crab);
+					WarningZoneCrabSet.Remove(crab);
+					WarningZoneCrabList.Remove(crab);
 				}
 			}
 		}
@@ -347,7 +356,7 @@ public class EnemyKnowledge : MonoBehaviour {
 	/// <param name="building">Building object.</param>
 	/// <param name="list">List to add to.</param>
 	/// <param name="hashSet">Set to add to.</param>
-	void processStructure (GameObject building, List<GameObject> list, HashSet<GameObject> hashSet)
+	void ProcessStructure(GameObject building, List<GameObject> list, HashSet<GameObject> hashSet)
 	{
 		if (!hashSet.Contains(building))
 		{
@@ -360,12 +369,12 @@ public class EnemyKnowledge : MonoBehaviour {
 	/// Evaluates the resource and places it in the correct collection.
 	/// </summary>
 	/// <param name="resource">Resource.</param>
-	void processResource (GameObject resource)
+	void ProcessResource(GameObject resource)
 	{
-		if (!resourceSet.Contains(resource)) 
+		if (!ResourceSet.Contains(resource)) 
 		{
-			resourceSet.Add(resource);
-			resourceList.Add(resource);
+			ResourceSet.Add(resource);
+			ResourceList.Add(resource);
 		}
 	}
 }

@@ -8,52 +8,52 @@
 [RequireComponent(typeof(DebugComponent))]
 public class ButtonController : MonoBehaviour {
 
-	string pendingAction;
+	string _pendingAction;
 
 	/// <summary>
 	/// Resumes the game.
 	/// </summary>
-	public void resumeGame ()
+	public void ResumeGame()
 	{
-		GetComponent<GUIController>().pauseMenu.SetActive(false);
+		GetComponent<GUIController>().PauseMenu.SetActive(false);
 		Time.timeScale = 1.0f;
 	}
 
 	/// <summary>
 	/// Opens the save menu.
 	/// </summary>
-	public void openSave ()
+	public void OpenSave()
 	{
-		GetComponent<GUIController>().saveMenu.SetActive(true);
+		GetComponent<GUIController>().SaveMenu.SetActive(true);
 	}
 
 	/// <summary>
 	/// Opens the confirmation menu.
 	/// </summary>
 	/// <param name="type">Quit or Main Menu.</param>
-	public void openConfirmation (string type)
+	public void OpenConfirmation(string type)
 	{
-		pendingAction = type;
+		_pendingAction = type;
 
-		GetComponent<GUIController>().saveConfirmMenu.SetActive(true);
+		GetComponent<GUIController>().SaveConfirmMenu.SetActive(true);
 	}
 
 	/// <summary>
 	/// Continues pending action without saving.
 	/// </summary>
-	public void continueWithoutSaving ()
+	public void ContinueWithoutSaving()
 	{
-		if(pendingAction == "Quit")
-			quitGame();
-		else if(pendingAction == "MainMenu")
-			mainMenu();
+		if (_pendingAction == "Quit")
+			QuitGame();
+		else if (_pendingAction == "MainMenu")
+			MainMenu();
 	}
 
 	/// <summary>
 	/// Saves the game.
 	/// TODO: implement function
 	/// </summary>
-	public void saveGame ()
+	public void SaveGame()
 	{
 		// Check selected file
 		// Ask to overwrite
@@ -65,16 +65,16 @@ public class ButtonController : MonoBehaviour {
 	/// <summary>
 	/// Closes the confirmation menu.
 	/// </summary>
-	public void cancelConfirmation ()
+	public void CancelConfirmation()
 	{
-		GetComponent<GUIController>().saveConfirmMenu.SetActive(false);
+		GetComponent<GUIController>().SaveConfirmMenu.SetActive(false);
 	}
 
 	/// <summary>
 	/// Loads main menu.
 	/// TODO: implement function
 	/// </summary>
-	public void mainMenu ()
+	public void MainMenu()
 	{
 		// Ask to save first
 		// if continue
@@ -91,7 +91,7 @@ public class ButtonController : MonoBehaviour {
 	/// Opens new game menu.
 	/// TODO: implement function
 	/// </summary>
-	public void newGame ()
+	public void NewGame()
 	{
 
 	}
@@ -99,9 +99,9 @@ public class ButtonController : MonoBehaviour {
 	/// <summary>
 	/// Quits the game.
 	/// </summary>
-	public void quitGame ()
+	public void QuitGame()
 	{
-		//if(GetComponent<DebugComponent>().debug)
+		//if (GetComponent<DebugComponent>().debug)
 		//	EditorApplication.isPlaying = false;
 		//else 
 			Application.Quit();
@@ -111,8 +111,8 @@ public class ButtonController : MonoBehaviour {
 	/// <summary>
 	/// Closes save menu.
 	/// </summary>
-	public void cancelSave ()
+	public void CancelSave()
 	{
-		GetComponent<GUIController>().saveMenu.SetActive(false);
+		GetComponent<GUIController>().SaveMenu.SetActive(false);
 	}
 }

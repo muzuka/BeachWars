@@ -2,23 +2,23 @@
 
 public class Timer {
 	
-	float timeConsumed;
-	float timeLimit;
-	public delegate void timerFunction();
+	float _timeConsumed;
+	float _timeLimit;
+	public delegate void TimerFunction();
 
-	public Timer (float tl)
+	public Timer(float tl)
 	{
-		timeConsumed = 0.0f;
-		timeLimit = tl;
+		_timeConsumed = 0.0f;
+		_timeLimit = tl;
 	}
 
-	public void update (timerFunction func)
+	public void update(TimerFunction func)
 	{
-		timeConsumed += Time.deltaTime;
-		if(timeConsumed >= timeLimit)
+		_timeConsumed += Time.deltaTime;
+		if (_timeConsumed >= _timeLimit)
 		{
 			func();
-			timeConsumed = 0.0f;
+			_timeConsumed = 0.0f;
 		}
 	}
 }

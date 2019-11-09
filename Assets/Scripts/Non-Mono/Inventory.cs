@@ -6,41 +6,41 @@
 /// </summary>
 public class Inventory {
 
-	const int invCapacity = 3;
-	public string[] inventory { get; set; }
-	public bool debug { get; set; }
+	const int _invCapacity = 3;
+	public string[] Items { get; set; }
+	public bool Debug { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Inventory"/> class.
 	/// </summary>
 	public Inventory()
 	{
-		inventory = new string[invCapacity];
+		Items = new string[_invCapacity];
 	}
 
 	/// <summary>
 	/// Sets flags according to weapon equipped
 	/// </summary>
 	/// <param name="weaponStates">Weapon states.</param>
-	public void setWeaponFlags (StateController weaponStates)
+	public void SetWeaponFlags(StateController weaponStates)
 	{
-		weaponStates.clearStates();
+		weaponStates.ClearStates();
 
-		if (!full())
+		if (!Full())
 			return;
 
-		for(int i = 0; i < invCapacity; i++) 
+		for (int i = 0; i < _invCapacity; i++) 
 		{
-			if (inventory[i] != null && IdUtility.isWeapon(inventory[i])) 
+			if (Items[i] != null && IdUtility.IsWeapon(Items[i])) 
 			{
-				if (inventory[i] == Tags.Spear)
-					weaponStates.setState(Tags.Spear, true);
-				else if (inventory[i] == Tags.Bow)
-					weaponStates.setState(Tags.Bow, true);
-				else if (inventory[i] == Tags.Hammer)
-					weaponStates.setState(Tags.Hammer, true);
-				else if (inventory[i] == Tags.Shield)
-					weaponStates.setState(Tags.Shield, true);
+				if (Items[i] == Tags.Spear)
+					weaponStates.SetState(Tags.Spear, true);
+				else if (Items[i] == Tags.Bow)
+					weaponStates.SetState(Tags.Bow, true);
+				else if (Items[i] == Tags.Hammer)
+					weaponStates.SetState(Tags.Hammer, true);
+				else if (Items[i] == Tags.Shield)
+					weaponStates.SetState(Tags.Shield, true);
 			}
 		}
 	}
@@ -49,21 +49,21 @@ public class Inventory {
 	/// Adds item to inventory
 	/// </summary>
 	/// <param name="objectTag">Item tag.</param>
-	public void addToInventory (string objectTag)
+	public void AddToInventory(string objectTag)
 	{
-		for(int i = 0; i < invCapacity; i++) 
+		for (int i = 0; i < _invCapacity; i++) 
 		{
-			if (inventory[i] == null) 
+			if (Items[i] == null) 
 			{
-				if (debug)
-					Debug.Log("Item received.");
-				inventory[i] = objectTag;
+				if (Debug)
+                    UnityEngine.Debug.Log("Item received.");
+				Items[i] = objectTag;
 				return;
 			}
 		}
 
-		if (debug)
-			Debug.Log("Inventory is full.");
+		if (Debug)
+            UnityEngine.Debug.Log("Inventory is full.");
 	}
 
 	/// <summary>
@@ -71,34 +71,34 @@ public class Inventory {
 	/// Object values:
 	/// weapons = 0, resources = 1, empty = 2
 	/// </summary>
-	public void sortInventory ()
+	public void SortInventory()
 	{
 		int k;
 		string tag1, tag2;
 
-		for(int i = 0; i < invCapacity; i++) 
+		for (int i = 0; i < _invCapacity; i++) 
 		{
 			k = i;
-			for(int j = i+1; j < invCapacity; j++) 
+			for (int j = i+1; j < _invCapacity; j++) 
 			{
 
-				if (inventory[k] == null)
+				if (Items[k] == null)
 					tag1 = "null";
 				else
-					tag1 = inventory[k];
+					tag1 = Items[k];
 
-				if (inventory[j] == null)
+				if (Items[j] == null)
 					tag2 = "null";
 				else
-					tag2 = inventory[j];
+					tag2 = Items[j];
 
-				if (getObjectValue(tag2) < getObjectValue(tag1))
+				if (GetObjectValue(tag2) < GetObjectValue(tag1))
 					k = j;
 			}
 
-			string temp = inventory[k];
-			inventory[k] = inventory[i];
-			inventory[i] = temp;
+			string temp = Items[k];
+			Items[k] = Items[i];
+			Items[i] = temp;
 		}
 	}
 
@@ -107,7 +107,7 @@ public class Inventory {
 	/// </summary>
 	/// <returns>The item value.</returns>
 	/// <param name="tag">Item tag.</param>
-	int getObjectValue (string tag)
+	int GetObjectValue(string tag)
 	{
 		switch (tag) {
 		case Tags.Stone:
@@ -129,34 +129,40 @@ public class Inventory {
 	/// <summary>
 	/// Empties the inventory.
 	/// </summary>
-	public void emptyInventory ()
+	public void EmptyInventory()
 	{
-		for(int i = 0; i < invCapacity; i++)
-			inventory[i] = null;
+		for (int i = 0; i < _invCapacity; i++)
+        {
+            Items[i] = null; 
+        }
 	}
 
 	/// <summary>
 	/// Empties the inventory of items with tag.
 	/// </summary>
 	/// <param name="tag">Tag to delete.</param>
-	public void emptyInventory (string tag)
+	public void EmptyInventory(string tag)
 	{
-		for(int i = 0; i < invCapacity; i++)
+		for (int i = 0; i < _invCapacity; i++)
 		{
-			if(inventory[i] == tag)
-				inventory[i] = null;
+			if (Items[i] == tag)
+            {
+                Items[i] = null; 
+            }
 		}
 	}
 
 	/// <summary>
 	/// Is the inventory full?
 	/// </summary>
-	public bool full ()
+	public bool Full()
 	{
-		for(int i = 0; i < invCapacity; i++)
+		for (int i = 0; i < _invCapacity; i++)
 		{
-			if (inventory[i] == null)
-				return false;
+			if (Items[i] == null)
+            {
+                return false; 
+            }
 		}
 		return true;
 	}
@@ -164,12 +170,14 @@ public class Inventory {
 	/// <summary>
 	/// Is the inventory empty?
 	/// </summary>
-	public bool empty ()
+	public bool Empty()
 	{
-		for(int i = 0; i < invCapacity; i++)
+		for (int i = 0; i < _invCapacity; i++)
 		{
-			if (inventory[i] != null)
-				return false;
+			if (Items[i] != null)
+            {
+                return false; 
+            }
 		}
 		return true;
 	}
@@ -178,12 +186,14 @@ public class Inventory {
 	/// Does inventory contain item with the specified tag?
 	/// </summary>
 	/// <param name="tag">Item tag.</param>
-	public bool contains (string tag)
+	public bool Contains(string tag)
 	{
-		for(int i = 0; i < invCapacity; i++)
+		for (int i = 0; i < _invCapacity; i++)
 		{
-			if(inventory[i] == tag)
-				return true;
+			if (Items[i] == tag)
+            {
+                return true; 
+            }
 		}
 
 		return false;
@@ -194,17 +204,17 @@ public class Inventory {
 	/// Usually for when a crab dies.
 	/// </summary>
 	/// <param name="crab">Reference to crab.</param>
-	public void dropInventory (GameObject crab) 
+	public void DropInventory(GameObject crab) 
 	{
-		for(int i = 0; i < invCapacity; i++) 
+		for (int i = 0; i < _invCapacity; i++) 
 		{
-			if (inventory[i] != null) 
+			if (Items[i] != null) 
 			{
 				float dist1 = Random.value * 2 * Random.Range(-1, 1);
 				float dist2 = Random.value * 2 * Random.Range(-1, 1);
 				Vector3 pos = crab.transform.position;
-				Object.Instantiate(getObjectFromTag(inventory[i]), new Vector3(pos.x + dist1, pos.y, pos.z + dist2), Quaternion.identity);
-				inventory[i] = null;
+				Object.Instantiate(GetObjectFromTag(Items[i]), new Vector3(pos.x + dist1, pos.y, pos.z + dist2), Quaternion.identity);
+				Items[i] = null;
 			}
 		}
 	}
@@ -214,35 +224,39 @@ public class Inventory {
 	/// Used for crafting.
 	/// </summary>
 	/// <param name="tag">Item tag.</param>
-	public void removeItem (string tag) 
+	public void RemoveItem(string tag) 
 	{
-		for(int i = 0; i < invCapacity; i++) 
+		for (int i = 0; i < _invCapacity; i++) 
 		{
-			if (inventory[i] == tag) 
+			if (Items[i] == tag) 
 			{
-				inventory[i] = null;
+				Items[i] = null;
 				break;
 			}
 		}
-		sortInventory();
+		SortInventory();
 	}
 
 	/// <summary>
 	/// Prints the inventory contents.
 	/// </summary>
-	public void printInventory () 
+	public void PrintInventory() 
 	{
 		string invList = "";
-		for(int i = 0; i < inventory.Length; i++) 
+		for (int i = 0; i < Items.Length; i++) 
 		{
-			if (inventory[i] != null)
-				invList = invList + inventory[i] + " ";
+			if (Items[i] != null)
+            {
+                invList = invList + Items[i] + " "; 
+            }
 			else
-				invList = invList + "nothing ";
+            {
+                invList = invList + "nothing "; 
+            }
 		}
 			
-		if (debug)
-			Debug.Log(invList);
+		if (Debug)
+            UnityEngine.Debug.Log(invList);
 	}
 
 	/// <summary>
@@ -251,14 +265,16 @@ public class Inventory {
 	/// </summary>
 	/// <returns>The count result.</returns>
 	/// <param name="tag">Item tag.</param>
-	public int countInventory (string tag)
+	public int CountInventory(string tag)
 	{
 		int count = 0;
 
-		for(int i = 0; i < invCapacity; i++)
+		for (int i = 0; i < _invCapacity; i++)
 		{
-			if(inventory[i] == tag)
-				count++;
+			if (Items[i] == tag)
+            {
+                count++; 
+            }
 		}
 
 		return count;
@@ -268,14 +284,16 @@ public class Inventory {
 	/// Does inventory have a weapon in it?
 	/// </summary>
 	/// <returns><c>true</c>, if armed, <c>false</c> otherwise.</returns>
-	public bool isArmed () 
+	public bool IsArmed() 
 	{
-		for(int i = 0; i < invCapacity; i++)
+		for (int i = 0; i < _invCapacity; i++)
 		{
-			if (inventory[i] != null) 
+			if (Items[i] != null) 
 			{
-				if (getObjectValue(inventory[i]) == 0)
-					return true;
+				if (GetObjectValue(Items[i]) == 0)
+                {
+                    return true; 
+                }
 			}
 		}
 		return false;
@@ -286,12 +304,14 @@ public class Inventory {
 	/// </summary>
 	/// <returns><c>true</c>, if all items have the same tag, <c>false</c> otherwise.</returns>
 	/// <param name="tagName">Item tag.</param>
-	public bool isAllOneType (string tagName) 
+	public bool IsAllOneType(string tagName) 
 	{
-		for(int i = 0; i < invCapacity; i++) 
+		for (int i = 0; i < _invCapacity; i++) 
 		{
-			if (inventory[i] != tagName)
-				return false;
+			if (Items[i] != tagName)
+            {
+                return false; 
+            }
 		}
 		return true;
 	}
@@ -301,13 +321,19 @@ public class Inventory {
 	/// </summary>
 	/// <returns>The object from tag.</returns>
 	/// <param name="tag">Tag.</param>
-	GameObject getObjectFromTag (string tag) 
+	GameObject GetObjectFromTag(string tag) 
 	{
-		if (IdUtility.isResource(tag))
-			return Resources.Load<GameObject>("Prefabs/Resource Objects/" + tag);
-		else if (IdUtility.isWeapon(tag))
-			return Resources.Load<GameObject>("Prefabs/Weapons/" + tag);
+		if (IdUtility.IsResource(tag))
+        {
+            return Resources.Load<GameObject>("Prefabs/Resource Objects/" + tag); 
+        }
+		else if (IdUtility.IsWeapon(tag))
+        {
+            return Resources.Load<GameObject>("Prefabs/Weapons/" + tag); 
+        }
 		else
-			return null;
+        {
+            return null; 
+        }
 	}
 }

@@ -4,74 +4,74 @@ using UnityEngine;
 
 public class Unit
 {
-    public int targetSize { get; set; }
-    public List<GameObject> members { get; set; }
-    StateController unitStateController;
-    string[] unitStates = { "Moving", "Attacking", "Capturing"};
+    public int TargetSize { get; set; }
+    public List<GameObject> Members { get; set; }
+    StateController _unitStateController;
+    string[] _unitStates = { "Moving", "Attacking", "Capturing"};
 
-    public Unit ()
+    public Unit()
     {
-        targetSize = 3;
-        members = new List<GameObject>();
-        unitStateController = new StateController(unitStates);
+        TargetSize = 3;
+        Members = new List<GameObject>();
+        _unitStateController = new StateController(_unitStates);
     }
 
-    public Unit (int targetSize)
+    public Unit(int targetSize)
     {
-        this.targetSize = targetSize;
-        members = new List<GameObject>();
-        unitStateController = new StateController(unitStates);
+        this.TargetSize = targetSize;
+        Members = new List<GameObject>();
+        _unitStateController = new StateController(_unitStates);
     }
 
-    public Unit (int targetSize, List<GameObject> units) 
+    public Unit(int targetSize, List<GameObject> units) 
     {
-        this.targetSize = targetSize;
-        this.members = units;
-        unitStateController = new StateController(unitStates);
+        this.TargetSize = targetSize;
+        this.Members = units;
+        _unitStateController = new StateController(_unitStates);
     }
 
-    public void AddCrab (GameObject crab)
+    public void AddCrab(GameObject crab)
     {
-        if (members.Count + 1 <= targetSize)
+        if (Members.Count + 1 <= TargetSize)
         {
-            members.Add(crab);
+            Members.Add(crab);
         }
     }
 
-    public void attack (GameObject target)
+    public void Attack(GameObject target)
     {
-        foreach (GameObject member in members)
+        foreach (GameObject member in Members)
         {
             member.SendMessage("startAttack", target);
         }
     }
 
-    public void equip (string weapon, GameObject armoury)
+    public void Equip(string weapon, GameObject armoury)
     {
-        foreach (GameObject member in members)
+        foreach (GameObject member in Members)
         {
-            member.GetComponent<CrabController>().startTakeWeapon(weapon, armoury);
+            member.GetComponent<CrabController>().StartTakeWeapon(weapon, armoury);
         }
     }
 
     // Cleans unit of killed members.
-    public void cleanUnit () {
-        for (int i = 0; i < members.Count; i++)
+    public void CleanUnit() {
+        for (int i = 0; i < Members.Count; i++)
         {
-            if (members[i] == null)
+            if (Members[i] == null)
             {
-                members.RemoveAt(i);
+                Members.RemoveAt(i);
                 i--;
             }
         }
     }
 
-    public int countKilledUnits ()
+    public int CountKilledUnits()
     {
         int killedUnitCount = 0;
-        for (int i = 0; i < members.Count; i++)
+        for (int i = 0; i < Members.Count; i++)
         {
-            if (members[i] == null)
+            if (Members[i] == null)
             {
                 killedUnitCount++;
             }
@@ -79,8 +79,8 @@ public class Unit
         return killedUnitCount;
     }
 
-    public bool needsMoreCrabs ()
+    public bool NeedsMoreCrabs()
     {
-        return members.Count < targetSize;
+        return Members.Count < TargetSize;
     }
 }

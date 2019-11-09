@@ -11,191 +11,208 @@ using UnityEngine;
 /// </summary>
 public class ProductionManager : MonoBehaviour {
 
-    public float weaponCreationTime;
-    public float buildingDistance;
+    public float WeaponCreationTime;
+    public float BuildingDistance;
 
-	StrategyManager strategyManager;
-	IncomeManager incomeManager;
+	StrategyManager _strategyManager;
+	IncomeManager _incomeManager;
 
 	// building location
-	List<Vector3> locations;                                // The eight locations around a castle
-	List<Dictionary<int, bool>> buildLocationOccupiedDict;  // list of dictionaries storing locations around each castle
+	List<Vector3> _locations;                                // The eight locations around a castle
+	List<Dictionary<int, bool>> _buildLocationOccupiedDict;  // list of dictionaries storing locations around each castle
 
-	BuildingGoal currentGoal;
-    GameObject currentGhostBuilding;
-    bool isBuilding;
+	BuildingGoal _currentGoal;
+    GameObject _currentGhostBuilding;
+    bool _isBuilding;
 
-    Timer weaponTimer;
+    Timer _weaponTimer;
 
-    public GameObject workshop { get; set; }
-    public GameObject armoury { get; set; }
+    public GameObject Workshop { get; set; }
+    public GameObject Armoury { get; set; }
 
-	// Use this for initialization
-	void Start () {
-		strategyManager = GetComponent<StrategyManager>();
-		incomeManager = GetComponent<IncomeManager>();
+	/// <summary>
+    /// Start this instance
+    /// </summary>
+	void Start() {
+		_strategyManager = GetComponent<StrategyManager>();
+		_incomeManager = GetComponent<IncomeManager>();
 
-		locations = new List<Vector3> ();
-		locations.Add (new Vector3 (-buildingDistance, 0.0f, -buildingDistance));
-		locations.Add (new Vector3 (0.0f, 0.0f, -buildingDistance));
-		locations.Add (new Vector3 (buildingDistance, 0.0f, -buildingDistance));
-		locations.Add (new Vector3 (buildingDistance, 0.0f, 0.0f));
-		locations.Add (new Vector3 (buildingDistance, 0.0f, buildingDistance));
-		locations.Add (new Vector3 (0.0f, 0.0f, buildingDistance));
-		locations.Add (new Vector3 (-buildingDistance, 0.0f, buildingDistance));
-		locations.Add (new Vector3 (-buildingDistance, 0.0f, 0.0f));
+		_locations = new List<Vector3> ();
+		_locations.Add (new Vector3(-BuildingDistance, 0.0f, -BuildingDistance));
+		_locations.Add (new Vector3(0.0f, 0.0f, -BuildingDistance));
+		_locations.Add (new Vector3(BuildingDistance, 0.0f, -BuildingDistance));
+		_locations.Add (new Vector3(BuildingDistance, 0.0f, 0.0f));
+		_locations.Add (new Vector3(BuildingDistance, 0.0f, BuildingDistance));
+		_locations.Add (new Vector3(0.0f, 0.0f, BuildingDistance));
+		_locations.Add (new Vector3(-BuildingDistance, 0.0f, BuildingDistance));
+		_locations.Add (new Vector3(-BuildingDistance, 0.0f, 0.0f));
 
-		buildLocationOccupiedDict = new List<Dictionary<int, bool>> ();
-		initBuildLocationList ();
+		_buildLocationOccupiedDict = new List<Dictionary<int, bool>> ();
+		InitBuildLocationList ();
 
-		currentGoal = new BuildingGoal(strategyManager.strategy.buildingQueue.Dequeue());
-        isBuilding = false;
+		_currentGoal = new BuildingGoal(_strategyManager.Strategy.BuildingQueue.Dequeue());
+        _isBuilding = false;
 
-        workshop = null;
+        Workshop = null;
 
-        weaponTimer = new Timer(weaponCreationTime);
+        _weaponTimer = new Timer(WeaponCreationTime);
 	}
 
-    // Update is called once per frame
-    void Update () {
-        if (!isBuilding)
+    /// <summary>
+    /// Update this instance
+    /// </summary>
+    void Update() {
+        if (!_isBuilding)
         {
-            if (BuildingCost.canBuild(currentGoal.buildingType, strategyManager.knowledge.totalWood, strategyManager.knowledge.totalStone))
+            if (BuildingCost.CanBuild(_currentGoal.buildingType, _strategyManager.Knowledge.TotalWood, _strategyManager.Knowledge.TotalStone))
             {
-                buildNewBuilding();
+                BuildNewBuilding();
             }
         }
 
-        if (isBuilding && currentGhostBuilding == null)
+        if (_isBuilding && _currentGhostBuilding == null)
         {
-            handleNewBuilding();
+            HandleNewBuilding();
         }
 
-        if (armoury != null)
+        if (Armoury != null)
         {
-            weaponTimer.update(buildNewWeapon);
+            _weaponTimer.update(BuildNewWeapon);
         }
 
-        if (workshop != null) 
+        if (Workshop != null) 
         {
             // if there is a workshop then check for the correct amount of resources and start building a catapult or ballista.
             // should build a catapult if enemy has a castle, otherwise build a ballista.
 
-            int catapultWoodCost = workshop.GetComponent<WorkshopController>().catapultWoodCost;
-            int catapultStoneCost = workshop.GetComponent<WorkshopController>().catapultStoneCost;
-            int ballistaWoodCost = workshop.GetComponent<WorkshopController>().ballistaWoodCost;
-            int ballistaStoneCost = workshop.GetComponent<WorkshopController>().ballistaStoneCost;
+            int catapultWoodCost = Workshop.GetComponent<WorkshopController>().CatapultWoodCost;
+            int catapultStoneCost = Workshop.GetComponent<WorkshopController>().CatapultStoneCost;
+            int ballistaWoodCost = Workshop.GetComponent<WorkshopController>().BallistaWoodCost;
+            int ballistaStoneCost = Workshop.GetComponent<WorkshopController>().BallistaStoneCost;
 
-            int currentWood = strategyManager.mainCastle.getWoodPieces();
-            int currentStone = strategyManager.mainCastle.getStonePieces();
+            int currentWood = _strategyManager.MainCastle.GetWoodPieces();
+            int currentStone = _strategyManager.MainCastle.GetStonePieces();
 
-            if (currentWood > ballistaWoodCost && currentStone > ballistaStoneCost && workshop.GetComponent<WorkshopController>().building) {
-                strategyManager.startBuildingSiegeWeapon(workshop, Tags.Ballista);
+            if (currentWood > ballistaWoodCost && currentStone > ballistaStoneCost && Workshop.GetComponent<WorkshopController>().Building) {
+                _strategyManager.StartBuildingSiegeWeapon(Workshop, Tags.Ballista);
             }
         }
 	}
 
-    void buildNewBuilding()
+    /// <summary>
+    /// Creates a new ghost building
+    /// </summary>
+    void BuildNewBuilding()
     {
-        GameObject spareCrab = incomeManager.getSpareCrab();
-        Vector3 openLocation = getOpenLocation();
+        GameObject spareCrab = _incomeManager.GetSpareCrab();
+        Vector3 openLocation = GetOpenLocation();
         if (spareCrab != null)
         {
-            if (currentGoal.buildingType != "None")
+            if (_currentGoal.buildingType != "None")
             {
-                currentGhostBuilding = Instantiate(Resources.Load<GameObject>("Prefabs/PreviewStructures/Ghost" + currentGoal.buildingType), openLocation, Quaternion.identity);
-                currentGhostBuilding.GetComponent<Team>().team = GetComponent<Team>().team;
-                strategyManager.startBuildFromGhost(spareCrab, currentGhostBuilding);
-                isBuilding = true;
+                _currentGhostBuilding = Instantiate(Resources.Load<GameObject>("Prefabs/PreviewStructures/Ghost" + _currentGoal.buildingType), openLocation, Quaternion.identity);
+                _currentGhostBuilding.GetComponent<Team>().team = GetComponent<Team>().team;
+                _strategyManager.StartBuildFromGhost(spareCrab, _currentGhostBuilding);
+                _isBuilding = true;
 
-                if (GetComponent<DebugComponent>().debug)
+                if (GetComponent<DebugComponent>().Debug)
                     Debug.Log("Created new ghost!");
             }
         }
         else
         {
-            if (GetComponent<DebugComponent>().debug)
+            if (GetComponent<DebugComponent>().Debug)
                 Debug.Log("Cannot find spare crab.");
         }
     }
-
-    void handleNewBuilding()
+    
+     /// <summary>
+     /// Register new building with the production manager
+     /// </summary>
+    void HandleNewBuilding()
     {
-        if (currentGoal.buildingType == Tags.Nest)
+        if (_currentGoal.buildingType == Tags.Nest)
         {
-            GameObject nest = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Nest);
+            GameObject nest = InfoTool.ClosestObjectWithTag(_strategyManager.Knowledge.AICastleList[0], Tags.Nest);
             nest.GetComponent<Team>().team = GetComponent<Team>().team;
-            GameObject crab = incomeManager.getSpareCrab();
-            incomeManager.crabEnteredBuilding(crab);
+            GameObject crab = _incomeManager.GetSpareCrab();
+            _incomeManager.CrabEnteredBuilding(crab);
 
             if (crab != null || nest != null)
             {
-                strategyManager.enterBuilding(crab, nest);
+                _strategyManager.EnterBuilding(crab, nest);
             }
         }
-        else if (currentGoal.buildingType == Tags.Workshop)
+        else if (_currentGoal.buildingType == Tags.Workshop)
         {
-            workshop = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Workshop);
+            Workshop = InfoTool.ClosestObjectWithTag(_strategyManager.Knowledge.AICastleList[0], Tags.Workshop);
         }
-        else if (currentGoal.buildingType == Tags.Armoury)
+        else if (_currentGoal.buildingType == Tags.Armoury)
         {
-            armoury = InfoTool.closestObjectWithTag(strategyManager.knowledge.aiCastleList[0], Tags.Armoury);
+            Armoury = InfoTool.ClosestObjectWithTag(_strategyManager.Knowledge.AICastleList[0], Tags.Armoury);
         }
 
-        isBuilding = false;
-        if (strategyManager.strategy.buildingQueue.Count > 0)
+        _isBuilding = false;
+        if (_strategyManager.Strategy.BuildingQueue.Count > 0)
         {
-            currentGoal = new BuildingGoal(strategyManager.strategy.buildingQueue.Dequeue());
+            _currentGoal = new BuildingGoal(_strategyManager.Strategy.BuildingQueue.Dequeue());
         }
         else
         {
-            currentGoal = new BuildingGoal("None");
+            _currentGoal = new BuildingGoal("None");
         }
         EventManager.TriggerEvent("FinishedBuilding");
-        if (GetComponent<DebugComponent>().debug)
-            Debug.Log("New goal: " + currentGoal.buildingType);
+        if (GetComponent<DebugComponent>().Debug)
+            Debug.Log("New goal: " + _currentGoal.buildingType);
     }
 
-    void buildNewWeapon ()
+    /// <summary>
+    /// Builds a new weapon at an armoury
+    /// </summary>
+    void BuildNewWeapon()
     {
-        if (armoury == null)
+        if (Armoury == null)
         {
             return;
         }
-        string nextWeapon = nextWeaponToBuild();
+        string nextWeapon = NextWeaponToBuild();
         if (nextWeapon != null)
         {
-            armoury.GetComponent<HoldsWeapons>().buildWeapon(nextWeapon);
+            Armoury.GetComponent<HoldsWeapons>().BuildWeapon(nextWeapon);
         }
     }
 
-    string nextWeaponToBuild ()
+    /// <summary>
+    /// Figures out next weapon to build
+    /// </summary>
+    /// <returns>Tag of the next weapon</returns>
+    string NextWeaponToBuild()
     {
         // Which weapon do I build
         // percentages: spears -> 25%, hammers -> 25%, bows -> 25%, shield -> 25%
-        if (armoury == null)
+        if (Armoury == null)
         {
             return null;
         }
-        if (armoury.GetComponent<HoldsWeapons>() == null)
+        if (Armoury.GetComponent<HoldsWeapons>() == null)
         {
             return null;
         }
-        HoldsWeapons weaponInfo = armoury.GetComponent<HoldsWeapons>();
+        HoldsWeapons weaponInfo = Armoury.GetComponent<HoldsWeapons>();
 
-        if (weaponInfo.weapons[Tags.Spear] < HoldsWeapons.capacity)
+        if (weaponInfo.Weapons[Tags.Spear] < HoldsWeapons.Capacity)
         {
             return Tags.Spear;
         }
-        else if (weaponInfo.weapons[Tags.Hammer] < HoldsWeapons.capacity)
+        else if (weaponInfo.Weapons[Tags.Hammer] < HoldsWeapons.Capacity)
         {
             return Tags.Hammer;
         }
-        else if (weaponInfo.weapons[Tags.Bow] < HoldsWeapons.capacity)
+        else if (weaponInfo.Weapons[Tags.Bow] < HoldsWeapons.Capacity)
         {
             return Tags.Bow;
         }
-        else if (weaponInfo.weapons[Tags.Shield] < HoldsWeapons.capacity)
+        else if (weaponInfo.Weapons[Tags.Shield] < HoldsWeapons.Capacity)
         {
             return Tags.Shield;
         }
@@ -209,32 +226,32 @@ public class ProductionManager : MonoBehaviour {
 	/// Gets an open location to build building.
 	/// </summary>
 	/// <returns>The open location.</returns>
-	Vector3 getOpenLocation ()
+	Vector3 GetOpenLocation()
 	{
-        Vector3 castleLocation = strategyManager.knowledge.aiCastleList[0].transform.position;
+        Vector3 castleLocation = _strategyManager.Knowledge.AICastleList[0].transform.position;
 
-        for (int i = 0; i < locations.Count; i++) {
-			if (!buildLocationOccupiedDict [0] [i])
+        for (int i = 0; i < _locations.Count; i++) {
+			if (!_buildLocationOccupiedDict [0] [i])
             {
-                buildLocationOccupiedDict[0][i] = true;
-                return castleLocation + locations[i];
+                _buildLocationOccupiedDict[0][i] = true;
+                return castleLocation + _locations[i];
             }
 		}
 
-		return new Vector3 ();
+		return new Vector3();
 	}
 
 	/// <summary>
 	/// Inits the build location list.
 	/// </summary>
-	void initBuildLocationList ()
+	void InitBuildLocationList()
 	{
 		CastleController [] castles = FindObjectsOfType<CastleController> ();
 
 		for (int i = 0; i < castles.Length; i++) {
-			buildLocationOccupiedDict.Add (new Dictionary<int, bool> ());
-			for (int j = 0; j < locations.Count; j++)
-				buildLocationOccupiedDict [buildLocationOccupiedDict.Count - 1].Add (j, false);
+			_buildLocationOccupiedDict.Add (new Dictionary<int, bool> ());
+			for (int j = 0; j < _locations.Count; j++)
+				_buildLocationOccupiedDict [_buildLocationOccupiedDict.Count - 1].Add (j, false);
 		}
 	}
 }

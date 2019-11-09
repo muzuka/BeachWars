@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 /// <summary>
@@ -8,76 +9,82 @@ using System;
 /// </summary>
 public class GhostBuildingManager {
 
-	public string buildingType { get; set; }
+	public string BuildingType { get; set; }
 
-	public bool canBuild { get; set; }
+	public bool CanBuild { get; set; }
 
-	public bool debug { get; set; }
+	public bool Debug { get; set; }
 
 	// main ghost building
-	public GameObject ghostBuilding { get; set; }
-	public Stack<GameObject> ghostWallSegments { get; set; }	// stack of blocks
+	public GameObject GhostBuilding { get; set; }
+	public Stack<GameObject> GhostWallSegments { get; set; }	// stack of blocks
 
-	public float junctionDistLimit { get; set; }
-    public float blockSize { get; set; }
+	public float JunctionDistLimit { get; set; }
+    public float BlockSize { get; set; }
 
-    GameObject prevJunction;				// tells you if there are three or more junctions
-	GameObject firstJunction;				// starting point
-	GameObject secondJunction;				// gets dragged
+    GameObject _prevJunction;				// tells you if there are three or more junctions
+	GameObject _firstJunction;				// starting point
+	GameObject _secondJunction;				// gets dragged
 
-	public bool combined { get; set; }
+	public bool Combined { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="GhostBuildingManager"/> class.
 	/// </summary>
-	public GhostBuildingManager ()
+	public GhostBuildingManager()
 	{
-		canBuild = true;
-		combined = false;
-		buildingType = null;
-		ghostBuilding = null;
-		prevJunction = null;
-		firstJunction = null;
-		secondJunction = null;
-		ghostWallSegments = new Stack<GameObject>();
+		CanBuild = true;
+		Combined = false;
+		BuildingType = null;
+		GhostBuilding = null;
+		_prevJunction = null;
+		_firstJunction = null;
+		_secondJunction = null;
+		GhostWallSegments = new Stack<GameObject>();
 	}
 
 	/// <summary>
 	/// Updates the ghost buildings.
 	/// Called in Player update function.
 	/// </summary>
-	public void updateGhosts () 
+	public void updateGhosts() 
 	{
-		if (ghostBuilding)
+		if (GhostBuilding)
 		{
 			RaycastHit hit;
 
-			if (ghostBuilding.name.Contains(Tags.Armoury))
-				canBuild = canBuildArmoury();
+			if (GhostBuilding.name.Contains(Tags.Armoury))
+            {
+                CanBuild = CanBuildArmoury(); 
+            }
 			else
-				canBuild = ghostBuilding.GetComponent<GhostColorChanger>().canBuild;
+            {
+                CanBuild = GhostBuilding.GetComponent<GhostColorChanger>().CanBuild; 
+            }
 
-			hit = Raycaster.shootMouseRay();
+			hit = Raycaster.ShootMouseRay();
 
-			ghostBuilding.transform.position = new Vector3(hit.point.x, 0.0f, hit.point.z);
+			GhostBuilding.transform.position = new Vector3(hit.point.x, 0.0f, hit.point.z);
 
-			if (buildingType == Tags.Junction && (firstJunction != null && secondJunction != null))
+			if (BuildingType == Tags.Junction && (_firstJunction != null && _secondJunction != null))
 			{
-				canBuild = canBuildWall();
-				updateWallSegments();
+				CanBuild = CanBuildWall();
+				UpdateWallSegments();
 			}
 		}
 
-		if(buildingType == "Junction")
-			checkJunctionProximity();
+		if (BuildingType == "Junction")
+        {
+            CheckJunctionProximity(); 
+        }
 	}
 
 	/// <summary>
 	/// Checks the junction proximity and tells manager whether junctions should combine.
 	/// </summary>
-	void checkJunctionProximity ()
+	void CheckJunctionProximity()
 	{
-		if(buildingType != Tags.Junction)
+		if (BuildingType != Tags.Junction)
 			return;
 
 		GameObject closestJunction;
@@ -85,26 +92,31 @@ public class GhostBuildingManager {
 		float junctionDist;					// distance to closest junction
 		float ghostJunctionDist;			// distance to closest ghost junction
 
-		// get closest junction
-		closestJunction = InfoTool.closestObjectWithTag(Raycaster.shootMouseRay().point, Tags.Junction);
-		junctionDist = getDistanceToGameObject(closestJunction);
+        List<GameObject> gameObjectList = GameObject.FindObjectsOfType<GameObject>().ToList();
+        gameObjectList.RemoveAll(x => (x.GetComponent<JunctionController>() == null || x.GetComponent<GhostBuilder>() == null));
+        gameObjectList.Remove(GhostBuilding);
 
-		var searchList = new List<GameObject>(UnityEngine.Object.FindObjectsOfType<GameObject>());
-		searchList.Remove(ghostBuilding);
+        // get closest junction
+        List<GameObject> junctionList = gameObjectList.FindAll(x => x.GetComponent<JunctionController>() != null);
+        closestJunction = InfoTool.ClosestObject(Raycaster.ShootMouseRay().point, junctionList);
+        junctionDist = GetDistanceToGameObject(closestJunction);
 
-		// get closest ghost junction
-		closestGhostJunction = InfoTool.closestObjectWithName(Raycaster.shootMouseRay().point, "GhostJunction(Clone)", searchList);
-		ghostJunctionDist = getDistanceToGameObject(closestGhostJunction);
+        // get closest ghost junction
+        List<GameObject> ghostJunctionList = gameObjectList.FindAll(x => x.GetComponent<GhostBuilder>() != null);
+        closestGhostJunction = InfoTool.ClosestObject(Raycaster.ShootMouseRay().point, ghostJunctionList);
+		ghostJunctionDist = GetDistanceToGameObject(closestGhostJunction);
 
-		if (!combined)
+		if (!Combined)
 		{
-			if(ghostBuilding != null)
+			if (GhostBuilding != null)
 			{
-				combineJunctions(closestJunction, junctionDist, closestGhostJunction, ghostJunctionDist);
+				CombineJunctions(closestJunction, junctionDist, closestGhostJunction, ghostJunctionDist);
 			}
 		}
 		else
-			separateJunctions(junctionDist, ghostJunctionDist);
+        {
+            SeparateJunctions(junctionDist, ghostJunctionDist); 
+        }
 	}
 
 	/// <summary>
@@ -112,35 +124,42 @@ public class GhostBuildingManager {
 	/// </summary>
 	/// <returns>The distance to game object, if no object then returns max.</returns>
 	/// <param name="obj">Test Object</param>
-	float getDistanceToGameObject (GameObject obj)
+	float GetDistanceToGameObject(GameObject obj)
 	{
 		if (obj)
-			return Vector3.Distance(obj.transform.position, Raycaster.shootMouseRay().point);
+        {
+            return Vector3.Distance(obj.transform.position, Raycaster.ShootMouseRay().point); 
+        }
 		else
-			return float.MaxValue;
+        {
+            return float.MaxValue; 
+        }
 	}
 
 	/// <summary>
 	/// Combine junctions if close enough.
-	/// Used only in checkJunctionProximity()
 	/// </summary>
 	/// <param name="closestJunction">Closest junction.</param>
 	/// <param name="junctionDist">Junction distance.</param>
 	/// <param name="closestGhostJunction">Closest ghost junction.</param>
 	/// <param name="ghostJunctionDist">Ghost junction distance.</param>
-	void combineJunctions (GameObject closestJunction, float junctionDist, GameObject closestGhostJunction, float ghostJunctionDist)
+	void CombineJunctions(GameObject closestJunction, float junctionDist, GameObject closestGhostJunction, float ghostJunctionDist)
 	{
 		// if distance is less than limit
-		if (junctionDist < junctionDistLimit)
-			secondJunction = closestJunction;
-		else if (ghostJunctionDist < junctionDistLimit)
-			secondJunction = closestGhostJunction;
+		if (junctionDist < JunctionDistLimit)
+        {
+            _secondJunction = closestJunction; 
+        }
+		else if (ghostJunctionDist < JunctionDistLimit)
+        {
+            _secondJunction = closestGhostJunction; 
+        }
 
-		if(junctionDist < junctionDistLimit || ghostJunctionDist < junctionDistLimit)
+		if (junctionDist < JunctionDistLimit || ghostJunctionDist < JunctionDistLimit)
 		{
-			destroyGhostBuilding();
-			combined = true;
-			updateWallSegments();
+			DestroyGhostBuilding();
+			Combined = true;
+			UpdateWallSegments();
 		}
 	}
 
@@ -150,60 +169,69 @@ public class GhostBuildingManager {
 	/// </summary>
 	/// <param name="junctionDist">Junction distance.</param>
 	/// <param name="ghostJunctionDist">Ghost junction distance.</param>
-	void separateJunctions (float junctionDist, float ghostJunctionDist)
+	void SeparateJunctions(float junctionDist, float ghostJunctionDist)
 	{
 		// if distance is greater than limit
-		if ((junctionDist > junctionDistLimit && ghostJunctionDist > junctionDistLimit))
+		if ((junctionDist > JunctionDistLimit && ghostJunctionDist > JunctionDistLimit))
 		{
-			createGhostBuilding();
-			secondJunction = ghostBuilding;
-			combined = false;
+			CreateGhostBuilding();
+			_secondJunction = GhostBuilding;
+			Combined = false;
 		}
 	}
 
 	/// <summary>
 	/// Is anything intersecting the armoury?
-	/// Armoury has multiple parts so necessary to check all parts.
 	/// </summary>
 	/// <returns><c>true</c>, if can build armoury, <c>false</c> otherwise.</returns>
-	bool canBuildArmoury()
+	bool CanBuildArmoury()
 	{
 		// Find model named rack
 		// check canBuild
-		GhostColorChanger[] armouryParts = ghostBuilding.GetComponentsInChildren<GhostColorChanger>();
-		for (int i = 0; i < armouryParts.Length; i++)
-		{
-			if (armouryParts[i].gameObject.name == "Rack")
-				return armouryParts[i].canBuild;
-		}
-
-		return false;
+		List<GhostColorChanger> armouryParts = GhostBuilding.GetComponentsInChildren<GhostColorChanger>().ToList();
+        GhostColorChanger rack = armouryParts.Find(x => x.gameObject.name == "Rack");
+        if (rack)
+        {
+            return rack.CanBuild; 
+        }
+        else
+        {
+            return false; 
+        }
 	}
 
 	/// <summary>
 	/// Is anything intersecting with any part of the wall or junction?
 	/// </summary>
 	/// <returns><c>true</c>, if entire wall can be built, <c>false</c> otherwise.</returns>
-	bool canBuildWall()
+	bool CanBuildWall()
 	{
-		GameObject[] walls = ghostWallSegments.ToArray();
+		List<GameObject> walls = GhostWallSegments.ToList().FindAll(x => !x.GetComponent<GhostColorChanger>().CanBuild);
 		bool canBuildFirst;
 		bool canBuildSecond;
-		for (int i = 0; i < walls.Length; i++)
-		{
-			if (!walls[i].GetComponent<GhostColorChanger>().canBuild)
-				return false;
-		}
 
-		if (firstJunction.tag == Tags.Junction)
-			canBuildFirst = true;
-		else
-			canBuildFirst = firstJunction.GetComponent<GhostColorChanger>().canBuild;
+        if (walls.Count > 0)
+        {
+            return false; 
+        }
 
-		if (secondJunction.tag == Tags.Junction)
-			canBuildSecond = true;
+		if (_firstJunction.tag == Tags.Junction)
+        {
+            canBuildFirst = true; 
+        }
 		else
-			canBuildSecond = secondJunction.GetComponent<GhostColorChanger>().canBuild;
+        {
+            canBuildFirst = _firstJunction.GetComponent<GhostColorChanger>().CanBuild; 
+        }
+
+		if (_secondJunction.tag == Tags.Junction)
+        {
+            canBuildSecond = true; 
+        }
+		else
+        {
+            canBuildSecond = _secondJunction.GetComponent<GhostColorChanger>().CanBuild; 
+        }
 
 		return canBuildFirst && canBuildSecond;
 	}
@@ -211,26 +239,26 @@ public class GhostBuildingManager {
 	/// <summary>
 	/// Current selection has been deselected.
 	/// </summary>
-	public void deselect ()
+	public void Deselect()
 	{
-		canBuild = true;
-		combined = false;
-		buildingType = null;
-		ghostBuilding = null;
-		prevJunction = null;
-		firstJunction = null;
-		secondJunction = null;
-		ghostWallSegments = new Stack<GameObject>();
+		CanBuild = true;
+		Combined = false;
+		BuildingType = null;
+		GhostBuilding = null;
+		_prevJunction = null;
+		_firstJunction = null;
+		_secondJunction = null;
+		GhostWallSegments = new Stack<GameObject>();
 	}
 
 	/// <summary>
 	/// Instantiates ghost building based on current building type
 	/// </summary>
-	public void createGhostBuilding ()
+	public void CreateGhostBuilding()
 	{
-		RaycastHit hit = Raycaster.shootMouseRay();
+		RaycastHit hit = Raycaster.ShootMouseRay();
 
-		ghostBuilding = (GameObject)UnityEngine.Object.Instantiate(Resources.Load("Prefabs/PreviewStructures/Ghost" + buildingType), 
+		GhostBuilding = (GameObject)UnityEngine.Object.Instantiate(Resources.Load("Prefabs/PreviewStructures/Ghost" + BuildingType), 
 																	hit.point + new Vector3(0.0f, 1.0f), 
 																	Quaternion.identity);
 	}
@@ -238,56 +266,58 @@ public class GhostBuildingManager {
 	/// <summary>
 	/// Called when junction is placed.
 	/// </summary>
-	public void placeJunction ()
+	public void PlaceJunction()
 	{
-		var wall = ghostWallSegments.ToArray();
+		var wall = GhostWallSegments.ToArray();
 		for (int i = 0; i < wall.Length; i++)
-			wall[i].GetComponent<GhostBuilder>().placed = true;
+        {
+            wall[i].GetComponent<GhostBuilder>().Placed = true; 
+        }
 		
-		ghostWallSegments.Clear();
+		GhostWallSegments.Clear();
 
-		prevJunction = firstJunction;
-		firstJunction = ghostBuilding;
-		placeGhostBuilding();
+		_prevJunction = _firstJunction;
+		_firstJunction = GhostBuilding;
+		PlaceGhostBuilding();
 
-		createGhostBuilding();
-		secondJunction = ghostBuilding;
+		CreateGhostBuilding();
+		_secondJunction = GhostBuilding;
 	}
 
 	/// <summary>
 	/// Spawns wall from junction.
 	/// </summary>
-	public void extendJunction ()
+	public void ExtendJunction()
 	{
-		if(firstJunction != null)
+		if (_firstJunction != null)
 			return;
 
-		buildingType = Tags.Junction;
-		firstJunction = Raycaster.getObjectAtRay();
+		BuildingType = Tags.Junction;
+		_firstJunction = Raycaster.GetObjectAtRay();
 	}
 
 	/// <summary>
 	/// Places the ghost building.
 	/// </summary>
-	public void placeGhostBuilding ()
+	public void PlaceGhostBuilding()
 	{
-		if(ghostBuilding == null)
+		if (GhostBuilding == null)
 			return;
 
-		ghostBuilding.GetComponent<GhostBuilder>().placed = true;
-		ghostBuilding = null;
+		GhostBuilding.GetComponent<GhostBuilder>().Placed = true;
+		GhostBuilding = null;
 	}
 
 	/// <summary>
 	/// Destroys the ghost building.
 	/// </summary>
-	public void destroyGhostBuilding ()
+	public void DestroyGhostBuilding()
 	{
-		if (ghostBuilding) {
-			if (ghostBuilding.gameObject.tag == Tags.Ghost)
+		if (GhostBuilding) {
+			if (GhostBuilding.gameObject.tag == Tags.Ghost)
 			{
-				ghostBuilding.GetComponent<GhostBuilder>().destroyed();
-				UnityEngine.Object.Destroy(ghostBuilding);
+				GhostBuilding.GetComponent<GhostBuilder>().Destroyed();
+				GameObject.Destroy(GhostBuilding);
 			}
 		}
 	}
@@ -296,62 +326,67 @@ public class GhostBuildingManager {
 	/// Destroys all wall segments.
 	/// Destroys junction if it is not connected.
 	/// </summary>
-	public void destroyWall () {
+	public void DestroyWall() {
 
-		while (ghostWallSegments.Count > 0)
+		while (GhostWallSegments.Count > 0)
 		{
-			GameObject seg = ghostWallSegments.Pop();
-			seg.GetComponent<GhostBuilder>().destroyed();
-			UnityEngine.Object.Destroy(seg);
+			GameObject wallSegment = GhostWallSegments.Pop();
+			wallSegment.GetComponent<GhostBuilder>().Destroyed();
+            GameObject.Destroy(wallSegment);
 		}
 
-		ghostWallSegments.Clear();
+		GhostWallSegments.Clear();
 
-		if (secondJunction != null)
+		if (_secondJunction != null)
 		{
-			if (prevJunction == null && firstJunction != null && firstJunction.tag == Tags.Ghost)
-				UnityEngine.Object.Destroy(firstJunction);
-			secondJunction = null;
-			firstJunction = null;
+			if (_prevJunction == null && _firstJunction != null && _firstJunction.tag == Tags.Ghost)
+            {
+                GameObject.Destroy(_firstJunction); 
+            }
+			_secondJunction = null;
+			_firstJunction = null;
 		}
 			
-		destroyGhostBuilding();
-
+		DestroyGhostBuilding();
 	}
 
 	/// <summary>
 	/// Updates the wall segments.
 	/// Creates segments and places them between junctions
 	/// </summary>
-	void updateWallSegments ()
+	void UpdateWallSegments()
 	{
-		if (firstJunction == null || secondJunction == null)
+		if (_firstJunction == null || _secondJunction == null)
 		{
 			return;
 		}
 
 		// get number of segments
 		
-		float distance = Vector3.Distance(firstJunction.transform.position, secondJunction.transform.position);
-		int targetSegments = (int)Math.Floor(distance / blockSize);
-		float posStep = (blockSize / distance);
+		float distance = Vector3.Distance(_firstJunction.transform.position, _secondJunction.transform.position);
+		int targetSegments = (int)Math.Floor(distance / BlockSize);
+		float posStep = (BlockSize / distance);
 
 		// add or remove segments as needed
-		if (targetSegments < ghostWallSegments.Count)
-			UnityEngine.Object.Destroy(ghostWallSegments.Pop());
-		else if (targetSegments > ghostWallSegments.Count)
+		if (targetSegments < GhostWallSegments.Count)
+        {
+            GameObject.Destroy(GhostWallSegments.Pop()); 
+        }
+		else if (targetSegments > GhostWallSegments.Count)
 		{
-			while (targetSegments > ghostWallSegments.Count)
-				ghostWallSegments.Push((GameObject)UnityEngine.Object.Instantiate(Resources.Load("Prefabs/PreviewStructures/GhostBlock")));
+			while (targetSegments > GhostWallSegments.Count)
+            {
+                GhostWallSegments.Push((GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PreviewStructures/GhostBlock"))); 
+            }
 		}
 	
 		// moves segments to correct position
 		float interval = posStep;
-		GameObject[] ghostWallArray = ghostWallSegments.ToArray();
+		GameObject[] ghostWallArray = GhostWallSegments.ToArray();
 		for (int i = 0; i < ghostWallArray.Length; i++)
 		{
-			ghostWallArray[i].transform.position = Vector3.Lerp(firstJunction.transform.position, secondJunction.transform.position, interval);
-			ghostWallArray[i].transform.rotation = Quaternion.LookRotation(secondJunction.transform.position - firstJunction.transform.position);
+			ghostWallArray[i].transform.position = Vector3.Lerp(_firstJunction.transform.position, _secondJunction.transform.position, interval);
+			ghostWallArray[i].transform.rotation = Quaternion.LookRotation(_secondJunction.transform.position - _firstJunction.transform.position);
 			interval += posStep;
 		}
 	}

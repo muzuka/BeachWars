@@ -14,7 +14,9 @@ public static class SelectUtils {
 		{
 			GameObject entity = hit.transform.gameObject;
 			if (!entity)
-				return entity;
+            {
+                return entity; 
+            }
 		}
 
 		return null;
