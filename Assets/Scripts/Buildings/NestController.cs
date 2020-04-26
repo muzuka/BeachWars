@@ -10,6 +10,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(DebugComponent))]
 public class NestController : MonoBehaviour {
 
+    public GameObject Crab;
+
 	[Tooltip("Time to create crab")]
 	public float TimeToCreate;
     [Tooltip("Starting health")]
@@ -65,14 +67,7 @@ public class NestController : MonoBehaviour {
                 }
                 if (_timeConsumed >= TimeToCreate)
                 {
-                    GameObject newCrab;
-                    float dist1 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
-                    float dist2 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
-                    Vector3 pos = gameObject.transform.position;
-                    newCrab = (GameObject)Instantiate(Resources.Load("Prefabs/Units/Crab"), new Vector3(pos.x + dist1, pos.y, pos.z + dist2), Quaternion.identity);
-                    newCrab.GetComponent<CrabController>().Type = GetComponent<Enterable>()._occupant.GetComponent<CrabController>().Type;
-                    newCrab.GetComponent<Team>().team = GetComponent<Team>().team;
-                    _timeConsumed = 0.0f;
+                    CreateCrab();
                 }
             }
         }
@@ -86,6 +81,21 @@ public class NestController : MonoBehaviour {
 		if (GetComponent<DebugComponent>().Debug)
 			Debug.Log("Nest was destroyed.");
 	}
+
+    /// <summary>
+    /// Spawns a crab in a random position
+    /// </summary>
+    void CreateCrab()
+    {
+        GameObject newCrab;
+        float dist1 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
+        float dist2 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
+        Vector3 pos = gameObject.transform.position;
+        newCrab = Instantiate(Crab, new Vector3(pos.x + dist1, pos.y, pos.z + dist2), Quaternion.identity);
+        newCrab.GetComponent<CrabController>().Type = GetComponent<Enterable>()._occupant.GetComponent<CrabController>().Type;
+        newCrab.GetComponent<Team>().team = GetComponent<Team>().team;
+        _timeConsumed = 0.0f;
+    }
 
     void CrabEntered() 
     {

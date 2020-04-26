@@ -548,15 +548,15 @@ public class GUIController : MonoBehaviour {
 				if (menuItem.GetComponent<RawImage>())
 					SelectedImage = menuItem.GetComponent<RawImage>();
 				break;
-			case "InventorySlot1":
+			case "InventorySlot":
 				if (menuItem.GetComponent<RawImage>())
 					InvSlot1 = menuItem.GetComponent<RawImage>();
 				break;
-			case "InventorySlot2":
+			case "InventorySlot (1)":
 				if (menuItem.GetComponent<RawImage>())
 					InvSlot2 = menuItem.GetComponent<RawImage>();
 				break;
-			case "InventorySlot3":
+			case "InventorySlot (2)":
 				if (menuItem.GetComponent<RawImage>())
 					InvSlot3 = menuItem.GetComponent<RawImage>();
 				break;

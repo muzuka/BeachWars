@@ -12,6 +12,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Enterable))]
 public class SiegeController : MonoBehaviour {
 
+    public GameObject Projectile;
+
 	// public unit stats
 	[Tooltip("How far it can attack")]
 	public float AttackRange;
@@ -179,7 +181,7 @@ public class SiegeController : MonoBehaviour {
 				Debug.Log(gameObject.tag + " launched attack!");
 
             _animator.SetTrigger("Fire");
-			_boulder = (GameObject)Instantiate(Resources.Load("Prefabs/Projectiles/Boulder"), transform.position, transform.rotation);
+			_boulder = Instantiate(Projectile, transform.position, transform.rotation);
 			_boulder.GetComponent<ProjectileController>().Destination = _target.transform.position;
 			_boulder.GetComponent<ProjectileController>().Moving = true;
 			_target.GetComponent<Attackable>().Attacked(AttackDamage);

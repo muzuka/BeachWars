@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf1493e3d3cc44a0880f8a7968e0c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Crab: {fileID: 154138, guid: d050f8084de9d47d9adaa835399a7dd0, type: 3}
   TimeToCreate: 5
   MaxHealth: 200
   DistanceToInstantiate: 2

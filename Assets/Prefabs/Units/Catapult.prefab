@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d767bdb8af80345b263008df590e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Projectile: {fileID: 1895706724130798, guid: 149575771ee5349c1817c957deca6166, type: 3}
   AttackRange: 0
   AttackDamage: 0
   AttackSpeed: 0
