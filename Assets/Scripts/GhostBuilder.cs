@@ -126,8 +126,8 @@ public class GhostBuilder : MonoBehaviour {
             {
                 foreach (CrabController crab in _builders)
                 {
-                    crab.GetComponent<CrabController>().ActionStates.ClearStates();
-                    crab.GetComponent<CrabController>().StopMove();
+                    crab.ActionStates.ClearStates();
+                    crab.StopMove();
                 }
             }
         }

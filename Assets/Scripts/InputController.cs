@@ -456,6 +456,7 @@ public class InputController : MonoBehaviour {
         }
         else
         {
+            Debug.Log("Target is not commandable.");
             if (target.GetComponent<Team>().team == GetComponent<Team>().team)
             {
                 target.GetComponent<GhostBuilder>().Destroyed();
