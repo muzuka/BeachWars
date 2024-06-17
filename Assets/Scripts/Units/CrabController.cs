@@ -91,7 +91,9 @@ public class CrabController : MonoBehaviour {
     string _buildingType;			            // the selected type of building
 
 	wallUpgradeType _upgradeType;				// type of upgrade for a block
-    
+
+	[SerializeField]
+	private GameObject _destinationMarkerFab;
 	// interacting knowledge
 	public Vector3 Destination { get; set; }	// current destination
 	public GameObject Target { get; set; }		// current target object to attack, collect from, or capture
@@ -452,7 +454,7 @@ public class CrabController : MonoBehaviour {
 
         if (!_destinationMarker)
         {
-            _destinationMarker = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Etc/DestinationMarker"), Destination, Quaternion.identity);
+            _destinationMarker = Instantiate<GameObject>(_destinationMarkerFab, Destination, Quaternion.identity);
         }
         else
         {

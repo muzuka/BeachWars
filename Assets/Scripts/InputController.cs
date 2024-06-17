@@ -16,6 +16,9 @@ public class InputController : MonoBehaviour {
     public int MaxOffsets;
     public float OffsetRadius;
 
+    public GameObject HaloCanvas;
+    public GameObject BuildingCanvas;
+
     // Can I select more than one unit?
     public bool MultiSelect { get; set; }
 
@@ -572,7 +575,7 @@ public class InputController : MonoBehaviour {
 
                     if (!_weaponCanvas)
                     {
-                        _weaponCanvas = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/GUI/WeaponBuildingCanvas")).GetComponent<Canvas>(); 
+                        _weaponCanvas = Instantiate<GameObject>(BuildingCanvas).GetComponent<Canvas>(); 
                     }
                     else
                     {
@@ -721,7 +724,7 @@ public class InputController : MonoBehaviour {
 		player.SelectedList.Add(entity);
 
 		if (IdUtility.IsMoveable(entity.tag))
-			player.HaloList.Add(Instantiate(Resources.Load<GameObject>("Prefabs/GUI/HaloCanvas")));
+			player.HaloList.Add(Instantiate(HaloCanvas));
 	}
 		
 	/// <summary>
