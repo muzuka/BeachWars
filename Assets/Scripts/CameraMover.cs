@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Camera mover.
@@ -8,6 +10,8 @@ public class CameraMover : MonoBehaviour {
 
 	[Tooltip("The speed of the camera")]
 	public float CameraSpeed;
+
+	public BaseControls _cameraControls;
 
 	Vector3 _mousePos;
 	Transform _cameraTransform;
@@ -33,8 +37,9 @@ public class CameraMover : MonoBehaviour {
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
-	void Start() 
+	void Start()
 	{
+		_cameraControls = new BaseControls();
 		_cameraTransform = gameObject.transform;
 
 		_upDirection = _cameraTransform.worldToLocalMatrix * (new Vector3(0.0f, 0.0f, 0.5f));
@@ -56,10 +61,10 @@ public class CameraMover : MonoBehaviour {
 		_mousePos = Input.mousePosition;
 
 		// define direction flags
-		_right = (_mousePos.x > Screen.width - 5.0f || Input.GetKey(KeyCode.RightArrow));
-		_left = (_mousePos.x < 5.0f || Input.GetKey(KeyCode.LeftArrow));
-		_up = (_mousePos.y < 5.0f || Input.GetKey(KeyCode.DownArrow));
-		_down = (_mousePos.y > Screen.height - 5.0f || Input.GetKey(KeyCode.UpArrow));
+		_right = (_mousePos.x > Screen.width - 5.0f || _cameraControls.FindAction("Right").IsPressed());
+		_left = (_mousePos.x < 5.0f || _cameraControls.FindAction("Left").IsPressed());
+		_up = (_mousePos.y < 5.0f || _cameraControls.FindAction("Forward").IsPressed());
+		_down = (_mousePos.y > Screen.height - 5.0f || _cameraControls.FindAction("Back").IsPressed());
 
 		// Check for mouse wheel movement
 		if (Input.mouseScrollDelta.y < 0 && transform.position.y < _maxHeight)

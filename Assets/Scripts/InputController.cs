@@ -830,7 +830,7 @@ public class InputController : MonoBehaviour {
 	{
 		_anchor = Input.mousePosition;
 		_outer = Input.mousePosition;
-
+		
 		_hasActiveBox = true;
 
 		GetComponent<GUIController>().StartSelectBox(_anchor);

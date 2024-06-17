@@ -937,6 +937,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1881350328829022, guid: b92eca7808e4043e189f3af2e52c1f39, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1951602214604832, guid: b92eca7808e4043e189f3af2e52c1f39, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1436,6 +1440,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OpenSave
       objectReference: {fileID: 0}
+    - target: {fileID: 114727324643164962, guid: b92eca7808e4043e189f3af2e52c1f39,
+        type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114727324643164962, guid: b92eca7808e4043e189f3af2e52c1f39,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
     - target: {fileID: 114790147424897842, guid: b92eca7808e4043e189f3af2e52c1f39,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1555,6 +1569,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Colors.m_NormalColor.r
       value: 0.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 223007189517742706, guid: b92eca7808e4043e189f3af2e52c1f39,
+        type: 3}
+      propertyPath: m_PixelPerfect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224005379936022264, guid: b92eca7808e4043e189f3af2e52c1f39,
         type: 3}
@@ -1680,6 +1699,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 224057459047660244, guid: b92eca7808e4043e189f3af2e52c1f39,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224057459047660244, guid: b92eca7808e4043e189f3af2e52c1f39,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224057459047660244, guid: b92eca7808e4043e189f3af2e52c1f39,
         type: 3}
@@ -4976,12 +5005,68 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: Back.m_Name
+      value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
       propertyPath: CameraSpeed
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: Left.m_Name
+      value: Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
       propertyPath: cameraSpeed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: Right.m_Name
+      value: Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: Forward.m_Name
+      value: Forward
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Id
+      value: c29801e3-4cfa-4c6b-ba6f-99b8607d69a7
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Name
+      value: Camera Controls
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Actions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Bindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Actions.Array.data[0].m_Id
+      value: b8e13337-08b4-49af-adf8-f14050521d7f
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Bindings.Array.data[0].m_Id
+      value: 6d892005-2d90-4eae-9617-2e0b44511e1c
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Actions.Array.data[0].m_Name
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Actions.Array.data[0].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Bindings.Array.data[0].m_Action
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492882, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
+      propertyPath: CameraControls.m_Actions.Array.data[0].m_ExpectedControlType
+      value: Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f95369671b894f37a599fdc5fc39aa0, type: 3}
