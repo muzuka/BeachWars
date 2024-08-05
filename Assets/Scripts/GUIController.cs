@@ -699,22 +699,13 @@ public class GUIController : MonoBehaviour {
 	/// <param name="slot">Slot number.</param>
 	public RawImage GetInvSlot(int slot)
 	{
-		if (slot == 1)
-        {
-            return InvSlot1; 
-        }
-		else if (slot == 2)
-        {
-            return InvSlot2; 
-        }
-		else if (slot == 3)
-        {
-            return InvSlot3; 
-        }
-		else
-        {
-            return null; 
-        }
+		return slot switch
+		{
+			1 => InvSlot1,
+			2 => InvSlot2,
+			3 => InvSlot3,
+			_ => null
+		};
 	}
 
 	/// <summary>

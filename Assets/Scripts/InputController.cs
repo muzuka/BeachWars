@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
+
 //using UnityEditor;
 
 /// <summary>
@@ -22,6 +26,11 @@ public class InputController : MonoBehaviour {
     // Can I select more than one unit?
     public bool MultiSelect { get; set; }
 
+    BaseControls _clickControls;
+    InputAction _select;
+    InputAction _use;
+    BaseControls.HotKeysActions _hotkeys;
+    
     Vector3 _anchor;				// Start point
 	Vector3 _outer;				// drag point
 	bool _hasActiveBox;			// is SelectBox active?
@@ -34,17 +43,37 @@ public class InputController : MonoBehaviour {
 
     List<Vector3> _offsets;
 
-	/// <summary>
+
+    void Awake()
+    {
+	    _clickControls = new BaseControls();
+    }
+
+    /// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start()
 	{
 		_debug = GetComponent<DebugComponent>().Debug;
-
+		
+		_select = _clickControls.Units.Select;
+		_use = _clickControls.Units.Use;
+		_hotkeys = _clickControls.HotKeys;
+		
         _offsets = new List<Vector3>();
         for (int i = 0; i < MaxOffsets; i++) {
             _offsets.Add(GetOffset(i, OffsetRadius, 1, 1));
         }
+	}
+
+	void OnEnable()
+	{
+		_clickControls.Enable();
+	}
+
+	void OnDisable()
+	{
+		_clickControls.Disable();
 	}
 
 	/// <summary>
@@ -52,7 +81,7 @@ public class InputController : MonoBehaviour {
 	/// </summary>
 	void Update() 
 	{
-		MultiSelect = Input.GetKey(KeyCode.LeftShift);
+		MultiSelect = _clickControls.Units.Multi.IsPressed();
 	}
 
 	/// <summary>
@@ -79,8 +108,9 @@ public class InputController : MonoBehaviour {
 					player.Deselect();
 					player.States.SetState("Building", true);
 
-					if (Input.GetMouseButtonUp(0))
+					if (_select.WasReleasedThisFrame())
 					{
+						Debug.Log("Pressed select");
 						if (Raycaster.IsPointingAt(Tags.Junction))
                         {
                             ghostManager.ExtendJunction();
@@ -90,7 +120,7 @@ public class InputController : MonoBehaviour {
                             ghostManager.PlaceJunction();
                         }
 					}
-					else if (Input.GetMouseButtonUp(1))
+					else if (_use.WasReleasedThisFrame())
 					{
 						ghostManager.DestroyGhostBuilding();
 						ghostManager.DestroyWall();
@@ -101,11 +131,11 @@ public class InputController : MonoBehaviour {
 				}
 				else
 				{
-					if (Input.GetMouseButtonUp(0) && ghostManager.CanBuild)
+					if (_select.WasReleasedThisFrame() && ghostManager.CanBuild)
                     {
                         LeftClickWhileBuilding(player);
                     }
-					else if (Input.GetMouseButtonUp(1))
+					else if (_use.WasReleasedThisFrame())
                     {
                         RightClickWhileBuilding(player);
                     }
@@ -114,16 +144,16 @@ public class InputController : MonoBehaviour {
 			else
 			{
 				// left click
-				if (Input.GetMouseButtonDown(0))
+				if (_select.WasPressedThisFrame())
                 {
                     CreateBoxSelection();
                 }
-				else if (Input.GetMouseButtonUp(0))
+				else if (_select.WasReleasedThisFrame())
                 {
                     SelectEntities(player, gui);
                 }
 				// right click
-				else if (Input.GetMouseButtonUp(1)) 
+				else if (_use.WasReleasedThisFrame()) 
 				{
 					if (Physics.Raycast(Raycaster.GetRay(), out _hit))
                     {
@@ -557,62 +587,64 @@ public class InputController : MonoBehaviour {
 	/// <param name="target">Target object.</param>
 	void RightClickArmoury(Player player, GameObject target)
 	{
-        if (player.GetComponent<Team>().team == target.GetComponent<Team>().team)
-        {
-            if (player.Selected.tag == Tags.Crab && player.CanCommand)
-            {
-                // open menu to choose weapon
-                // set armoury as current
+		if (player.GetComponent<Team>().team == target.GetComponent<Team>().team)
+		{
+			if (player.Selected.tag == Tags.Crab && player.CanCommand)
+			{
+				// open menu to choose weapon
+				// set armoury as current
 
-                if (player.States.GetState("Attacking"))
-                {
-                    player.Selected.SendMessage("StartDismantling", target, SendMessageOptions.DontRequireReceiver);
-                }
-                else
-                {
-                    if (_debug)
-                        Debug.Log("Set up weapon canvas");
+				if (player.States.GetState("Attacking"))
+				{
+					player.Selected.SendMessage("StartDismantling", target, SendMessageOptions.DontRequireReceiver);
+				}
+				else
+				{
+					if (_debug)
+						Debug.Log("Set up weapon canvas");
 
-                    if (!_weaponCanvas)
-                    {
-                        _weaponCanvas = Instantiate<GameObject>(BuildingCanvas).GetComponent<Canvas>(); 
-                    }
-                    else
-                    {
-                        _weaponCanvas.gameObject.SetActive(true); 
-                    }
+					if (!_weaponCanvas)
+					{
+						_weaponCanvas = Instantiate<GameObject>(BuildingCanvas).GetComponent<Canvas>();
+					}
+					else
+					{
+						_weaponCanvas.gameObject.SetActive(true);
+					}
 
-                    Button[] buttons = _weaponCanvas.GetComponentsInChildren<Button>();
-                    for (int i = 0; i < buttons.Length; i++)
-                    {
-                        if (buttons[i].name == "SpearButton")
-                            buttons[i].onClick.AddListener(() => {
-                                GetComponent<Player>().TakeWeapon(Tags.Spear);
-                                _weaponCanvas.gameObject.SetActive(false);
-                            });
-                        if (buttons[i].name == "HammerButton")
-                            buttons[i].onClick.AddListener(() => {
-                                GetComponent<Player>().TakeWeapon(Tags.Hammer);
-                                _weaponCanvas.gameObject.SetActive(false);
-                            });
-                        if (buttons[i].name == "BowButton")
-                            buttons[i].onClick.AddListener(() => {
-                                GetComponent<Player>().TakeWeapon(Tags.Bow);
-                                _weaponCanvas.gameObject.SetActive(false);
-                            });
-                        if (buttons[i].name == "ShieldButton")
-                            buttons[i].onClick.AddListener(() => {
-                                GetComponent<Player>().TakeWeapon(Tags.Shield);
-                                _weaponCanvas.gameObject.SetActive(false);
-                            });
-                    }
+					Button[] buttons = _weaponCanvas.GetComponentsInChildren<Button>();
+					for (int i = 0; i < buttons.Length; i++)
+					{
+						if (buttons[i].name == "SpearButton")
+							buttons[i].onClick.AddListener(() =>
+							{
+								GetComponent<Player>().TakeWeapon(Tags.Spear);
+								_weaponCanvas.gameObject.SetActive(false);
+							});
+						if (buttons[i].name == "HammerButton")
+							buttons[i].onClick.AddListener(() =>
+							{
+								GetComponent<Player>().TakeWeapon(Tags.Hammer);
+								_weaponCanvas.gameObject.SetActive(false);
+							});
+						if (buttons[i].name == "BowButton")
+							buttons[i].onClick.AddListener(() =>
+							{
+								GetComponent<Player>().TakeWeapon(Tags.Bow);
+								_weaponCanvas.gameObject.SetActive(false);
+							});
+						if (buttons[i].name == "ShieldButton")
+							buttons[i].onClick.AddListener(() =>
+							{
+								GetComponent<Player>().TakeWeapon(Tags.Shield);
+								_weaponCanvas.gameObject.SetActive(false);
+							});
+					}
 
-                    player.TargetedArmoury = target.GetComponent<HoldsWeapons>();
-                }
-            }
-        }
-
-		
+					player.TargetedArmoury = target.GetComponent<HoldsWeapons>();
+				}
+			}
+		}
 	}
     #endregion
 
@@ -629,14 +661,14 @@ public class InputController : MonoBehaviour {
 
 		if (Input.anyKeyDown)
 		{
-			if (Input.GetKeyDown(KeyCode.A)) 
+			if (_hotkeys.Attack.IsPressed())
 			{
 				if (_debug)
 					Debug.Log("Click on something to attack.");
 				player.States.ClearStates();
 				player.States.SetState("Attacking", true);
 			}
-			if (Input.GetKeyDown(KeyCode.B)) 
+			if (_hotkeys.Build.IsPressed()) 
 			{
 				if (_debug)
 					Debug.Log("Start building castle.");
@@ -645,26 +677,26 @@ public class InputController : MonoBehaviour {
 				player.SetBuildingType(Tags.Castle);
 				//player.setBuildMode(true);
 			}
-			if (Input.GetKeyDown(KeyCode.C)) 
+			if (_hotkeys.Capture.IsPressed()) 
 			{
 				if (_debug)
 					Debug.Log("Click on castle to capture.");
 				player.States.SetState("Capturing", true);
 			}
-			if (Input.GetKeyDown(KeyCode.E)) 
+			if (_hotkeys.Enter.IsPressed()) 
 			{
 				if (_debug)
 					Debug.Log("Click on a castle or siege weapon to enter.");
 				player.States.ClearStates();
 				player.States.SetState("Entering", true);
 			}
-			if (Input.GetKeyDown(KeyCode.F)) 
+			if (_hotkeys.Repair.IsPressed()) 
 			{
 				if (_debug)
 					Debug.Log("Click an object to repair.");
 				player.States.SetState("Repairing", true);
 			}
-			if (Input.GetKeyDown(KeyCode.I)) 
+			if (_hotkeys.Info.IsPressed()) 
 			{
 				if (_debug)
 				{
@@ -674,7 +706,7 @@ public class InputController : MonoBehaviour {
                     }
 				}
 			}
-			if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) 
+			if (_hotkeys.Pause.IsPressed()) 
 			{
 				player.Paused = !player.Paused;
 				if (player.Paused)
@@ -688,13 +720,13 @@ public class InputController : MonoBehaviour {
 					GetComponent<GUIController>().PauseMenu.SetActive(false);
 				}
 			}
-			if (Input.GetKeyDown(KeyCode.R)) 
+			if (_hotkeys.Recruit.IsPressed()) 
 			{
 				if (_debug)
 					Debug.Log("Click on a neutral crab to recruit.");
 				player.States.SetState("Recruiting", true);
 			}
-			if (Input.GetKeyDown(KeyCode.U)) 
+			if (_hotkeys.Upgrade.IsPressed()) 
 			{
 				if (_debug)
 					Debug.Log("Click on a block to upgrade.");
@@ -766,6 +798,7 @@ public class InputController : MonoBehaviour {
 		if (_debug)
 			Debug.Assert(player);
 
+		Input.GetKeyDown(KeyCode.A);
 		_hit = Raycaster.ShootMouseRay();
 		GameObject entity = _hit.transform.gameObject;
 		// entity exists and player hasn't selected already and entity isn't the beach.

@@ -176,6 +176,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Multi"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2e6bd88-ec96-4860-ad8a-cc20cc417386"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -200,6 +209,216 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97db4c5a-4053-4894-a95b-542cb5a5e44d"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Multi"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""HotKeys"",
+            ""id"": ""e9167a90-5995-489a-80d7-5ec08e64093d"",
+            ""actions"": [
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""498b8373-003b-4ef0-9837-3c22a21664fc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build"",
+                    ""type"": ""Button"",
+                    ""id"": ""3abc0f0c-9811-45fa-8bfd-58d0ed59c93c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Capture"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e4c5ea2-f8e4-4571-9e34-4d0a51d48d23"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Enter"",
+                    ""type"": ""Button"",
+                    ""id"": ""42630e65-b831-4485-8105-7888488083d0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Repair"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ceb3e23-d024-40e4-8279-3e7c910d8725"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Info"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7647e52-607f-4bb6-8b1e-282dfbd31319"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""78bfc935-2e2b-4eb5-8c81-8a440173cf47"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Recruit"",
+                    ""type"": ""Button"",
+                    ""id"": ""5b34dfea-f77e-412d-abd7-80e4ad5bcc70"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Upgrade"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f926744-8257-4bed-ba08-dec4ee80310f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b6da33eb-2861-4fdd-85ce-03c568d69d65"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d418c731-3ba9-4199-ad50-3c1fce726908"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7a34486-1e96-449d-83e2-5837d12179d8"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Capture"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d100cdca-5991-41cb-8733-b07e26bf5d97"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""088c0e0a-fa62-40bf-af2b-dc89129d1c9c"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Repair"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e9408f3-86f6-4c89-8036-df2ca8010e23"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Info"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b26f181-9147-43bb-8abf-c50516962f16"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92a07fa3-21ca-47be-86e9-ba8141a82578"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""318f9b90-a60d-4b89-8b71-bdfbf3d11e39"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Recruit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93ae5465-bd4f-42b8-8b63-02bec13ca026"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Upgrade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -222,6 +441,18 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_Units = asset.FindActionMap("Units", throwIfNotFound: true);
         m_Units_Select = m_Units.FindAction("Select", throwIfNotFound: true);
         m_Units_Use = m_Units.FindAction("Use", throwIfNotFound: true);
+        m_Units_Multi = m_Units.FindAction("Multi", throwIfNotFound: true);
+        // HotKeys
+        m_HotKeys = asset.FindActionMap("HotKeys", throwIfNotFound: true);
+        m_HotKeys_Attack = m_HotKeys.FindAction("Attack", throwIfNotFound: true);
+        m_HotKeys_Build = m_HotKeys.FindAction("Build", throwIfNotFound: true);
+        m_HotKeys_Capture = m_HotKeys.FindAction("Capture", throwIfNotFound: true);
+        m_HotKeys_Enter = m_HotKeys.FindAction("Enter", throwIfNotFound: true);
+        m_HotKeys_Repair = m_HotKeys.FindAction("Repair", throwIfNotFound: true);
+        m_HotKeys_Info = m_HotKeys.FindAction("Info", throwIfNotFound: true);
+        m_HotKeys_Pause = m_HotKeys.FindAction("Pause", throwIfNotFound: true);
+        m_HotKeys_Recruit = m_HotKeys.FindAction("Recruit", throwIfNotFound: true);
+        m_HotKeys_Upgrade = m_HotKeys.FindAction("Upgrade", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -355,12 +586,14 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private List<IUnitsActions> m_UnitsActionsCallbackInterfaces = new List<IUnitsActions>();
     private readonly InputAction m_Units_Select;
     private readonly InputAction m_Units_Use;
+    private readonly InputAction m_Units_Multi;
     public struct UnitsActions
     {
         private @BaseControls m_Wrapper;
         public UnitsActions(@BaseControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Select => m_Wrapper.m_Units_Select;
         public InputAction @Use => m_Wrapper.m_Units_Use;
+        public InputAction @Multi => m_Wrapper.m_Units_Multi;
         public InputActionMap Get() { return m_Wrapper.m_Units; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -376,6 +609,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Use.started += instance.OnUse;
             @Use.performed += instance.OnUse;
             @Use.canceled += instance.OnUse;
+            @Multi.started += instance.OnMulti;
+            @Multi.performed += instance.OnMulti;
+            @Multi.canceled += instance.OnMulti;
         }
 
         private void UnregisterCallbacks(IUnitsActions instance)
@@ -386,6 +622,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Use.started -= instance.OnUse;
             @Use.performed -= instance.OnUse;
             @Use.canceled -= instance.OnUse;
+            @Multi.started -= instance.OnMulti;
+            @Multi.performed -= instance.OnMulti;
+            @Multi.canceled -= instance.OnMulti;
         }
 
         public void RemoveCallbacks(IUnitsActions instance)
@@ -403,6 +642,116 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         }
     }
     public UnitsActions @Units => new UnitsActions(this);
+
+    // HotKeys
+    private readonly InputActionMap m_HotKeys;
+    private List<IHotKeysActions> m_HotKeysActionsCallbackInterfaces = new List<IHotKeysActions>();
+    private readonly InputAction m_HotKeys_Attack;
+    private readonly InputAction m_HotKeys_Build;
+    private readonly InputAction m_HotKeys_Capture;
+    private readonly InputAction m_HotKeys_Enter;
+    private readonly InputAction m_HotKeys_Repair;
+    private readonly InputAction m_HotKeys_Info;
+    private readonly InputAction m_HotKeys_Pause;
+    private readonly InputAction m_HotKeys_Recruit;
+    private readonly InputAction m_HotKeys_Upgrade;
+    public struct HotKeysActions
+    {
+        private @BaseControls m_Wrapper;
+        public HotKeysActions(@BaseControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Attack => m_Wrapper.m_HotKeys_Attack;
+        public InputAction @Build => m_Wrapper.m_HotKeys_Build;
+        public InputAction @Capture => m_Wrapper.m_HotKeys_Capture;
+        public InputAction @Enter => m_Wrapper.m_HotKeys_Enter;
+        public InputAction @Repair => m_Wrapper.m_HotKeys_Repair;
+        public InputAction @Info => m_Wrapper.m_HotKeys_Info;
+        public InputAction @Pause => m_Wrapper.m_HotKeys_Pause;
+        public InputAction @Recruit => m_Wrapper.m_HotKeys_Recruit;
+        public InputAction @Upgrade => m_Wrapper.m_HotKeys_Upgrade;
+        public InputActionMap Get() { return m_Wrapper.m_HotKeys; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(HotKeysActions set) { return set.Get(); }
+        public void AddCallbacks(IHotKeysActions instance)
+        {
+            if (instance == null || m_Wrapper.m_HotKeysActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_HotKeysActionsCallbackInterfaces.Add(instance);
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Build.started += instance.OnBuild;
+            @Build.performed += instance.OnBuild;
+            @Build.canceled += instance.OnBuild;
+            @Capture.started += instance.OnCapture;
+            @Capture.performed += instance.OnCapture;
+            @Capture.canceled += instance.OnCapture;
+            @Enter.started += instance.OnEnter;
+            @Enter.performed += instance.OnEnter;
+            @Enter.canceled += instance.OnEnter;
+            @Repair.started += instance.OnRepair;
+            @Repair.performed += instance.OnRepair;
+            @Repair.canceled += instance.OnRepair;
+            @Info.started += instance.OnInfo;
+            @Info.performed += instance.OnInfo;
+            @Info.canceled += instance.OnInfo;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @Recruit.started += instance.OnRecruit;
+            @Recruit.performed += instance.OnRecruit;
+            @Recruit.canceled += instance.OnRecruit;
+            @Upgrade.started += instance.OnUpgrade;
+            @Upgrade.performed += instance.OnUpgrade;
+            @Upgrade.canceled += instance.OnUpgrade;
+        }
+
+        private void UnregisterCallbacks(IHotKeysActions instance)
+        {
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Build.started -= instance.OnBuild;
+            @Build.performed -= instance.OnBuild;
+            @Build.canceled -= instance.OnBuild;
+            @Capture.started -= instance.OnCapture;
+            @Capture.performed -= instance.OnCapture;
+            @Capture.canceled -= instance.OnCapture;
+            @Enter.started -= instance.OnEnter;
+            @Enter.performed -= instance.OnEnter;
+            @Enter.canceled -= instance.OnEnter;
+            @Repair.started -= instance.OnRepair;
+            @Repair.performed -= instance.OnRepair;
+            @Repair.canceled -= instance.OnRepair;
+            @Info.started -= instance.OnInfo;
+            @Info.performed -= instance.OnInfo;
+            @Info.canceled -= instance.OnInfo;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @Recruit.started -= instance.OnRecruit;
+            @Recruit.performed -= instance.OnRecruit;
+            @Recruit.canceled -= instance.OnRecruit;
+            @Upgrade.started -= instance.OnUpgrade;
+            @Upgrade.performed -= instance.OnUpgrade;
+            @Upgrade.canceled -= instance.OnUpgrade;
+        }
+
+        public void RemoveCallbacks(IHotKeysActions instance)
+        {
+            if (m_Wrapper.m_HotKeysActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IHotKeysActions instance)
+        {
+            foreach (var item in m_Wrapper.m_HotKeysActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_HotKeysActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public HotKeysActions @HotKeys => new HotKeysActions(this);
     private int m_BaseControlsSchemeIndex = -1;
     public InputControlScheme BaseControlsScheme
     {
@@ -423,5 +772,18 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     {
         void OnSelect(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnMulti(InputAction.CallbackContext context);
+    }
+    public interface IHotKeysActions
+    {
+        void OnAttack(InputAction.CallbackContext context);
+        void OnBuild(InputAction.CallbackContext context);
+        void OnCapture(InputAction.CallbackContext context);
+        void OnEnter(InputAction.CallbackContext context);
+        void OnRepair(InputAction.CallbackContext context);
+        void OnInfo(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnRecruit(InputAction.CallbackContext context);
+        void OnUpgrade(InputAction.CallbackContext context);
     }
 }

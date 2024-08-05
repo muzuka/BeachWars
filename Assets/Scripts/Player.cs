@@ -183,56 +183,56 @@ public class Player : MonoBehaviour
 				HaloList[i].SetActive(true);
 				HaloList[i].transform.GetChild(0).position = SelectedList[i].transform.position;
 
-                if (SelectedList.Count > 1)
-                {
-                    if (SelectedList[i].tag == Tags.Crab)
-                    {
-                        if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Attacking"))
-                        {
-                            HaloList[i].GetComponentInChildren<Image>().color = Color.red;
-                        }
-                        else if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Building"))
-                        {
-                            HaloList[i].GetComponentInChildren<Image>().color = Color.blue;
-                        }
-                        else if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Collecting"))
-                        {
-                            HaloList[i].GetComponentInChildren<Image>().color = Color.green;
-                        }
-                    }
-                    else if (IdUtility.IsSiegeWeapon(SelectedList[i].tag))
-                    {
-                        if (SelectedList[i].GetComponent<SiegeController>().IsBusy())
-                        {
-                            HaloList[i].GetComponentInChildren<Image>().color = Color.red;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Selected.tag == Tags.Crab)
-                    {
-                        if (Selected.GetComponent<CrabController>().ActionStates.GetState("Attacking"))
-                        {
-                            HaloList[0].GetComponentInChildren<Image>().color = Color.red;
-                        }
-                        else if (Selected.GetComponent<CrabController>().ActionStates.GetState("Building"))
-                        {
-                            HaloList[0].GetComponentInChildren<Image>().color = Color.blue;
-                        }
-                        else if (Selected.GetComponent<CrabController>().ActionStates.GetState("Collecting"))
-                        {
-                            HaloList[0].GetComponentInChildren<Image>().color = Color.green;
-                        }
-                    }
-                    else if (IdUtility.IsSiegeWeapon(Selected.tag))
-                    {
-                        if (Selected.GetComponent<SiegeController>().IsBusy())
-                        {
-                            HaloList[0].GetComponentInChildren<Image>().color = Color.red;
-                        }
-                    }
-                }
+				if (SelectedList.Count > 1)
+				{
+					if (SelectedList[i].tag == Tags.Crab)
+					{
+						if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Attacking"))
+						{
+							HaloList[i].GetComponentInChildren<Image>().color = Color.red;
+						}
+						else if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Building"))
+						{
+							HaloList[i].GetComponentInChildren<Image>().color = Color.blue;
+						}
+						else if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Collecting"))
+						{
+							HaloList[i].GetComponentInChildren<Image>().color = Color.green;
+						}
+					}
+					else if (IdUtility.IsSiegeWeapon(SelectedList[i].tag))
+					{
+						if (SelectedList[i].GetComponent<SiegeController>().IsBusy())
+						{
+							HaloList[i].GetComponentInChildren<Image>().color = Color.red;
+						}
+					}
+				}
+				else
+				{
+					if (Selected.tag == Tags.Crab)
+					{
+						if (Selected.GetComponent<CrabController>().ActionStates.GetState("Attacking"))
+						{
+							HaloList[0].GetComponentInChildren<Image>().color = Color.red;
+						}
+						else if (Selected.GetComponent<CrabController>().ActionStates.GetState("Building"))
+						{
+							HaloList[0].GetComponentInChildren<Image>().color = Color.blue;
+						}
+						else if (Selected.GetComponent<CrabController>().ActionStates.GetState("Collecting"))
+						{
+							HaloList[0].GetComponentInChildren<Image>().color = Color.green;
+						}
+					}
+					else if (IdUtility.IsSiegeWeapon(Selected.tag))
+					{
+						if (Selected.GetComponent<SiegeController>().IsBusy())
+						{
+							HaloList[0].GetComponentInChildren<Image>().color = Color.red;
+						}
+					}
+				}
 			}
 		}
 	}
