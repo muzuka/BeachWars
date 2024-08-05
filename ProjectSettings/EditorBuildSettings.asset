@@ -7,9 +7,16 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
+    guid: 0779a391c98cc486badaa7ccab82a2bb
   - enabled: 1
     path: Assets/Scenes/Level Select.unity
+    guid: c571dbdcb20514000aafdc7ed207370d
   - enabled: 0
     path: Assets/Scenes/TestLevel.unity
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Scenario.unity
+    guid: f307a6abb50c34b028dd195a356543e3
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: a7a21cc863d84af4cb6cd40397742880,
+      type: 2}
