@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 
@@ -10,6 +11,8 @@ public class CameraMover : MonoBehaviour {
 
 	[Tooltip("The speed of the camera")]
 	public float CameraSpeed;
+
+	public BoxCollider CameraBounds;
 
 	public BaseControls _cameraControls;
 
@@ -79,6 +82,13 @@ public class CameraMover : MonoBehaviour {
 		_left = (_mousePos.x < 5.0f || _cameraControls.Camera.Left.IsPressed());
 		_up = (_mousePos.y < 5.0f || _cameraControls.Camera.Back.IsPressed());
 		_down = (_mousePos.y > Screen.height - 5.0f || _cameraControls.Camera.Forward.IsPressed());
+
+		// Check bounds
+		_right = _right && transform.position.x < CameraBounds.bounds.max.x;
+		_left = _left && transform.position.x > CameraBounds.bounds.min.x;
+		_up = _up && transform.position.z < CameraBounds.bounds.max.z;
+		_down = _down && transform.position.z > CameraBounds.bounds.min.z;
+		
 		// Check for mouse wheel movement
 		if (_cameraControls.Camera.ZoomOut.ReadValue<float>() > 0 && transform.position.y < _maxHeight)
 			_cameraTransform.Translate(-_forwardDirection.direction);
