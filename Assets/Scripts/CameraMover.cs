@@ -34,12 +34,16 @@ public class CameraMover : MonoBehaviour {
 
 	Ray _forwardDirection;
 
+	void Awake()
+	{
+		_cameraControls = new BaseControls();
+	}
+
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start()
 	{
-		_cameraControls = new BaseControls();
 		_cameraTransform = gameObject.transform;
 
 		_upDirection = _cameraTransform.worldToLocalMatrix * (new Vector3(0.0f, 0.0f, 0.5f));
@@ -52,6 +56,16 @@ public class CameraMover : MonoBehaviour {
 		_lowerLeft = _cameraTransform.worldToLocalMatrix * _lowerLeft;
 		_lowerRight = _cameraTransform.worldToLocalMatrix * _lowerRight;
 	}
+	
+	void OnEnable()
+	{
+		_cameraControls.Enable();
+	}
+
+	void OnDisable()
+	{
+		_cameraControls.Disable();
+	}
 
 	/// <summary>
 	/// Update this instance.
@@ -61,15 +75,14 @@ public class CameraMover : MonoBehaviour {
 		_mousePos = Input.mousePosition;
 
 		// define direction flags
-		_right = (_mousePos.x > Screen.width - 5.0f || _cameraControls.FindAction("Right").IsPressed());
-		_left = (_mousePos.x < 5.0f || _cameraControls.FindAction("Left").IsPressed());
-		_up = (_mousePos.y < 5.0f || _cameraControls.FindAction("Forward").IsPressed());
-		_down = (_mousePos.y > Screen.height - 5.0f || _cameraControls.FindAction("Back").IsPressed());
-
+		_right = (_mousePos.x > Screen.width - 5.0f || _cameraControls.Camera.Right.IsPressed());
+		_left = (_mousePos.x < 5.0f || _cameraControls.Camera.Left.IsPressed());
+		_up = (_mousePos.y < 5.0f || _cameraControls.Camera.Back.IsPressed());
+		_down = (_mousePos.y > Screen.height - 5.0f || _cameraControls.Camera.Forward.IsPressed());
 		// Check for mouse wheel movement
-		if (Input.mouseScrollDelta.y < 0 && transform.position.y < _maxHeight)
+		if (_cameraControls.Camera.ZoomOut.ReadValue<float>() > 0 && transform.position.y < _maxHeight)
 			_cameraTransform.Translate(-_forwardDirection.direction);
-		else if (Input.mouseScrollDelta.y > 0 && transform.position.y > _minHeight)
+		else if (_cameraControls.Camera.ZoomIn.ReadValue<float>() > 0 && transform.position.y > _minHeight)
 			_cameraTransform.Translate(_forwardDirection.direction);
 
 		// Check directions and move accordingly

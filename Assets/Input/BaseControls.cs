@@ -62,6 +62,24 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ZoomIn"",
+                    ""type"": ""Value"",
+                    ""id"": ""e1237fd7-734b-4d4b-9863-ef84dd8bf1e2"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ZoomOut"",
+                    ""type"": ""Value"",
+                    ""id"": ""46e9c51e-e698-4f6a-a970-4adec8a91d6e"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -150,6 +168,28 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""BaseControls"",
                     ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f06d2896-4319-46ff-9c75-ee43a7a137ca"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomIn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11deafa9-5e0f-43f0-b07d-7aecd80e3f6a"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomOut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -437,6 +477,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_Camera_Back = m_Camera.FindAction("Back", throwIfNotFound: true);
         m_Camera_Left = m_Camera.FindAction("Left", throwIfNotFound: true);
         m_Camera_Right = m_Camera.FindAction("Right", throwIfNotFound: true);
+        m_Camera_ZoomIn = m_Camera.FindAction("ZoomIn", throwIfNotFound: true);
+        m_Camera_ZoomOut = m_Camera.FindAction("ZoomOut", throwIfNotFound: true);
         // Units
         m_Units = asset.FindActionMap("Units", throwIfNotFound: true);
         m_Units_Select = m_Units.FindAction("Select", throwIfNotFound: true);
@@ -518,6 +560,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Camera_Back;
     private readonly InputAction m_Camera_Left;
     private readonly InputAction m_Camera_Right;
+    private readonly InputAction m_Camera_ZoomIn;
+    private readonly InputAction m_Camera_ZoomOut;
     public struct CameraActions
     {
         private @BaseControls m_Wrapper;
@@ -526,6 +570,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @Back => m_Wrapper.m_Camera_Back;
         public InputAction @Left => m_Wrapper.m_Camera_Left;
         public InputAction @Right => m_Wrapper.m_Camera_Right;
+        public InputAction @ZoomIn => m_Wrapper.m_Camera_ZoomIn;
+        public InputAction @ZoomOut => m_Wrapper.m_Camera_ZoomOut;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -547,6 +593,12 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Right.started += instance.OnRight;
             @Right.performed += instance.OnRight;
             @Right.canceled += instance.OnRight;
+            @ZoomIn.started += instance.OnZoomIn;
+            @ZoomIn.performed += instance.OnZoomIn;
+            @ZoomIn.canceled += instance.OnZoomIn;
+            @ZoomOut.started += instance.OnZoomOut;
+            @ZoomOut.performed += instance.OnZoomOut;
+            @ZoomOut.canceled += instance.OnZoomOut;
         }
 
         private void UnregisterCallbacks(ICameraActions instance)
@@ -563,6 +615,12 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Right.started -= instance.OnRight;
             @Right.performed -= instance.OnRight;
             @Right.canceled -= instance.OnRight;
+            @ZoomIn.started -= instance.OnZoomIn;
+            @ZoomIn.performed -= instance.OnZoomIn;
+            @ZoomIn.canceled -= instance.OnZoomIn;
+            @ZoomOut.started -= instance.OnZoomOut;
+            @ZoomOut.performed -= instance.OnZoomOut;
+            @ZoomOut.canceled -= instance.OnZoomOut;
         }
 
         public void RemoveCallbacks(ICameraActions instance)
@@ -767,6 +825,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnBack(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnZoomIn(InputAction.CallbackContext context);
+        void OnZoomOut(InputAction.CallbackContext context);
     }
     public interface IUnitsActions
     {
