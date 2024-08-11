@@ -161,8 +161,7 @@ public class Player : MonoBehaviour
 
 		if (SelectedList != null)
 			MultiSelect = (SelectedList.Count > 1);
-
-		Gui.UpdateUI(this);
+		
 		if (HasSelected)
 			UpdateHalos();
 
@@ -277,6 +276,7 @@ public class Player : MonoBehaviour
 		Gui.SetActiveGUIComponents(obj.tag);
 		Gui.GetActionViewController().SetButtons(this);
 		Gui.SelectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
+		Gui.UpdateUI(this);
 	}
 
 	/// <summary>
@@ -299,6 +299,7 @@ public class Player : MonoBehaviour
 		Gui.SetActiveGUIComponents("multi");
 		Gui.GetActionViewController().SetButtons(this);
 		Gui.SetMultiUI();
+		Gui.UpdateUI(this);
 	}
 
 	/// <summary>
