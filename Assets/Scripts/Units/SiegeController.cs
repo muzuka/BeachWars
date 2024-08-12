@@ -5,11 +5,6 @@ using UnityEngine.AI;
 /// Siege controller.
 /// Controls siege weapons(catapults and ballistas)
 /// </summary>
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(Team))]
-[RequireComponent(typeof(DebugComponent))]
-[RequireComponent(typeof(Enterable))]
 public class SiegeController : MonoBehaviour {
 
     public GameObject Projectile;

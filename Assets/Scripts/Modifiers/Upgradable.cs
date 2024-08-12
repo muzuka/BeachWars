@@ -4,8 +4,6 @@
 /// Upgradable.
 /// Handles upgrading objects.
 /// </summary>
-[RequireComponent(typeof(DebugComponent))]
-[RequireComponent(typeof(CastleController))]
 public class Upgradable : MonoBehaviour {
 
 	[Tooltip("The amount of time to upgrade object")]

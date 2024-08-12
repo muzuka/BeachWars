@@ -4,9 +4,6 @@
 /// Tower controller.
 /// Handles attacking.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(Enterable))]
-[RequireComponent(typeof(DebugComponent))]
 public class TowerController : MonoBehaviour {
 
 	[Tooltip("Base distance it attacks from")]

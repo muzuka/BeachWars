@@ -4,7 +4,6 @@ using System.Collections.Generic;
 /// <summary>
 /// Manages weapons.
 /// </summary>
-[RequireComponent(typeof(Team))]
 public class HoldsWeapons : MonoBehaviour {
 
     public Dictionary<string, int> Weapons { get; set; }

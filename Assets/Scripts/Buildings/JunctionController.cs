@@ -3,8 +3,6 @@
 /// <summary>
 /// Junction controller.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(Team))]
 public class JunctionController : MonoBehaviour {
 
 	const int MaxHealth = 10;

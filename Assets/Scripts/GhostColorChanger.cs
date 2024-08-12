@@ -3,7 +3,6 @@
 /// <summary>
 /// Changes color of object.
 /// </summary>
-[RequireComponent(typeof(MeshRenderer))]
 public class GhostColorChanger : MonoBehaviour
 {
 	public Material Invalid;

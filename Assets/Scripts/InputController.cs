@@ -11,8 +11,6 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Input handler.
 /// </summary>
-[RequireComponent(typeof(DebugComponent))]
-[RequireComponent(typeof(GUIController))]
 public class InputController : MonoBehaviour {
 
     [Tooltip("The distance a mouse must be dragged to become a multi-select.")]

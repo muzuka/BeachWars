@@ -5,7 +5,6 @@ using UnityEngine.UI;
 /// Attackable.
 /// Use if object can be attacked and destroyed
 /// </summary>
-[RequireComponent(typeof(DebugComponent))]
 public class Attackable : MonoBehaviour {
 
 	// maximum health of object

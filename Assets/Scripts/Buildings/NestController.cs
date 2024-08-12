@@ -5,9 +5,6 @@ using UnityEngine.UI;
 /// Nest controller.
 /// Handles crab creation.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(Enterable))]
-[RequireComponent(typeof(DebugComponent))]
 public class NestController : MonoBehaviour {
 
     public GameObject Crab;

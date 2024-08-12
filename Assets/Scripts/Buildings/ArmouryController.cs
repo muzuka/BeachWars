@@ -4,8 +4,6 @@
 /// Armoury controller.
 /// Handles model changes and interfaces with HoldsWeapons.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(DebugComponent))]
 public class ArmouryController : MonoBehaviour {
 
 	const int MAXHEALTH = 200;

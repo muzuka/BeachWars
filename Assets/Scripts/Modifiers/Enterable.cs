@@ -5,7 +5,6 @@ using UnityEngine.UI;
 /// Enterable.
 /// Allows object to be entered
 /// </summary>
-[RequireComponent(typeof(Team))]
 public class Enterable : MonoBehaviour {
 
     [Tooltip("Reference to the canvas object to instantiate.")]

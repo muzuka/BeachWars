@@ -4,8 +4,6 @@
 /// Block controller.
 /// Handles upgrading blocks and converting to a tower or gate.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(Team))]
 public class BlockController : MonoBehaviour {
 
 	// maximum healths for upgrade levels

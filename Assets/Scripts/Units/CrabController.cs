@@ -5,17 +5,24 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum CrabSpecies {ROCK, FIDDLER, TGIANT, SPIDER, COCONUT, HORSESHOE, SEAWEED, CALICO, TRILOBITE, KAKOOTA};
+public enum CrabSpecies
+{
+	ROCK, 
+	FIDDLER, 
+	TGIANT, 
+	SPIDER, 
+	COCONUT, 
+	HORSESHOE, 
+	SEAWEED, 
+	CALICO, 
+	TRILOBITE, 
+	KAKOOTA
+};
 
 /// <summary>
 /// Crab controller.
 /// Handles all crab actions that can be commanded.
 /// </summary>
-[RequireComponent(typeof(Renderer))]
-[RequireComponent(typeof(Team))]
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(DebugComponent))]
 public class CrabController : MonoBehaviour {
 
 	#region public variables

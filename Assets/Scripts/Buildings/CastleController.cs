@@ -5,9 +5,6 @@ using System.Collections.Generic;
 /// Castle controller.
 /// Handles resources and upgrading.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(DebugComponent))]
-[RequireComponent(typeof(WallUpgrade))]
 public class CastleController : MonoBehaviour {
 
 	// public variables

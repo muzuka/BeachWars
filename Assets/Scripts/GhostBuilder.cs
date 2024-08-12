@@ -5,7 +5,6 @@ using System.Collections.Generic;
 /// Ghost builder.
 /// Finds a builder for the ghost.
 /// </summary>
-[RequireComponent(typeof(Team))]
 public class GhostBuilder : MonoBehaviour {
 
 	[Tooltip("Object to instantiate")]

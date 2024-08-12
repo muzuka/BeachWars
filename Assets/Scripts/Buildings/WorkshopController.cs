@@ -5,8 +5,6 @@ using UnityEngine.UI;
 /// Workshop controller.
 /// Handles building siege weapons.
 /// </summary>
-[RequireComponent(typeof(Attackable))]
-[RequireComponent(typeof(DebugComponent))]
 public class WorkshopController : MonoBehaviour {
 
     [Header("Structure Costs:")]

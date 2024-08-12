@@ -4,7 +4,6 @@
 /// Hoverable.
 /// Object will change color if mouse is over it.
 /// </summary>
-[RequireComponent(typeof(Renderer))]
 public class Hoverable : MonoBehaviour {
 
 	protected bool Hover;
