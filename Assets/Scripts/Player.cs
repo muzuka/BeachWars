@@ -9,10 +9,6 @@ using System;
 /// Main player controller.
 /// Handles selected units and delegating actions.
 /// </summary>
-[RequireComponent(typeof(InputController))]
-[RequireComponent(typeof(GUIController))]
-[RequireComponent(typeof(Team))]
-[RequireComponent(typeof(DebugComponent))]
 public class Player : MonoBehaviour
 {
     [Tooltip("Is lose condition active?")]
@@ -272,10 +268,9 @@ public class Player : MonoBehaviour
 		Selected.SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver);
 
 		// set gui
-		Gui.SetLabel(obj);
+		Gui.InfoView.SetLabel(obj);
 		Gui.SetActiveGUIComponents(obj.tag);
-		Gui.GetActionViewController().SetButtons(this);
-		Gui.SelectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
+		Gui.InfoView.SelectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
 		Gui.UpdateUI(this);
 	}
 
@@ -297,8 +292,6 @@ public class Player : MonoBehaviour
 		CanCommand = (_team.team == SelectedTeam.team);
 
 		Gui.SetActiveGUIComponents("multi");
-		Gui.GetActionViewController().SetButtons(this);
-		Gui.SetMultiUI();
 		Gui.UpdateUI(this);
 	}
 
@@ -489,33 +482,9 @@ public class Player : MonoBehaviour
 	/// Sets the images for each inventory slot.
 	/// </summary>
 	/// <param name="inv">Inventory array.</param>
-	public void GetInventory(string[] inv)
+	public void UpdateInventory(string[] inv)
 	{
-		Gui.GetInvSlot(1).texture = GetTexture(inv[0]);
-		Gui.GetInvSlot(2).texture = GetTexture(inv[1]);
-		Gui.GetInvSlot(3).texture = GetTexture(inv[2]);
-	}
-
-	/// <summary>
-	/// Gets the texture given the name.
-	/// </summary>
-	/// <returns>The texture.</returns>
-	/// <param name="textureName">texture name.</param>
-	Texture GetTexture(string textureName)
-	{
-		Texture newTexture = Resources.Load<Texture>("Textures/Empty");
-		if (textureName == null)
-        {
-            return newTexture; 
-        }
-
-		newTexture = Resources.Load<Texture>("Textures/" + textureName);
-		if (!newTexture)
-        {
-            newTexture = Resources.Load<Texture>("Textures/Empty"); 
-        }
-
-		return newTexture;
+		Gui.InfoView.SetInvView(inv);
 	}
 
 	/// <summary>
@@ -533,7 +502,7 @@ public class Player : MonoBehaviour
 		{
             CrabController crab = Selected.GetComponent<CrabController>();
 			crab.Craft(crab.GetCraftableType());
-			GetInventory(crab.GetInventory());
+			UpdateInventory(crab.GetInventory());
 		}
 	}
 
@@ -554,7 +523,7 @@ public class Player : MonoBehaviour
 		{
             CrabController crab = Selected.GetComponent<CrabController>();
             crab.Craft(Tags.Bow);
-			GetInventory(crab.GetInventory());
+			UpdateInventory(crab.GetInventory());
 		}
 	}
 

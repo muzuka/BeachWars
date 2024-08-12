@@ -756,7 +756,7 @@ public class CrabController : MonoBehaviour {
 
 		if (_selected)
         {
-            _controller.GetInventory(Inventory.Items); 
+            _controller.UpdateInventory(Inventory.Items); 
         }
 	}
 
@@ -967,7 +967,7 @@ public class CrabController : MonoBehaviour {
 
 		if (_selected)
         {
-            _controller.GetInventory(Inventory.Items); 
+            _controller.UpdateInventory(Inventory.Items); 
         }
 		
 		ActionStates.ClearStates();
@@ -1081,7 +1081,7 @@ public class CrabController : MonoBehaviour {
 		Inventory.SortInventory();
 
 		if (_selected)
-			_controller.GetInventory(Inventory.Items);
+			_controller.UpdateInventory(Inventory.Items);
 	}
 
 	#endregion
@@ -1660,12 +1660,12 @@ public class CrabController : MonoBehaviour {
 	/// Updates the UI.
 	/// </summary>
 	/// <param name="gui">GUI script.</param>
-	public void UpdateUI(GUIController gui)
+	public void UpdateUI(InfoViewController gui)
 	{
 		gui.CraftButton.gameObject.SetActive(_currentCraft != "None");
 		gui.SubCraftButton.gameObject.SetActive(_currentCraft == Tags.Shield);
 		GetComponent<Attackable>().SetHealth(gui.HealthSlider);
-		_controller.GetInventory(Inventory.Items);
+		_controller.UpdateInventory(Inventory.Items);
 
 		gui.CrabLevelText.text = "Level: " + _level;
 

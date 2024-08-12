@@ -337,7 +337,7 @@ public class SiegeController : MonoBehaviour {
 	/// Updates the UI.
 	/// </summary>
 	/// <param name="gui">GUI script.</param>
-	public void UpdateUI(GUIController gui)
+	public void UpdateUI(InfoViewController gui)
 	{
 		GetComponent<Attackable>().SetHealth(gui.HealthSlider);
 	}

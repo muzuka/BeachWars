@@ -207,7 +207,7 @@ public class CastleController : MonoBehaviour {
 	/// Updates the UI.
 	/// </summary>
 	/// <param name="gui">GUI script.</param>
-	public void UpdateUI(GUIController gui)
+	public void UpdateUI(InfoViewController gui)
 	{
 		GetComponent<Attackable>().SetHealth(gui.HealthSlider);
 		gui.WoodCount.text = "Wood: " + _woodPieces;

@@ -173,7 +173,7 @@ public class GhostBuilder : MonoBehaviour {
     /// Updates the UI. Called by the GUI controller.
     /// </summary>
     /// <param name="gui"></param>
-	public void UpdateUI(GUIController gui)
+	public void UpdateUI(InfoViewController gui)
 	{
 		gui.WoodCount.text = "Wood: " + WoodAmount + "/" + WoodRequirement;
 		gui.StoneCount.text = "Stone: " + StoneAmount + "/" + StoneRequirement;
