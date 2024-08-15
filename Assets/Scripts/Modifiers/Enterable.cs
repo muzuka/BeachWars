@@ -57,12 +57,10 @@ public class Enterable : MonoBehaviour {
 	/// <param name="enteringObject">Crab or siege weapon.</param>
 	public void RequestEntry(GameObject enteringObject)
 	{
-		bool canEnter = false;
-
-		if (!Occupied() && (enteringObject.tag == Tags.Crab || IdUtility.IsSiegeWeapon(enteringObject.tag)))
-		{
-			canEnter = enteringObject.GetComponent<Team>().team == _team.team;
-		}
+		bool canEnter = !Occupied() && 
+		                enteringObject.GetComponent<Team>().team == _team.team &&
+		                (IdUtility.IsCrab(enteringObject) || 
+		                 IdUtility.IsSiegeWeapon(enteringObject));
 
 		if (canEnter)
 		{

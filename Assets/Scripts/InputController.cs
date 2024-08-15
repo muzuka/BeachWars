@@ -189,7 +189,7 @@ public class InputController : MonoBehaviour {
 		{
 			_hit = Raycaster.ShootMouseRay();
 
-			if (_hit.collider.tag == Tags.Junction)
+			if (_hit.collider.CompareTag(Tags.Junction))
             {
                 ghostManager.ExtendJunction();
             }
@@ -209,7 +209,7 @@ public class InputController : MonoBehaviour {
 	{
 		GameObject buildClick = Raycaster.GetObjectAtRay();
 
-		if (buildClick.tag == Tags.Ghost) 
+		if (buildClick.CompareTag(Tags.Ghost)) 
 		{
 			buildClick.GetComponent<GhostBuilder>().Destroyed();
 			Destroy(buildClick);
@@ -267,11 +267,11 @@ public class InputController : MonoBehaviour {
 				RightClickArmoury(player, target);
 				break;
 			default:
-                if (IdUtility.IsBuilding(target.tag))
+                if (IdUtility.IsBuilding(target))
                 {
                     RightClickBuilding(player, target);
                 }
-                else if (IdUtility.IsWeapon(target.tag) && player.Selected.tag == Tags.Crab)
+                else if (IdUtility.IsWeapon(target) && IdUtility.IsCrab(player.Selected))
                 {
                     player.Selected.GetComponent<CrabController>().StartCollecting(target);
                 }
@@ -313,13 +313,11 @@ public class InputController : MonoBehaviour {
 	{
 		if (_debug)
 			Debug.Assert(castle);
-
-		int castleTeam = castle.GetComponent<Team>().team;
-
-        if (castleTeam == player.GetComponent<Team>().team)
+		
+        if (castle.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
         {
             // Evacuate castle
-            if (player.Selected.tag == Tags.Castle)
+            if (player.Selected.CompareTag(Tags.Castle))
             {
                 player.Selected.GetComponent<Enterable>().RemoveOccupant(); 
             }
@@ -335,13 +333,13 @@ public class InputController : MonoBehaviour {
             {
                 if (player.CanCommand)
                 {
-                    if (player.Selected.tag == Tags.Crab)
+                    if (IdUtility.IsCrab(player.Selected))
                     {
                         if (player.Selected.GetComponent<CrabController>().Inventory.Contains(Tags.Stone) || player.Selected.GetComponent<CrabController>().Inventory.Contains(Tags.Wood))
                         {
                             for (int i = 0; i < player.SelectedList.Count; i++)
                             {
-                                if (player.SelectedList[i].tag == Tags.Crab)
+                                if (IdUtility.IsCrab(player.SelectedList[i]))
                                 {
                                     player.SelectedList[i].GetComponent<CrabController>().StartUnloading(castle.gameObject); 
                                 }
@@ -386,41 +384,36 @@ public class InputController : MonoBehaviour {
 	/// Buildings can be entered, repaired, attacked, or evacuated.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	/// <param name="target">Target object.</param>
-	public void RightClickBuilding(Player player, GameObject target) 
+	/// <param name="building">Target object.</param>
+	public void RightClickBuilding(Player player, GameObject building) 
 	{
-		int playerTeam = player.GetComponent<Team>().team;
-		int hitTeam = target.GetComponent<Team>().team;
-
-		bool enterCondition = hitTeam == playerTeam && target.GetComponent<Enterable>();
-
-        if (playerTeam == hitTeam)
+        if (building.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
         {
             if (player.States.GetState("Repairing"))
             {
-                player.SelectedList[0].GetComponent<CrabController>().StartRepair(target);
+                player.SelectedList[0].GetComponent<CrabController>().StartRepair(building);
                 player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
-                player.MoveMultiple(target.transform.position);
+                player.MoveMultiple(building.transform.position);
             }
             else if (player.States.GetState("Attacking"))
             {
-                player.Selected.SendMessage("StartDismantling", target, SendMessageOptions.DontRequireReceiver);
+                player.Selected.SendMessage("StartDismantling", building, SendMessageOptions.DontRequireReceiver);
             }
-            else if (target.GetComponent<Enterable>())
+            else if (building.GetComponent<Enterable>())
             {
-                if (player.Selected == target)
+                if (player.Selected == building)
                 {
                     player.Selected.GetComponent<Enterable>().RemoveOccupant();
                 }
                 else
                 {
-                    if (player.Selected.tag == Tags.Crab)
+                    if (IdUtility.IsCrab(player.Selected))
                     {
-                        player.Selected.GetComponent<CrabController>().StartEnter(target); 
+                        player.Selected.GetComponent<CrabController>().StartEnter(building); 
                     }
-                    else if (IdUtility.IsSiegeWeapon(player.Selected.tag) && target.tag == Tags.Crab)
+                    else if (IdUtility.IsSiegeWeapon(player.Selected) && building.CompareTag(Tags.Tower))
                     {
-                        player.Selected.GetComponent<SiegeController>().StartEnter(target); 
+                        player.Selected.GetComponent<SiegeController>().StartEnter(building); 
                     }
                 }
             }
@@ -438,7 +431,7 @@ public class InputController : MonoBehaviour {
 		target.GetComponent<ResourceController>().SetCrabs(player.SelectedList);
 		for (int i = 0; i < player.SelectedList.Count; i++) 
 		{
-            if (player.SelectedList[i].tag == Tags.Crab)
+            if (IdUtility.IsCrab(player.SelectedList[i]))
             {
                 player.SelectedList[i].GetComponent<CrabController>().StartCollecting(target); 
             }
@@ -459,7 +452,7 @@ public class InputController : MonoBehaviour {
         {
             player.Selected.GetComponent<CrabController>().StartRecruiting(target);
         }
-		else if (hitTeam != player.GetComponent<Team>().team) 
+		else if (!player.GetComponent<Team>().OnTeam(hitTeam)) 
 		{
 			player.States.ClearStates();
 			player.States.SetState("Attacking", true);
@@ -488,7 +481,7 @@ public class InputController : MonoBehaviour {
         else
         {
             Debug.Log("Target is not commandable.");
-            if (target.GetComponent<Team>().team == GetComponent<Team>().team)
+            if (target.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
             {
                 target.GetComponent<GhostBuilder>().Destroyed();
                 Destroy(target);
@@ -504,7 +497,7 @@ public class InputController : MonoBehaviour {
 	/// <param name="target">Target object.</param>
 	void RightClickBlock(Player player, GameObject target) 
 	{
-		if (target.GetComponent<Team>().team == player.GetComponent<Team>().team) 
+		if (target.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team)) 
 		{
 			if (player.States.GetState("Upgrading")) 
 			{
@@ -560,7 +553,7 @@ public class InputController : MonoBehaviour {
 	/// <param name="target">Target object.</param>
 	void RightClickSiege(Player player, GameObject target) 
 	{
-		if (target.GetComponent<Team>().team == player.GetComponent<Team>().team)
+		if (target.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
         {
             if (player.HasSelected)
             {
@@ -571,7 +564,7 @@ public class InputController : MonoBehaviour {
                 target.GetComponent<Enterable>().RemoveOccupant();
             }
         }
-		else if (target.GetComponent<Team>().team != player.GetComponent<Team>().team)
+		else
         {
             player.Selected.SendMessage("StartAttack", target, SendMessageOptions.DontRequireReceiver);
         }
@@ -585,9 +578,9 @@ public class InputController : MonoBehaviour {
 	/// <param name="target">Target object.</param>
 	void RightClickArmoury(Player player, GameObject target)
 	{
-		if (player.GetComponent<Team>().team == target.GetComponent<Team>().team)
+		if (player.GetComponent<Team>().OnTeam(target.GetComponent<Team>().team))
 		{
-			if (player.Selected.tag == Tags.Crab && player.CanCommand)
+			if (IdUtility.IsCrab(player.Selected) && player.CanCommand)
 			{
 				// open menu to choose weapon
 				// set armoury as current
@@ -753,7 +746,7 @@ public class InputController : MonoBehaviour {
 
 		player.SelectedList.Add(entity);
 
-		if (IdUtility.IsMoveable(entity.tag))
+		if (IdUtility.IsMoveable(entity))
 			player.HaloList.Add(Instantiate(HaloCanvas));
 	}
 		
@@ -761,15 +754,17 @@ public class InputController : MonoBehaviour {
 	/// Adds all within bounds.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	void AddAllWithinBounds(Player player) 
+	void AddAllWithinBounds(Player player)
 	{
+		Camera mainCamera = Camera.main;
+		Team playerTeam = player.GetComponent<Team>();
 		Bounds bounds = SelectUtils.GetViewportBounds(Camera.main, _anchor, _outer);
 
 		foreach(CrabController crab in FindObjectsOfType<CrabController>()) 
 		{
-			if (crab.GetComponent<Team>().team == GetComponent<Team>().team) 
+			if (crab.GetComponent<Team>().OnTeam(playerTeam.team)) 
 			{
-				if (SelectUtils.IsWithinBounds(Camera.main, bounds, crab.transform.position))
+				if (SelectUtils.IsWithinBounds(mainCamera, bounds, crab.transform.position))
 					AddToSelection(player, crab.gameObject);
 			}
 		}
@@ -778,9 +773,9 @@ public class InputController : MonoBehaviour {
 		{
 			if (siege.GetComponent<Enterable>().Occupied()) 
 			{
-				if (siege.GetComponent<Team>().team == GetComponent<Team>().team)
+				if (siege.GetComponent<Team>().OnTeam(playerTeam.team))
 				{
-					if (SelectUtils.IsWithinBounds(Camera.main, bounds, siege.transform.position))
+					if (SelectUtils.IsWithinBounds(mainCamera, bounds, siege.transform.position))
 						AddToSelection(player, siege.gameObject);
 				}
 			}
@@ -891,7 +886,7 @@ public class InputController : MonoBehaviour {
 
         _hit = Raycaster.ShootMouseRay();
 
-        if (_hit.transform.tag == Tags.Beach && player.CanCommand)
+        if (_hit.transform.CompareTag(Tags.Beach) && player.CanCommand)
         {
             if (_debug)
                 Debug.Log("Hit Beach");
@@ -901,11 +896,11 @@ public class InputController : MonoBehaviour {
             }
             else
             {
-                if (player.Selected.tag == Tags.Crab)
+                if (IdUtility.IsCrab(player.Selected))
                 {
                     player.Selected.GetComponent<CrabController>().StartNewMove(_hit.point);
                 }
-                else if (IdUtility.IsSiegeWeapon(player.Selected.tag))
+                else if (IdUtility.IsSiegeWeapon(player.Selected))
                 {
                     player.Selected.GetComponent<SiegeController>().StartMove(_hit.point);
                 }
@@ -922,6 +917,7 @@ public class InputController : MonoBehaviour {
         }
     }
 
+    // Spaces crabs out around the selected position
     void MoveSelectedCrabs(Player player)
     {
         Vector3 avgPosition = InfoTool.GetAveragePosition(player.SelectedList);
@@ -1012,15 +1008,12 @@ public class InputController : MonoBehaviour {
         {
             Vector3 offset = new Vector3(xSign * _offsets[i].x, _offsets[i].y, zSign * _offsets[i].z);
 
-            if (crabs[i].tag == Tags.Crab)
+            if (IdUtility.IsCrab(crabs[i]))
             {
                 crabs[i].GetComponent<CrabController>().ActionStates.ClearStates(); 
-            }
-            if (crabs[i].tag == Tags.Crab)
-            {
                 crabs[i].GetComponent<CrabController>().StartNewMove(_hit.point + offset);
             }
-            else if (IdUtility.IsSiegeWeapon(crabs[i].tag))
+            else if (IdUtility.IsSiegeWeapon(crabs[i]))
             {
                 crabs[i].GetComponent<SiegeController>().StartMove(_hit.point + offset);
             }
@@ -1064,56 +1057,58 @@ public class InputController : MonoBehaviour {
 
     Vector3 GetOffset(int pos, float radius, int xSign, int zSign) 
     {
-        float diameter = Mathf.Pow(radius, 2);
-        int maxDiameterMultiple = 1;
+	    float diameter = Mathf.Pow(radius, 2);
+	    int maxDiameterMultiple = 1;
 
-        float x = xSign * radius;
-        float y = 0.0f;
-        float z = zSign * radius;
+	    float x = xSign * radius;
+	    float y = 0.0f;
+	    float z = zSign * radius;
 
-        if (pos == 0)
-        {
-            if (_debug)
-                Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
-            return new Vector3(x, y, z);
-        } 
-        else 
-        {
-            int count = 1;
+	    if (pos == 0)
+	    {
+		    if (_debug)
+			    Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
+		    return new Vector3(x, y, z);
+	    }
 
-            while (count <= pos) {
-                for (int i = 0; i <= maxDiameterMultiple; i++) 
-                {
-                    x = xSign * radius + (diameter * i);
-                    z = zSign * radius + (diameter * maxDiameterMultiple);
+	    int count = 1;
 
-                    if (count == pos)
-                    {
-                        if (_debug)
-                            Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
-                        return new Vector3(x, y, z);
-                    }
+	    while (count <= pos)
+	    {
+		    for (int i = 0; i <= maxDiameterMultiple; i++)
+		    {
+			    x = xSign * radius + (diameter * i);
+			    z = zSign * radius + (diameter * maxDiameterMultiple);
 
-                    count++;
-                }
-                for (int i = maxDiameterMultiple - 1; i >= 0; i--) 
-                {
-                    x = xSign * radius + (diameter * maxDiameterMultiple);
-                    z = zSign * radius + (diameter * i);
+			    if (count == pos)
+			    {
+				    if (_debug)
+					    Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
+				    return new Vector3(x, y, z);
+			    }
 
-                    if (count == pos)
-                    {
-                        if (_debug)
-                            Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
-                        return new Vector3(x, y, z);
-                    }
+			    count++;
+		    }
 
-                    count++;
-                }
-                maxDiameterMultiple++;
-            }
-            return new Vector3();
-        }
+		    for (int i = maxDiameterMultiple - 1; i >= 0; i--)
+		    {
+			    x = xSign * radius + (diameter * maxDiameterMultiple);
+			    z = zSign * radius + (diameter * i);
+
+			    if (count == pos)
+			    {
+				    if (_debug)
+					    Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
+				    return new Vector3(x, y, z);
+			    }
+
+			    count++;
+		    }
+
+		    maxDiameterMultiple++;
+	    }
+
+	    return new Vector3();
     }
     #endregion
 }

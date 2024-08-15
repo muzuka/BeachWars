@@ -87,9 +87,10 @@ public class TowerController : MonoBehaviour {
 	{
 		_target = null;
 		CrabController[] crabs = FindObjectsOfType<CrabController>();
+		Team team = GetComponent<Team>();
 		for (int i = 0; i < crabs.Length; i++)
 		{
-			if (crabs[i].gameObject.GetComponent<Team>().team != GetComponent<Team>().team)
+			if (!team.OnTeam(crabs[i].gameObject.GetComponent<Team>().team))
 			{
 				if (Vector3.Distance(crabs[i].gameObject.transform.position, gameObject.transform.position) <= AttackRange)
 				{

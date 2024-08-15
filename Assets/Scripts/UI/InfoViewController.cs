@@ -177,11 +177,11 @@ public class InfoViewController : MonoBehaviour
     /// <param name="selected">Selected object.</param>
     public void SetLabel(GameObject selected)
     {
-	    if (selected.tag == Tags.Crab)
+	    if (IdUtility.IsCrab(selected))
 	    {
 		    LabelText.text = selected.GetComponent<CrabController>().Type.ToString().ToLower() + " crab"; 
 	    }
-	    else if (selected.tag == Tags.Ghost)
+	    else if (selected.CompareTag(Tags.Ghost))
 	    {
 		    LabelText.text = selected.tag + " " + selected.GetComponent<GhostBuilder>().Original.tag; 
 	    }
@@ -190,7 +190,7 @@ public class InfoViewController : MonoBehaviour
 		    LabelText.text = selected.tag; 
 	    }
 
-	    if (!Player.Instance.CanCommand && !IdUtility.IsResource(selected.tag))
+	    if (!Player.Instance.CanCommand && !IdUtility.IsResource(selected))
 	    {
 		    LabelText.text = "Enemy " + LabelText.text; 
 	    }

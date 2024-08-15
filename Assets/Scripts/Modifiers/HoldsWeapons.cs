@@ -54,7 +54,7 @@ public class HoldsWeapons : MonoBehaviour {
 	/// <param name="weapon">Hammer, Spear, Bow, or Shield tags.</param>
 	public bool RequestWeapon(GameObject crab, string weapon)
 	{
-		if (crab.GetComponent<Team>().team == GetComponent<Team>().team && Weapons[weapon] > 0)
+		if (crab.GetComponent<Team>().OnTeam(GetComponent<Team>().team) && Weapons[weapon] > 0)
 		{
 			Weapons[weapon]--;
 			return true;

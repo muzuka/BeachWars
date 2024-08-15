@@ -26,7 +26,7 @@ public class BlockController : MonoBehaviour {
 		_walls = GetComponentsInChildren<Transform>();
 		for (int i = 0; i < _walls.Length; i++) 
 		{
-			if (_walls[i].gameObject.tag == Tags.Block_Wall)
+			if (_walls[i].gameObject.CompareTag(Tags.Block_Wall))
 				_walls[i].gameObject.SetActive(false);
 		}
 

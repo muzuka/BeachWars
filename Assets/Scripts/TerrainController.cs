@@ -14,8 +14,8 @@ public class TerrainController : MonoBehaviour {
 	void Start() 
 	{
 		_terrainData = Terrain.terrainData;
-		_heightMapWidth = _terrainData.heightmapWidth;
-		_heightMapHeight = _terrainData.heightmapHeight;
+		_heightMapWidth = _terrainData.heightmapResolution;
+		_heightMapHeight = _terrainData.heightmapResolution;
 		_heights = _terrainData.GetHeights(0, 0, _heightMapWidth, _heightMapHeight);
 	}
 	

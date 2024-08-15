@@ -60,13 +60,13 @@ public class GUIController : MonoBehaviour {
 
 		_gateButton = () => 
 		{
-			GetComponent<Player>().Selected.GetComponent<BlockController>().ConvertTo("Gate");
+			GetComponent<Player>().Selected.GetComponent<BlockController>().ConvertTo(Tags.Gate);
 			WallPanel.SetActive(false);
 		};
 
 		_towerButton = () =>
 		{
-			GetComponent<Player>().Selected.GetComponent<BlockController>().ConvertTo("Tower");
+			GetComponent<Player>().Selected.GetComponent<BlockController>().ConvertTo(Tags.Tower);
 			WallPanel.SetActive(false);
 		};
 

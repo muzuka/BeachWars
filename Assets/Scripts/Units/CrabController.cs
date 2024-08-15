@@ -22,6 +22,7 @@ public enum CrabSpecies
 /// <summary>
 /// Crab controller.
 /// Handles all crab actions that can be commanded.
+/// TODO: Add team variable
 /// </summary>
 public class CrabController : MonoBehaviour {
 
@@ -218,7 +219,7 @@ public class CrabController : MonoBehaviour {
 		{
 			CastleController[] castles = FindObjectsOfType<CastleController>();
 			for (int i = 0; i < castles.Length; i++) {
-				if (castles[i].gameObject.GetComponent<Team>().team == GetComponent<Team>().team)
+				if (castles[i].gameObject.GetComponent<Team>().OnTeam(GetComponent<Team>().team))
 				{
 					_mainCastle = castles[i];
 					break;
@@ -251,22 +252,7 @@ public class CrabController : MonoBehaviour {
 		if (!ActionStates.IsIdle())
 		{
 			CheckForInteractions();
-		} 
-		else 
-		{
-			// The code below is very slow
-			// findEnemyCrabs is a major performance issue MUST FIX!!!!
-            /*
-			GameObject enemyCrab = null;
-
-			//// if not neutral
-			if (team.team != neutralTeamCode)
-				enemyCrab = findEnemyCrabs ();
-
-			if (enemyCrab != null)
-				startAttack (enemyCrab);*/
 		}
-			
 	}
 
 	/// <summary>
@@ -519,7 +505,7 @@ public class CrabController : MonoBehaviour {
 			return;
 		}
 			
-		if (IdUtility.IsMoveable(Target.tag))
+		if (IdUtility.IsMoveable(Target))
         {
             Target.SendMessage("SetAttacker", gameObject, SendMessageOptions.DontRequireReceiver); 
         }
@@ -552,7 +538,7 @@ public class CrabController : MonoBehaviour {
             finalAttack = _bowAttack; 
         }
 		
-		if (Target.tag != Tags.Crab)
+		if (!IdUtility.IsCrab(Target))
         {
             Target.GetComponent<Attackable>().Attacked(finalAttack); 
         }
@@ -583,8 +569,10 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if target is valid, <c>false</c> otherwise.</returns>
 	bool ValidTarget() 
 	{
-		return (Target.tag == Tags.Block || Target.tag == Tags.Castle ||
-				IdUtility.IsMoveable(Target.tag) || IdUtility.IsBuilding(Target.tag));
+		return (Target.CompareTag(Tags.Block) || 
+		        Target.CompareTag(Tags.Castle) ||
+				IdUtility.IsMoveable(Target) || 
+		        IdUtility.IsBuilding(Target));
 	}
 
 	/// <summary>
@@ -593,18 +581,12 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if target is enemy, <c>false</c> otherwise.</returns>
 	bool TargetIsEnemy() 
 	{
-		int tempTeam;
-
-		if (IdUtility.IsResource(Target.tag))
+		if (IdUtility.IsResource(Target))
         {
             return true; 
         }
-		else
-        {
-            tempTeam = Target.GetComponent<Team>().team; 
-        }
 
-		return (tempTeam != _team.team);
+		return !_team.OnTeam(Target.GetComponent<Team>().team);
 	}
 
 	/// <summary>
@@ -618,7 +600,7 @@ public class CrabController : MonoBehaviour {
 		for (int i = 0; i < crabs.Length; i++)
 		{
 			int crabTeam = crabs[i].GetComponent<Team>().team;
-			if (crabTeam != _team.team && crabTeam != _neutralTeamCode)
+			if (!_team.OnTeam(crabTeam) && crabTeam != _neutralTeamCode)
 			{
 				float dist = GetDistanceToObject(crabs[i].gameObject);
 
@@ -1061,9 +1043,7 @@ public class CrabController : MonoBehaviour {
 			return;
 		}
 
-		string targetTag = Target.transform.tag;
-
-		if (IdUtility.IsResource(targetTag))
+		if (IdUtility.IsResource(Target))
 		{
 			StartCoroutine(Collect());
 			if (Inventory.Full())
@@ -1080,7 +1060,7 @@ public class CrabController : MonoBehaviour {
 				}
 			}
 		}
-		else if (IdUtility.IsWeapon(targetTag))
+		else if (IdUtility.IsWeapon(Target))
 		{
 			ActionStates.ClearStates();
 			CollectWeapon();
@@ -1285,7 +1265,7 @@ public class CrabController : MonoBehaviour {
 			CancelCapture();
 			Target.GetComponent<Enterable>().RequestEntry(gameObject);
 		}
-		else if (IsCapturing() && !CanInteract() || Target.gameObject.tag != Tags.Castle)
+		else if (IsCapturing() && !CanInteract() || !Target.gameObject.CompareTag(Tags.Castle))
         {
             CancelCapture(); 
         }
@@ -1322,7 +1302,7 @@ public class CrabController : MonoBehaviour {
 	public void StartRecruiting(GameObject crab) 
 	{
 		if (_debug)
-			Debug.Assert(crab.tag == Tags.Crab);
+			Debug.Assert(IdUtility.IsCrab(crab));
 
 		Target = crab;
 
@@ -1414,7 +1394,7 @@ public class CrabController : MonoBehaviour {
 
 		for (int i = 0; i < castles.Length; i++) 
 		{
-			if (castles[i].GetComponent<Team>().team == _team.team)
+			if (_team.OnTeam(castles[i].GetComponent<Team>().team))
             {
                 friendlyCastles++; 
             }
@@ -1439,7 +1419,7 @@ public class CrabController : MonoBehaviour {
 
 		for (int i = 0; i < crabs.Length; i++) 
 		{
-			if (crabs[i].GetComponent<Team>().team == _team.team) 
+			if (_team.OnTeam(crabs[i].GetComponent<Team>().team)) 
 			{
 				if (!crabSpecies.Contains(crabs[i].GetComponent<CrabController>().Type))
                 {

@@ -155,7 +155,7 @@ public class SiegeController : MonoBehaviour {
 			return;
 		}
 
-		if (IdUtility.IsMoveable(_target.tag))
+		if (IdUtility.IsMoveable(_target))
         {
             _target.SendMessage("SetAttacker", gameObject, SendMessageOptions.DontRequireReceiver); 
         }
@@ -201,14 +201,11 @@ public class SiegeController : MonoBehaviour {
 	public void StartEnter(GameObject enterTarget)
 	{
 		if (_debug)
-		{
-			Debug.Assert(enterTarget.GetComponent<Enterable>() != null);
 			Debug.Log("Started entering");
-		}
 
 		_target = enterTarget;
 
-		if (_target.tag != Tags.Tower || _target.GetComponent<Team>().team != _team.team)
+		if (!_target.CompareTag(Tags.Tower) || !_target.GetComponent<Team>().OnTeam(_team.team))
 		{
 			if (_debug)
 				Debug.Log("Cannot Enter");
@@ -248,7 +245,10 @@ public class SiegeController : MonoBehaviour {
 	/// <returns><c>true</c>, if target is valid, <c>false</c> otherwise.</returns>
 	bool ValidTarget()
 	{
-		return (_target.tag == Tags.Crab || _target.tag == Tags.Block || _target.tag == Tags.Castle || IdUtility.IsSiegeWeapon(_target.tag));
+		return (IdUtility.IsCrab(_target) || 
+		        _target.CompareTag(Tags.Block) || 
+		        _target.CompareTag(Tags.Castle) || 
+		        IdUtility.IsSiegeWeapon(_target));
 	}
 
 	/// <summary>
@@ -257,18 +257,12 @@ public class SiegeController : MonoBehaviour {
 	/// <returns><c>true</c>, if target is enemy, <c>false</c> otherwise.</returns>
 	bool TargetIsEnemy()
 	{
-		int tempTeam;
-
-		if (_target.tag == Tags.Stone || _target.tag == Tags.Wood)
+		if (IdUtility.IsResource(_target))
         {
             return true; 
         }
-		else
-        {
-            tempTeam = _target.GetComponent<Team>().team; 
-        }
 
-		return (tempTeam != _team.team);
+		return !_target.GetComponent<Team>().OnTeam(_team.team);
 	}
 
 	/// <summary>

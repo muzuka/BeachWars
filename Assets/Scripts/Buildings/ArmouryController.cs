@@ -184,7 +184,7 @@ public class ArmouryController : MonoBehaviour {
 		CastleController[] castles = FindObjectsOfType<CastleController>();
 		for (int i = 0; i < castles.Length; i++)
 		{
-			if (castles[i].GetComponent<Team>().team == GetComponent<Team>().team)
+			if (castles[i].GetComponent<Team>().OnTeam(GetComponent<Team>().team))
 			{
 				float distance = Vector3.Distance(gameObject.transform.position, castles[i].gameObject.transform.position);
 

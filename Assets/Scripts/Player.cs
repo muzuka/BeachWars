@@ -171,7 +171,7 @@ public class Player : MonoBehaviour
 	/// </summary>
 	void UpdateHalos()
 	{
-		if (IdUtility.IsMoveable(Selected.tag))
+		if (IdUtility.IsMoveable(Selected))
 		{
 			for (int i = 0; i < HaloList.Count; i++)
 			{
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
 
 				if (SelectedList.Count > 1)
 				{
-					if (SelectedList[i].tag == Tags.Crab)
+					if (IdUtility.IsCrab(SelectedList[i]))
 					{
 						if (SelectedList[i].GetComponent<CrabController>().ActionStates.GetState("Attacking"))
 						{
@@ -195,7 +195,7 @@ public class Player : MonoBehaviour
 							HaloList[i].GetComponentInChildren<Image>().color = Color.green;
 						}
 					}
-					else if (IdUtility.IsSiegeWeapon(SelectedList[i].tag))
+					else if (IdUtility.IsSiegeWeapon(SelectedList[i]))
 					{
 						if (SelectedList[i].GetComponent<SiegeController>().IsBusy())
 						{
@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
 				}
 				else
 				{
-					if (Selected.tag == Tags.Crab)
+					if (IdUtility.IsCrab(Selected))
 					{
 						if (Selected.GetComponent<CrabController>().ActionStates.GetState("Attacking"))
 						{
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
 							HaloList[0].GetComponentInChildren<Image>().color = Color.green;
 						}
 					}
-					else if (IdUtility.IsSiegeWeapon(Selected.tag))
+					else if (IdUtility.IsSiegeWeapon(Selected))
 					{
 						if (Selected.GetComponent<SiegeController>().IsBusy())
 						{
@@ -262,7 +262,7 @@ public class Player : MonoBehaviour
 	{
 		Selected = obj;
 		SelectedTeam = obj.GetComponent<Team>();
-		CanCommand = (_team.team == SelectedTeam.team);
+		CanCommand = _team.OnTeam(SelectedTeam.team);
 		HasSelected = true;
 
 		Selected.SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver);
@@ -434,7 +434,7 @@ public class Player : MonoBehaviour
 	/// <param name="type">Building tag.</param>
 	public void SetBuildingType(string type)
 	{
-		if (IdUtility.IsBuilding(type) || type == Tags.Block || type == Tags.Gate || type == Tags.Junction)
+		if (IdUtility.IsBuilding(type) || IdUtility.IsWallPart(type))
         {
             BuildingType = type; 
         }
@@ -463,7 +463,7 @@ public class Player : MonoBehaviour
 	/// <param name="weapon">Hammer, Spear, Bow, or Shield.</param>
 	public void TakeWeapon(string weapon)
 	{
-		if (Selected.tag == Tags.Crab && CanCommand)
+		if (IdUtility.IsCrab(Selected) && CanCommand)
         {
             Selected.GetComponent<CrabController>().StartTakeWeapon(weapon); 
         }
@@ -555,7 +555,7 @@ public class Player : MonoBehaviour
 	{
 		for (int i = 1; i < SelectedList.Count; i++)
 		{
-			if (SelectedList[i].tag == Tags.Crab)
+			if (IdUtility.IsCrab(SelectedList[i]))
             {
                 SelectedList[i].SendMessage("startMove", dest); 
             }
@@ -572,7 +572,7 @@ public class Player : MonoBehaviour
 		string type = "None";
 		for (int i = 0; i < SelectedList.Count; i++)
 		{
-			if (SelectedList[i].tag == Tags.Crab)
+			if (IdUtility.IsCrab(SelectedList[i]))
 			{
 				if (type == "None")
                 {
@@ -583,7 +583,7 @@ public class Player : MonoBehaviour
                     type = "Mixed"; 
                 }
 			}
-			if (IdUtility.IsSiegeWeapon(SelectedList[i].tag))
+			if (IdUtility.IsSiegeWeapon(SelectedList[i]))
 			{
 				if (type == "None")
                 {
