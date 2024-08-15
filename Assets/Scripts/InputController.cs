@@ -801,7 +801,7 @@ public class InputController : MonoBehaviour {
 		GameObject entity = _hit.transform.gameObject;
 		// entity exists and player hasn't selected already and entity isn't the beach.
 		bool selectable = entity != null && !player.SelectedList.Contains(entity) && entity.tag != Tags.Beach;
-
+		
 		if (selectable)
 		{
 			//player.select(entity);

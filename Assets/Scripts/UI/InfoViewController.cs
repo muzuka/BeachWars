@@ -64,6 +64,9 @@ public class InfoViewController : MonoBehaviour
 	    LabelText.text = _emptyString;
 	    StoneCount.text = "";
 	    WoodCount.text = "";
+        
+	    if (!GUIHookedIn())
+		    Debug.Log("GUI isn't completely connected.");
     }
 
     public void SetViewMode(bool isMulti)

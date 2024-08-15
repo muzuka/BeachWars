@@ -77,13 +77,13 @@ public class CameraMover : MonoBehaviour {
 	{
 		_mousePos = Input.mousePosition;
 
-		// define direction flags
+		// Set direction flags
 		_right = (_mousePos.x > Screen.width - 5.0f || _cameraControls.Camera.Right.IsPressed());
 		_left = (_mousePos.x < 5.0f || _cameraControls.Camera.Left.IsPressed());
-		_up = (_mousePos.y < 5.0f || _cameraControls.Camera.Back.IsPressed());
-		_down = (_mousePos.y > Screen.height - 5.0f || _cameraControls.Camera.Forward.IsPressed());
+		_up = (_mousePos.y > Screen.height - 5.0f || _cameraControls.Camera.Forward.IsPressed());
+		_down = (_mousePos.y < 5.0f || _cameraControls.Camera.Back.IsPressed());
 
-		// Check bounds
+		// Override if out of bounds
 		_right = _right && transform.position.x < CameraBounds.bounds.max.x;
 		_left = _left && transform.position.x > CameraBounds.bounds.min.x;
 		_up = _up && transform.position.z < CameraBounds.bounds.max.z;
@@ -121,9 +121,9 @@ public class CameraMover : MonoBehaviour {
 			_cameraTransform.Translate(_result * CameraSpeed);
 		}
 		else if (_up)
-			_cameraTransform.Translate(_upDirection * -CameraSpeed);
-		else if (_down)
 			_cameraTransform.Translate(_upDirection * CameraSpeed);
+		else if (_down)
+			_cameraTransform.Translate(_upDirection * -CameraSpeed);
 		else if (_left)
 			_cameraTransform.Translate(new Vector3(-CameraSpeed, 0.0f, 0.0f));
 		else if (_right)
