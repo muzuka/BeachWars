@@ -691,7 +691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1768579919163172, guid: b92eca7808e4043e189f3af2e52c1f39, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114006128532949036, guid: b92eca7808e4043e189f3af2e52c1f39,
         type: 3}
@@ -2476,6 +2476,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 94e62ee3-a5f6-4856-9a42-be99ce7d3103
     m_ActionName: UI/Mouse Wheel[/Mouse/position/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fce52727-f17c-403b-b73c-953aff0f7d71
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 326ae35e-a396-4010-bab0-602084f56ce3
+    m_ActionName: UI/Cancel[/Keyboard/backspace]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: BaseControls
   m_DefaultActionMap: Units

@@ -94,39 +94,14 @@ public class CameraMover : MonoBehaviour {
 			_cameraTransform.Translate(-_forwardDirection.direction);
 		else if (_cameraControls.Camera.ZoomIn.ReadValue<float>() > 0 && transform.position.y > _minHeight)
 			_cameraTransform.Translate(_forwardDirection.direction);
-
-		// Check directions and move accordingly
-		if (_up && _right) 
-		{
-			_result = _upperRight - _lowerLeft;
-			_result.Normalize();
-			_cameraTransform.Translate(_result * CameraSpeed);
-		}
-		else if (_up && _left) 
-		{
-			_result = _upperLeft - _lowerRight;
-			_result.Normalize();
-			_cameraTransform.Translate(_result * CameraSpeed);
-		}
-		else if (_down && _right) 
-		{
-			_result = _lowerRight - _upperLeft;
-			_result.Normalize();
-			_cameraTransform.Translate(_result * CameraSpeed);
-		}
-		else if (_down && _left) 
-		{
-			_result = _lowerLeft - _upperRight;
-			_result.Normalize();
-			_cameraTransform.Translate(_result * CameraSpeed);
-		}
-		else if (_up)
+		
+		if (_up)
 			_cameraTransform.Translate(_upDirection * CameraSpeed);
-		else if (_down)
+		if (_down)
 			_cameraTransform.Translate(_upDirection * -CameraSpeed);
-		else if (_left)
+		if (_left)
 			_cameraTransform.Translate(new Vector3(-CameraSpeed, 0.0f, 0.0f));
-		else if (_right)
+		if (_right)
 			_cameraTransform.Translate(new Vector3(CameraSpeed, 0.0f, 0.0f));
 	}
 }
