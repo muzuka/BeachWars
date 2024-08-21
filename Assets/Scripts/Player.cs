@@ -41,9 +41,6 @@ public class Player : MonoBehaviour
  	// is something selected?
 	public bool HasSelected { get; set; }
 
-	// is more than one thing selected?
-	public bool MultiSelect { get; set; }
-
  	// can I command the selected object?
 	public bool CanCommand { get; set; }
 
@@ -155,8 +152,7 @@ public class Player : MonoBehaviour
 
 		Input.ProcessMouseClick(this, Gui);
 
-		if (SelectedList != null)
-			MultiSelect = (SelectedList.Count > 1);
+		
 		
 		if (HasSelected)
 			UpdateHalos();
@@ -347,7 +343,7 @@ public class Player : MonoBehaviour
             return; 
         }
 			
-		if (!MultiSelect)
+		if (!IsMultiSelected())
         {
             Deselect(); 
         }
@@ -596,5 +592,15 @@ public class Player : MonoBehaviour
 			}
 		}
 		return type;
+	}
+
+	public bool IsMultiSelected()
+	{
+		if (SelectedList != null)
+		{
+			return SelectedList.Count > 1;
+		}
+
+		return false;
 	}
 }

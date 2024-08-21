@@ -86,9 +86,9 @@ public class GUIController : MonoBehaviour {
 	{
 		if (player.HasSelected)
 		{
-			InfoView.SetViewMode(player.MultiSelect);
+			InfoView.SetViewMode(player.IsMultiSelected());
 
-			if (!player.MultiSelect)
+			if (!player.IsMultiSelected())
             {
                 SingleUIUpdate(player); 
             }
@@ -273,7 +273,7 @@ public class GUIController : MonoBehaviour {
 	/// <param name="anchor">Anchor position.</param>
 	public void StartSelectBox(Vector3 anchor)
 	{
-		//SelectBox.SetActive(true);
+		SelectBox.SetActive(true);
 
 		this._anchor = anchor;
 
@@ -338,7 +338,7 @@ public class GUIController : MonoBehaviour {
 	{
 		if (_debug)
 			Debug.Log("Cleared Box.");
-		//SelectBox.SetActive(false);
+		SelectBox.SetActive(false);
 		_selectBoxTransform.sizeDelta = new Vector2(0, 0);
 	}
 }
