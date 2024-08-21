@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public enum CrabSpecies
 {
@@ -244,7 +245,7 @@ public class CrabController : MonoBehaviour {
             ActionStates.SetState("Attacking", false); 
         }
 
-		if (Input.GetKeyDown(KeyCode.Space) && _selected)
+		if (Keyboard.current.spaceKey.IsPressed() && _selected)
         {
             ActionStates.printStates(); 
         }

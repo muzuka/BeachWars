@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 //using UnityEditor;
 
@@ -20,10 +21,11 @@ public class InputController : MonoBehaviour {
 
     public GameObject HaloCanvas;
     public GameObject BuildingCanvas;
-
+    
     // Can I select more than one unit?
     public bool MultiSelect { get; set; }
 
+    PlayerInput _playerInput;
     BaseControls _clickControls;
     InputAction _select;
     InputAction _use;
@@ -53,7 +55,8 @@ public class InputController : MonoBehaviour {
 	void Start()
 	{
 		_debug = GetComponent<DebugComponent>().Debug;
-		
+
+		_playerInput = GetComponent<PlayerInput>();
 		_select = _clickControls.Units.Select;
 		_use = _clickControls.Units.Use;
 		_hotkeys = _clickControls.HotKeys;
@@ -95,8 +98,10 @@ public class InputController : MonoBehaviour {
 			Debug.Assert(gui);
 		}
 
-		if (!gui.MouseOnGUI()) 
+		if (!gui.MouseOnGUI())
 		{
+			_playerInput.enabled = true;
+			
 			if (player.States.GetState("Building"))
 			{
 				GhostBuildingManager ghostManager = player.GhostManager;
@@ -161,6 +166,10 @@ public class InputController : MonoBehaviour {
 
 				DragBoxSelection();
 			}
+		}
+		else
+		{
+			_playerInput.enabled = false;
 		}
 	}
 
@@ -650,7 +659,7 @@ public class InputController : MonoBehaviour {
 		if (_debug)
 			Debug.Assert(player);
 
-		if (Input.anyKeyDown)
+		if (Keyboard.current.anyKey.IsPressed())
 		{
 			if (_hotkeys.Attack.IsPressed())
 			{
@@ -791,7 +800,6 @@ public class InputController : MonoBehaviour {
 		if (_debug)
 			Debug.Assert(player);
 
-		Input.GetKeyDown(KeyCode.A);
 		_hit = Raycaster.ShootMouseRay();
 		GameObject entity = _hit.transform.gameObject;
 		// entity exists and player hasn't selected already and entity isn't the beach.
@@ -854,8 +862,8 @@ public class InputController : MonoBehaviour {
 	/// </summary>
 	public void CreateBoxSelection() 
 	{
-		_anchor = Input.mousePosition;
-		_outer = Input.mousePosition;
+		_anchor = Mouse.current.position.ReadValue();
+		_outer = Mouse.current.position.ReadValue();
 		
 		_hasActiveBox = true;
 
@@ -869,7 +877,7 @@ public class InputController : MonoBehaviour {
 	{
 		if (_hasActiveBox) 
 		{
-			_outer = Input.mousePosition;
+			_outer = Mouse.current.position.ReadValue();
 
 			GetComponent<GUIController>().DragSelectBox(_outer);
 		}

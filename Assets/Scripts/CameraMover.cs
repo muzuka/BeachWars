@@ -75,7 +75,7 @@ public class CameraMover : MonoBehaviour {
 	/// </summary>
 	void Update() 
 	{
-		_mousePos = Input.mousePosition;
+		_mousePos = Mouse.current.position.ReadValue();
 
 		// Set direction flags
 		_right = (_mousePos.x > Screen.width - 5.0f || _cameraControls.Camera.Right.IsPressed());

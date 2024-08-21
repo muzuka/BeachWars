@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Provides ray casting utilities.
@@ -11,7 +12,7 @@ public static class Raycaster {
 	/// <returns>The ray.</returns>
 	public static Ray GetRay() 
 	{
-		Vector3 mPos = Input.mousePosition;
+		Vector3 mPos = Mouse.current.position.ReadValue();
 		return Camera.main.ScreenPointToRay(mPos);
 	}
 

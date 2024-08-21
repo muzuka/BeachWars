@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Text.RegularExpressions;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// GUI controller.
@@ -255,7 +256,7 @@ public class GUIController : MonoBehaviour {
 			if (rectTrans.gameObject.GetInstanceID() != MainGUI.GetInstanceID() && rectTrans.gameObject.GetInstanceID() != SelectBox.GetInstanceID()) 
 			{
 				// gui is active and mouse is in gui
-				if (RectTransformUtility.RectangleContainsScreenPoint(rectTrans, new Vector2(Input.mousePosition.x, Input.mousePosition.y)) && rectTrans.gameObject.activeSelf) 
+				if (RectTransformUtility.RectangleContainsScreenPoint(rectTrans, Mouse.current.position.ReadValue()) && rectTrans.gameObject.activeSelf) 
 				{
                     OnGUI.isOn = true;
 					return true;
@@ -272,7 +273,7 @@ public class GUIController : MonoBehaviour {
 	/// <param name="anchor">Anchor position.</param>
 	public void StartSelectBox(Vector3 anchor)
 	{
-		SelectBox.SetActive(true);
+		//SelectBox.SetActive(true);
 
 		this._anchor = anchor;
 
@@ -337,7 +338,7 @@ public class GUIController : MonoBehaviour {
 	{
 		if (_debug)
 			Debug.Log("Cleared Box.");
-		SelectBox.SetActive(false);
+		//SelectBox.SetActive(false);
 		_selectBoxTransform.sizeDelta = new Vector2(0, 0);
 	}
 }
