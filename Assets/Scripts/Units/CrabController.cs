@@ -2,9 +2,11 @@
 using UnityEngine.UI;
 using UnityEngine.AI;
 using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public enum CrabSpecies
 {
@@ -51,14 +53,7 @@ public class CrabController : MonoBehaviour {
     [Tooltip("Time to repair")]
     public float TimeToRepair;
 
-    //weapon values
-    [Header("Weapon Values:")]
-    const float _spearAttack = 1.0f;
-    const float _spearDistance = 1.5f;
-    const float _shieldDefense = 0.5f;
-    const float _hammerAttack = 1.0f;
-    const float _bowAttack = 1.5f;
-    const float _bowRange = 10.0f;
+    public UnitData DataSource;
 
     [Header("Level stat increases:")]
     public float DamageIncrease;
@@ -87,7 +82,7 @@ public class CrabController : MonoBehaviour {
 	Team _team;                      // team of crab
 
 	// action states
-	public StateController ActionStates { get; set; }
+	public StateController ActionStates;
 	string[] _actionStateList = {"Moving", "Attacking", "Building", "Collecting", "Unloading", "Entering", "Capturing", "Recruiting", "Upgrading", "Repairing", "Taking", "Dismantling", "Rebuilding"};
 
     //weapon states
@@ -102,10 +97,11 @@ public class CrabController : MonoBehaviour {
 	wallUpgradeType _upgradeType;				// type of upgrade for a block
 
 	[SerializeField]
-	private GameObject _destinationMarkerFab;
+	GameObject _destinationMarkerFab;
+	
 	// interacting knowledge
-	public Vector3 Destination { get; set; }	// current destination
-	public GameObject Target { get; set; }		// current target object to attack, collect from, or capture
+	Vector3 _destination;						// current destination
+	GameObject _target;							// current target object to attack, collect from, or capture
 	GameObject _secondTarget; 					// A secondary target that may be used after another action finishes.
 	Player _controller;							// reference to player object, null when not selected.
 
@@ -120,7 +116,7 @@ public class CrabController : MonoBehaviour {
 	bool _uiOpen;								// is the UI open
 
 	// TODO find good container
-	public Inventory Inventory { get; set; }	// inventory holds objects
+	public Inventory Inventory;	// inventory holds objects
 
 	NavMeshAgent _crabAgent;                     // reference to navmeshagent
 
@@ -178,13 +174,14 @@ public class CrabController : MonoBehaviour {
 		_crabAgent = GetComponent<NavMeshAgent>();
 		_crabAgent.speed = _maxSpeed;
         GetComponent<Attackable>().SetHealth(_maxHealth);
+        GetComponent<Attackable>().Reaction = Attacked;
 
         _timeConsumed = 0.0f;
 		ActionStates = new StateController(_actionStateList);
 		_weaponStates = new StateController(_weaponStateList);
-		Target = null;
+		_target = null;
 		_secondTarget = null;
-		Destination = new Vector3();
+		_destination = new Vector3();
 		_upgradeType = 0;
         _mainCastle = null;
         _destinationMarker = null;
@@ -240,7 +237,7 @@ public class CrabController : MonoBehaviour {
 		// update what weapons the crab is carrying
 		Inventory.SetWeaponFlags(_weaponStates);
 
-		if (Target == null)
+		if (_target == null)
         {
             ActionStates.SetState("Attacking", false); 
         }
@@ -266,9 +263,9 @@ public class CrabController : MonoBehaviour {
 		Inventory.DropInventory(gameObject);
 		AudioSource.PlayClipAtPoint(DeathClip, transform.position);
 
-		if (Target)
+		if (_target)
         {
-            Target.SendMessage("enemyDied", SendMessageOptions.DontRequireReceiver); 
+            _target.SendMessage("enemyDied", SendMessageOptions.DontRequireReceiver); 
         }
 
 		if (_controller)
@@ -299,12 +296,15 @@ public class CrabController : MonoBehaviour {
             }
 			else
             {
-                StartAttack(Target); 
+                StartAttack(_target); 
             }
 		}
 
 		if (IsInBuildRange())
+		{
+			Destroy(_destinationMarker);
 			ActionStates.SetState("Moving", false);
+		}
 
 		if (ActionStates.GetState("Taking") && CanInteract())
 		{
@@ -328,63 +328,7 @@ public class CrabController : MonoBehaviour {
 			}
             // otherwise do something to help build it.
 			else {
-                // only do something if there is a ghost building
-				if (_ghostBuilderReference)
-				{
-                    // if ghost building requires more material
-					if (!_ghostBuilderReference.CanBuild())
-					{
-
-                        // check that inventory is still required
-                        // if not, unload and start collecting next type
-                        bool needsBoth = _ghostBuilderReference.NeedsWood() && _ghostBuilderReference.NeedsStone();
-
-                        if (!ActionStates.GetState("Unloading"))
-                        {
-                            if (!needsBoth && _ghostBuilderReference.NeedsWood() && Inventory.Contains(Tags.Stone))
-                            {
-                                StartUnloading(_mainCastle.gameObject);
-                            }
-                            else if (!needsBoth && _ghostBuilderReference.NeedsStone() && Inventory.Contains(Tags.Wood))
-                            {
-                                StartUnloading(_mainCastle.gameObject);
-                            }
-                        }
-						
-
-                        // if idle get more resources
-                        if (!ActionStates.GetState("Unloading") && !ActionStates.GetState("Collecting"))
-                        {
-                            if (Inventory.Empty())
-                            {
-                                if (_ghostBuilderReference.NeedsWood())
-                                {
-                                    GetMoreResource(Tags.Wood);
-                                }
-                                else if (_ghostBuilderReference.NeedsStone())
-                                {
-                                    GetMoreResource(Tags.Stone);
-                                }
-                            }
-                        }
-					}
-				}
-                // If ghost is gone then cancel
-				else 
-				{
-					ActionStates.ClearStates();
-
-					// if inventory is not empty, unload resources and go idle
-					// else, go idle
-					if (!Inventory.Empty())
-					{
-						StartUnloading(_mainCastle.gameObject);
-					}
-					else
-					{
-						_crabAgent.isStopped = true;
-					}
-				}
+                ContinueBuild();
 			}
 		}
 
@@ -402,7 +346,7 @@ public class CrabController : MonoBehaviour {
 
         if (ActionStates.GetState("Capturing") && CanInteract())
         {
-            if (!Target.GetComponent<Enterable>().Occupied())
+            if (!_target.GetComponent<Enterable>().Occupied())
             {
                 Capture(); 
             }
@@ -419,11 +363,6 @@ public class CrabController : MonoBehaviour {
         
         if (ActionStates.GetState("Dismantling") && CanInteract())
             _dismantleTimer.update(Attack);
-
-        if (GetDistanceToPosition(Destination) < AttackRange)
-        {
-            Destroy(_destinationMarker);
-        }
 	}
 
 	#endregion
@@ -444,15 +383,15 @@ public class CrabController : MonoBehaviour {
 		_crabAgent.ResetPath();
 		_crabAgent.destination = dest;
 
-		Destination = dest;
+		_destination = dest;
 
         if (!_destinationMarker)
         {
-            _destinationMarker = Instantiate<GameObject>(_destinationMarkerFab, Destination, Quaternion.identity);
+            _destinationMarker = Instantiate<GameObject>(_destinationMarkerFab, _destination, Quaternion.identity);
         }
         else
         {
-            _destinationMarker.transform.position = Destination;
+            _destinationMarker.transform.position = _destination;
         }
 
         ActionStates.SetState("Moving", true);
@@ -496,23 +435,22 @@ public class CrabController : MonoBehaviour {
 			Debug.Log("Started attack!");
 		}
 
-		Target = attackTarget;
+		_target = attackTarget;
 
 		if ((!ValidTarget()) || !TargetIsEnemy()) 
 		{
 			if (_debug)
 				Debug.Log("Invalid Target");
-			Target = null;
+			_target = null;
 			return;
 		}
 			
-		if (IdUtility.IsMoveable(Target))
+		if (IdUtility.IsMoveable(_target))
         {
-            Target.SendMessage("SetAttacker", gameObject, SendMessageOptions.DontRequireReceiver); 
+            _target.SendMessage("SetAttacker", gameObject, SendMessageOptions.DontRequireReceiver); 
         }
 
-		StartMove(Target.transform.position);
-		
+		StartMove(_target.transform.position);
 		ActionStates.SetState("Attacking", true);
 	}
 
@@ -525,28 +463,35 @@ public class CrabController : MonoBehaviour {
 			Debug.Log("Crab attack");
 
 		float finalAttack = _attackDamage;
-
+		
 		if (_weaponStates.GetState(Tags.Spear))
         {
-            finalAttack += _spearAttack; 
+            finalAttack += DataSource.WeaponValues[Tags.Spear]; 
         }
 		else if (_weaponStates.GetState(Tags.Hammer))
         {
-            finalAttack += _hammerAttack; 
+            finalAttack += DataSource.WeaponValues[Tags.Hammer]; 
         }
 		else if (_weaponStates.GetState(Tags.Bow))
         {
-            finalAttack = _bowAttack; 
+            finalAttack = DataSource.WeaponValues[Tags.Bow]; 
         }
 		
-		if (!IdUtility.IsCrab(Target))
+		if (_target.GetComponent<Attackable>() != null)
         {
-            Target.GetComponent<Attackable>().Attacked(finalAttack); 
+	        if (_target.GetComponent<CrabController>() != null && 
+	            _target.GetComponent<CrabController>().Inventory.Contains(Tags.Shield))
+	        {
+		        finalAttack *= DataSource.WeaponValues[Tags.Shield];
+	        }
+	        
+            _target.GetComponent<Attackable>().Attacked(finalAttack); 
         }
 		else
-        {
-            Target.GetComponent<CrabController>().Attacked(finalAttack); 
-        }
+		{
+			if (_debug)
+				Debug.Log("Attack target has no Attackable!");
+		}
 		
 		AudioSource.PlayClipAtPoint(HitClip, transform.position);
 		_timeConsumed = 0.0f;
@@ -570,10 +515,10 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if target is valid, <c>false</c> otherwise.</returns>
 	bool ValidTarget() 
 	{
-		return (Target.CompareTag(Tags.Block) || 
-		        Target.CompareTag(Tags.Castle) ||
-				IdUtility.IsMoveable(Target) || 
-		        IdUtility.IsBuilding(Target));
+		return (_target.CompareTag(Tags.Block) || 
+		        _target.CompareTag(Tags.Castle) ||
+				IdUtility.IsMoveable(_target) || 
+		        IdUtility.IsBuilding(_target));
 	}
 
 	/// <summary>
@@ -582,12 +527,15 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if target is enemy, <c>false</c> otherwise.</returns>
 	bool TargetIsEnemy() 
 	{
-		if (IdUtility.IsResource(Target))
+		if (_target.GetComponent<Team>() == null)
         {
-            return true; 
+	        if (_debug)
+		        Debug.Log("Attack target has no Team");
+	        
+            return false;
         }
 
-		return !_team.OnTeam(Target.GetComponent<Team>().team);
+		return !_team.OnTeam(_target.GetComponent<Team>().team);
 	}
 
 	/// <summary>
@@ -619,18 +567,12 @@ public class CrabController : MonoBehaviour {
 	/// Decrease health by amount.
 	/// </summary>
 	/// <param name="damage">Damage amount.</param>
-	public void Attacked(float damage) 
+	public void Attacked() 
 	{
 		CancelCapture();
-
-		if (_weaponStates.GetState(Tags.Shield))
-        {
-            damage *= _shieldDefense; 
-        }
 		
-		GetComponent<Attackable>().Attacked(damage);
 		//TODO: play damaged animation
-		StartAttack(Target);
+		StartAttack(_target);
 	}
 
 	/// <summary>
@@ -639,7 +581,7 @@ public class CrabController : MonoBehaviour {
 	/// <param name="enemy">Enemy object.</param>
 	public void SetAttacker(GameObject enemy) 
 	{
-		Target = enemy;
+		_target = enemy;
 	}
 
 	/// <summary>
@@ -649,7 +591,7 @@ public class CrabController : MonoBehaviour {
 	{
 		_experience += LevelGain;
 		ActionStates.ClearStates();
-		Target = null;
+		_target = null;
 	}
 
     #endregion
@@ -661,11 +603,10 @@ public class CrabController : MonoBehaviour {
         if (_debug)
             Debug.Log("Started Dismantling");
 
-        Target = structure;
+        _target = structure;
         _dismantleTimer = new Timer(_attackSpeed);
 
-        StartMove(Target.transform.position);
-
+        StartMove(_target.transform.position);
         ActionStates.SetState("Dismantling", true);
     }
 
@@ -681,9 +622,9 @@ public class CrabController : MonoBehaviour {
     /// <param name="castle">Castle object.</param>
     public void StartUnloading(GameObject unloadTarget) 
 	{
-		Target = unloadTarget;
+		_target = unloadTarget;
 
-		StartMove(Target.transform.position);
+		StartMove(_target.transform.position);
 
 		ActionStates.SetState("Unloading", true);
 		if (_secondTarget)
@@ -697,7 +638,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void Unload() 
 	{
-        if (Target.GetComponent<CastleController>() == null)
+        if (_target.GetComponent<CastleController>() == null)
         {
             Debug.LogWarning("Target is not a castle.");
             return;
@@ -707,7 +648,7 @@ public class CrabController : MonoBehaviour {
 		{
 			if (Inventory.Items[i] != null && IdUtility.IsResource(Inventory.Items[i])) 
 			{
-				Target.GetComponent<CastleController>().Give(Inventory.Items[i]);
+				_target.GetComponent<CastleController>().Give(Inventory.Items[i]);
 				Inventory.Items[i] = null;
 			}
 		}
@@ -731,13 +672,13 @@ public class CrabController : MonoBehaviour {
 		{
 			if (ActionStates.GetState("Building"))
 			{
-				BuildFromGhost(Target);
+				BuildFromGhost(_target);
 			}
 			else
 			{
                 if (_secondTarget != null)
                 {
-                    GameObject newSecond = Target;
+                    GameObject newSecond = _target;
                     StartCollecting(_secondTarget);
                     _secondTarget = newSecond;
                 }
@@ -799,7 +740,7 @@ public class CrabController : MonoBehaviour {
 		_buildingType = newType;
         _rebuildTimer = new Timer(TimeToRebuild);
         ActionStates.SetState("Rebuilding", true);
-        Target = obj;
+        _target = obj;
 		_timeConsumed = 0.0f;
 
 		StartMove(obj.transform.position);
@@ -869,6 +810,65 @@ public class CrabController : MonoBehaviour {
 		}
 	}
 
+	void ContinueBuild()
+	{
+		// only do something if there is a ghost building
+		if (_ghostBuilderReference)
+		{
+			// if ghost building requires more material
+			if (!_ghostBuilderReference.CanBuild())
+			{
+				// check that inventory is still required
+				// if not, unload and start collecting next type
+				bool needsBoth = _ghostBuilderReference.NeedsWood() && _ghostBuilderReference.NeedsStone();
+
+				if (!ActionStates.GetState("Unloading"))
+				{
+					if (!needsBoth && _ghostBuilderReference.NeedsWood() && Inventory.Contains(Tags.Stone))
+					{
+						StartUnloading(_mainCastle.gameObject);
+					}
+					else if (!needsBoth && _ghostBuilderReference.NeedsStone() && Inventory.Contains(Tags.Wood))
+					{
+						StartUnloading(_mainCastle.gameObject);
+					}
+				}
+
+				// if idle get more resources
+				if (!ActionStates.GetState("Unloading") && !ActionStates.GetState("Collecting"))
+				{
+					if (Inventory.Empty())
+					{
+						if (_ghostBuilderReference.NeedsWood())
+						{
+							GetMoreResource(Tags.Wood);
+						}
+						else if (_ghostBuilderReference.NeedsStone())
+						{
+							GetMoreResource(Tags.Stone);
+						}
+					}
+				}
+			}
+		}
+		// If ghost is gone then cancel
+		else
+		{
+			ActionStates.ClearStates();
+
+			// if inventory is not empty, unload resources and go idle
+			// else, go idle
+			if (!Inventory.Empty())
+			{
+				StartUnloading(_mainCastle.gameObject);
+			}
+			else
+			{
+				_crabAgent.isStopped = true;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Check ability to rebuild.
 	/// </summary>
@@ -880,8 +880,8 @@ public class CrabController : MonoBehaviour {
 		ActionStates.ClearStates();
 		_timeConsumed = 0.0f;
 
-		Transform blockTransform = Target.transform;
-		Destroy(Target);
+		Transform blockTransform = _target.transform;
+		Destroy(_target);
 		Instantiate(Resources.Load("Prefabs/Structures/" + _buildingType), blockTransform.position, blockTransform.rotation);
 	}
 
@@ -929,7 +929,7 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Log("Started upgrading");
 
-		Target = obj;
+		_target = obj;
 
 		if (Inventory.IsAllOneType(Tags.Wood))
 			_upgradeType = wallUpgradeType.WOOD;
@@ -951,8 +951,8 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Log("Upgrading");
 
-		Target.GetComponent<WallUpgrade>().StartWallUpgrade(_upgradeType, Inventory);
-		Target.GetComponent<WallUpgrade>().SetCrabs(_selectedCrabs);
+		_target.GetComponent<WallUpgrade>().StartWallUpgrade(_upgradeType, Inventory);
+		_target.GetComponent<WallUpgrade>().SetCrabs(_selectedCrabs);
 		Inventory.EmptyInventory();
 
 		if (_selected)
@@ -985,7 +985,7 @@ public class CrabController : MonoBehaviour {
         }
         else
         {
-            Target = obj;
+            _target = obj;
             StartMove(obj.transform.position);
             ActionStates.SetState("Collecting", true);
         }
@@ -996,7 +996,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	IEnumerator Collect()
 	{
-        if (Target.GetComponent<ResourceController>() == null)
+        if (_target.GetComponent<ResourceController>() == null)
         {
             Debug.LogWarning("Collecting from a non-resource.");
             yield break;
@@ -1005,11 +1005,11 @@ public class CrabController : MonoBehaviour {
 		while (CanInteract() && !Inventory.Full() && ActionStates.GetState("Collecting")) 
 		{
 			if (_debug)
-				Debug.Log("Taking " + Target.tag + ".");
+				Debug.Log("Taking " + _target.tag + ".");
 
-			Inventory.AddToInventory(Target.tag);
+			Inventory.AddToInventory(_target.tag);
 
-			Target.GetComponent<ResourceController>().Take();
+			_target.GetComponent<ResourceController>().Take();
 
 			yield return null;
 		}
@@ -1023,11 +1023,11 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Log("Taking weapon.");
 
-		Inventory.AddToInventory(Target.tag);
-		_weaponStates.SetState(Target.tag, true);
-		Destroy(Target);
+		Inventory.AddToInventory(_target.tag);
+		_weaponStates.SetState(_target.tag, true);
+		Destroy(_target);
 
-		Target = null;
+		_target = null;
 	}
 
 	/// <summary>
@@ -1038,18 +1038,18 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Log("Collecting");
 
-		if (Target == null)
+		if (_target == null)
 		{
 			GoIdle();
 			return;
 		}
 
-		if (IdUtility.IsResource(Target))
+		if (IdUtility.IsResource(_target))
 		{
 			StartCoroutine(Collect());
 			if (Inventory.Full())
 			{
-				_secondTarget = Target;
+				_secondTarget = _target;
 
 				if (ActionStates.GetState("Building"))
 				{
@@ -1061,7 +1061,7 @@ public class CrabController : MonoBehaviour {
 				}
 			}
 		}
-		else if (IdUtility.IsWeapon(Target))
+		else if (IdUtility.IsWeapon(_target))
 		{
 			ActionStates.ClearStates();
 			CollectWeapon();
@@ -1085,21 +1085,19 @@ public class CrabController : MonoBehaviour {
 	public void StartTakeWeapon(string weapon)
 	{
 		_weaponToTake = weapon;
+		_target = _controller.TargetedArmoury.gameObject;
+
+		StartMove(_target.transform.position);
 		ActionStates.SetState("Taking", true);
-
-		Target = _controller.TargetedArmoury.gameObject;
-
-		StartMove(Target.transform.position);
 	}
 
     public void StartTakeWeapon(string weapon, GameObject armoury)
     {
         _weaponToTake = weapon;
+        _target = armoury;
+
+        StartMove(_target.transform.position);
         ActionStates.SetState("Taking", true);
-
-        Target = armoury;
-
-        StartMove(Target.transform.position);
     }
 
 	/// <summary>
@@ -1129,11 +1127,10 @@ public class CrabController : MonoBehaviour {
 	void StartTake(GameObject castle, string takeTag)
 	{
 		_resourceToTake = takeTag;
+		_target = castle;
+
+		StartMove(_target.transform.position);
 		ActionStates.SetState("Taking", true);
-
-		Target = castle;
-
-		StartMove(Target.transform.position);
 	}
 
 	/// <summary>
@@ -1153,7 +1150,7 @@ public class CrabController : MonoBehaviour {
 		}
 
 		if (ActionStates.GetState ("Building")) {
-            _secondTarget = Target;
+            _secondTarget = _target;
             StartMove(_ghostBuilderReference.transform.position);
             ActionStates.SetState("Taking", false);
         }
@@ -1178,14 +1175,12 @@ public class CrabController : MonoBehaviour {
 	{
 		if (_debug)
 		{
-			Debug.Assert(enterable.GetComponent<Enterable>());
 			Debug.Log("Started entering");
 		}
 
-		Target = enterable;
+		_target = enterable;
 
-		StartMove(Target.transform.position);
-
+		StartMove(_target.transform.position);
 		ActionStates.SetState("Entering", true);
 	}
 
@@ -1194,9 +1189,9 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void Enter() 
 	{
-        if (Target.GetComponent<Enterable>())
+        if (_target.GetComponent<Enterable>())
         {
-            Target.GetComponent<Enterable>().RequestEntry(gameObject); 
+            _target.GetComponent<Enterable>().RequestEntry(gameObject); 
         }
 	}
 
@@ -1226,15 +1221,13 @@ public class CrabController : MonoBehaviour {
 	{
 		if (_debug)
         {
-            Debug.Assert(castle.GetComponent<CastleController>());
             Debug.Log("Capturing castle.");
         }
 			
-		Target = castle;
-		_timeToCapture = Target.GetComponent<CastleController>().GetResistanceTime();
+		_target = castle;
+		_timeToCapture = _target.GetComponent<CastleController>().GetResistanceTime() / _selectedCrabs;
 
-		StartMove(Target.transform.position);
-
+		StartMove(_target.transform.position);
 		ActionStates.SetState("Capturing", true);
 	}
 
@@ -1249,24 +1242,25 @@ public class CrabController : MonoBehaviour {
 			Debug.Log(_timeConsumed + " / " + (_timeToCapture / _selectedCrabs));
 		}
 
-        if (Target.GetComponent<Enterable>() == null || Target.GetComponent<Team>() == null)
+        if (_target.GetComponent<Enterable>() == null || _target.GetComponent<Team>() == null)
         {
             Debug.LogWarning("Target isn't enterable nor does it have a team.");
             return;
         }
 
 		_timeConsumed += Time.deltaTime;
-		if (_timeConsumed >= (_timeToCapture / _selectedCrabs) && !Target.GetComponent<Enterable>().Occupied())
+		if (_timeConsumed >= _timeToCapture && !_target.GetComponent<Enterable>().Occupied())
 		{
 			if (_debug)
 				Debug.Log("Captured castle");
 
-			Target.GetComponent<Team>().team = _team.team;
+			_target.GetComponent<Team>().ChangeTeam(_team.team);
 
 			CancelCapture();
-			Target.GetComponent<Enterable>().RequestEntry(gameObject);
+			_target.GetComponent<Enterable>().RequestEntry(gameObject);
 		}
-		else if (IsCapturing() && !CanInteract() || !Target.gameObject.CompareTag(Tags.Castle))
+		
+		if (IsCapturing() && !CanInteract())
         {
             CancelCapture(); 
         }
@@ -1287,7 +1281,7 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if capture is in progress, <c>false</c> otherwise.</returns>
 	bool IsCapturing() 
 	{
-		return ((_timeConsumed > 0.0f) && (_timeConsumed < (_timeToCapture / _selectedCrabs)));
+		return _timeConsumed > 0.0f && _timeConsumed < _timeToCapture;
 	}
 
 	#endregion
@@ -1305,10 +1299,9 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Assert(IdUtility.IsCrab(crab));
 
-		Target = crab;
+		_target = crab;
 
 		StartMove(crab.transform.position);
-
 		ActionStates.SetState("Recruiting", true);
 	}
 
@@ -1324,7 +1317,7 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Log("Recruiting");
 
-        if (Target.GetComponent<CrabController>() == null)
+        if (_target.GetComponent<CrabController>() == null)
         {
             Debug.LogWarning("Target is not a crab.");
             return;
@@ -1334,16 +1327,16 @@ public class CrabController : MonoBehaviour {
 		{	
 			if (_debug)
 				Debug.Log("Recruitment successful!");
-			Target.GetComponent<CrabController>()._team = _team;
+			_target.GetComponent<CrabController>()._team = _team;
 		}
 		else
 		{
 			if (_debug)
 				Debug.Log("Recruitment unsuccessful!");
 
-			if (Target.GetComponent<SacrificeNeutralCrab>() != null)
+			if (_target.GetComponent<SacrificeNeutralCrab>() != null)
 			{
-				Target.GetComponent<SacrificeNeutralCrab>().StartSacrifice(gameObject);
+				_target.GetComponent<SacrificeNeutralCrab>().StartSacrifice(gameObject);
 			}
 		}
 		ActionStates.ClearStates();
@@ -1355,13 +1348,13 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if crab is recruitable, <c>false</c> otherwise.</returns>
 	bool CanRecruit() 
 	{
-        if (Target.GetComponent<CrabController>() == null)
+        if (_target.GetComponent<CrabController>() == null)
         {
             Debug.LogWarning("Target is not a crab.");
             return false;
         }
 
-		switch (Target.GetComponent<CrabController>().Type) {
+		switch (_target.GetComponent<CrabController>().Type) {
 		case CrabSpecies.ROCK:
 		case CrabSpecies.KAKOOTA:
 		case CrabSpecies.CALICO:
@@ -1373,12 +1366,12 @@ public class CrabController : MonoBehaviour {
 			return HasCastles(2);
 		case CrabSpecies.TGIANT:
 		case CrabSpecies.COCONUT:
-			return Target.GetComponent<SacrificeNeutralCrab>().CanRecruit();
+			return _target.GetComponent<SacrificeNeutralCrab>().CanRecruit();
 		case CrabSpecies.HORSESHOE:
 			return HasVariedSpecies(2);
 		default:
 			if (_debug)
-				Debug.Log("Impossible crab type: " + Target.GetComponent<CrabController>().Type);
+				Debug.Log("Impossible crab type: " + _target.GetComponent<CrabController>().Type);
 			return false;
 		}
 	}
@@ -1444,11 +1437,10 @@ public class CrabController : MonoBehaviour {
 	/// <param name="repairTarget">Repair target.</param>
 	public void StartRepair(GameObject repairTarget) 
 	{
-		Target = repairTarget;
+		_target = repairTarget;
         _repairTimer = new Timer(TimeToRepair);
 
 		StartMove(repairTarget.transform.position);
-
 		ActionStates.SetState("Repairing", true);
 	}
 
@@ -1460,7 +1452,7 @@ public class CrabController : MonoBehaviour {
 		if (_debug)
 			Debug.Log("Repairing");
         
-		Target.SendMessage("Repair", RebuildAmount, SendMessageOptions.DontRequireReceiver);
+		_target.SendMessage("Repair", RebuildAmount, SendMessageOptions.DontRequireReceiver);
 	}
 
 	#endregion
@@ -1481,15 +1473,15 @@ public class CrabController : MonoBehaviour {
 		{
 			if (_weaponStates.GetState(Tags.Bow))
             {
-                tempRange += _bowRange; 
+                tempRange += DataSource.WeaponRanges[Tags.Bow]; 
             }
 			else if (_weaponStates.GetState(Tags.Spear))
             {
-                tempRange += _spearDistance; 
+                tempRange += DataSource.WeaponValues[Tags.Spear]; 
             }
 		}
 
-		return (GetDistanceToObject (Target) < tempRange);
+		return (GetDistanceToObject (_target) < tempRange);
 	}
 
 	/// <summary>
@@ -1498,17 +1490,7 @@ public class CrabController : MonoBehaviour {
 	/// <returns><c>true</c>, if in build range, <c>false</c> otherwise.</returns>
 	bool IsInBuildRange()
 	{
-		return (GetDistanceToPosition(Destination) < AttackRange);
-	}
-
-	/// <summary>
-	/// Gets the distance to position from crab.
-	/// </summary>
-	/// <returns>The distance to position.</returns>
-	/// <param name="pos">Position.</param>
-	float GetDistanceToPosition(Vector3 pos)
-	{
-		return Vector3.Distance(transform.position, pos);
+		return Vector3.Distance(transform.position, _destination) < AttackRange;
 	}
 
 	/// <summary>
@@ -1524,19 +1506,7 @@ public class CrabController : MonoBehaviour {
 			return 0.0f;
 		}
 
-		Vector3 crabPosition = transform.position;
-		Vector3 objectPosition = obj.transform.position;
-		RaycastHit[] hits = Physics.RaycastAll(new Ray(crabPosition, objectPosition - crabPosition));
-
-		for (int i = 0; i < hits.Length; i++) 
-		{
-			if (hits[i].collider.gameObject == obj)
-            {
-                return hits[i].distance; 
-            }
-		}
-
-		return float.MaxValue; // Most cases should find object so return value that will fail
+		return Vector3.Distance(transform.position, obj.transform.position); // Most cases should find object so return value that will fail
 	}
 
 	#endregion
@@ -1552,29 +1522,19 @@ public class CrabController : MonoBehaviour {
 	/// <returns>Hammer, Spear, Shield, or Bow.</returns>
 	public string GetCraftableType() 
 	{
-		int stones = 0, sticks = 0;
-
-		for (int i = 0; i < Inventory.Items.Length; i++) 
-		{
-			if (Inventory.Items[i] == null)
-				continue;
-			
-			if (Inventory.Items[i] == Tags.Stone)
-				stones++;
-			else if (Inventory.Items[i] == Tags.Wood)
-				sticks++;
-		}
+		int stones = Inventory.CountInventory(Tags.Stone);
+		int sticks = Inventory.CountInventory(Tags.Wood);
 
 		if (stones == 2 && sticks == 1)
 			return Tags.Hammer;
-		else if (stones == 1 && sticks == 2)
+		if (stones == 1 && sticks == 2)
 			return Tags.Spear;
-		else if (sticks == 3)
+		if (sticks == 3)
 			return Tags.Shield;
-		else if (sticks == 2)
+		if (sticks == 2)
 			return Tags.Bow;
-		else
-			return "None";
+		
+		return "None";
 	}
 
 	/// <summary>
@@ -1627,7 +1587,7 @@ public class CrabController : MonoBehaviour {
 				if (_debug)
 					Debug.Log("Distance to " + crabs[i].name + " is " + dist);
 				
-				if (crabs[i].GetComponent<Team>().team == 0)
+				if (crabs[i].GetComponent<Team>().OnTeam(0))
 				{
 					if (_debug)
 						Debug.Log("Found Crab!");
@@ -1741,30 +1701,12 @@ public class CrabController : MonoBehaviour {
 	/// <returns>The crab type.</returns>
 	public string GetType()
 	{
-		switch (Type) {
-		case CrabSpecies.ROCK:
-			return "Rock Crab";
-		case CrabSpecies.FIDDLER:
-			return "Fiddler Crab";
-		case CrabSpecies.TGIANT:
-			return "Tasmanian Crab";
-		case CrabSpecies.SPIDER:
-			return "Spider Crab";
-		case CrabSpecies.COCONUT:
-			return "Coconut Crab";
-		case CrabSpecies.HORSESHOE:
-			return "Horseshoe Crab";
-		case CrabSpecies.SEAWEED:
-			return "Seaweed Crab";
-		case CrabSpecies.CALICO:
-			return "Calico Crab";
-		case CrabSpecies.KAKOOTA:
-			return "Kakoota Crab";
-		case CrabSpecies.TRILOBITE:
-			return "Trilobite";
-		default:
+		if (!DataSource.CrabTypes.ContainsKey(Type))
+		{
 			return "null";
 		}
+		
+		return DataSource.CrabTypes[Type];
 	}
 
 	#endregion
@@ -1829,14 +1771,14 @@ public class CrabController : MonoBehaviour {
 		{
 		case CrabSpecies.TGIANT:
 			gameObject.AddComponent<SacrificeNeutralCrab>();
-			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = 5;
+			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = DataSource.CrabSacrifices[CrabSpecies.TGIANT];
 			break;
 		case CrabSpecies.COCONUT:
 			gameObject.AddComponent<SacrificeNeutralCrab>();
-			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = 2;
+			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = DataSource.CrabSacrifices[CrabSpecies.COCONUT];
 			break;
 		}
 	}
+	
+	#endregion
 }
-
-#endregion

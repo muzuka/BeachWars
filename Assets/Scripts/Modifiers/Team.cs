@@ -12,4 +12,9 @@ public class Team : MonoBehaviour {
     {
         return team == queryTeam;
     }
+
+    public void ChangeTeam(int newTeam)
+    {
+        team = newTeam;
+    }
 }

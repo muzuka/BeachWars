@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>
@@ -8,11 +9,13 @@ using UnityEngine.UI;
 public class Attackable : MonoBehaviour {
 
 	// maximum health of object
-	public float MaxHealth { get; set; }
+	public float MaxHealth;
 
 	// current health of object
-	public float Health { get; set; }
+	public float Health;
 
+	public UnityAction Reaction;
+	
 	/// <summary>
 	/// Update this instance.
 	/// </summary>
@@ -78,5 +81,6 @@ public class Attackable : MonoBehaviour {
 	public void Attacked(float damage) 
 	{
 		Health = Health - damage;
+		Reaction.Invoke();
 	}
 }

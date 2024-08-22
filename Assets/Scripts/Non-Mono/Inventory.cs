@@ -96,9 +96,7 @@ public class Inventory {
 					k = j;
 			}
 
-			string temp = Items[k];
-			Items[k] = Items[i];
-			Items[i] = temp;
+			(Items[k], Items[i]) = (Items[i], Items[k]);
 		}
 	}
 
