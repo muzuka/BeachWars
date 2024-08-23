@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "UnitData")]
 public class UnitData : ScriptableObject
 {
     public Dictionary<string, float> WeaponValues = new Dictionary<string, float>()

@@ -185,6 +185,7 @@ MonoBehaviour:
   TimeToUpgrade: 10
   TimeToRebuild: 1
   TimeToRepair: 1
+  DataSource: {fileID: 11400000, guid: d962cac8430d0d749ab9cff7322867df, type: 2}
   DamageIncrease: 1
   HealthIncrease: 2
   RebuildAmount: 10
@@ -205,6 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f350603d953640979e25088aada8d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHealth: 0
+  Health: 0
 --- !u!114 &114000013596240112
 MonoBehaviour:
   m_ObjectHideFlags: 0
