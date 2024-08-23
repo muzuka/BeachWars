@@ -34,7 +34,7 @@ public class GUIController : MonoBehaviour {
     public ActionViewController ActionView;
     public InfoViewController InfoView;
 
-    Vector2 _anchor;
+    Vector2 _start;
 
 	UnityAction _gateButton;
 	UnityAction _towerButton;
@@ -275,44 +275,25 @@ public class GUIController : MonoBehaviour {
 	{
 		SelectBox.SetActive(true);
 
-		this._anchor = anchor;
+		_start = anchor;
 
-		_selectBoxTransform.position = new Vector3(this._anchor.x, this._anchor.y, _selectBoxTransform.position.z);
+		_selectBoxTransform.position = new Vector3(_start.x, _start.y, _selectBoxTransform.position.z);
 	}
 
 	/// <summary>
 	/// Drags the select box.
 	/// </summary>
-	/// <param name="outer">Outer position.</param>
-	public void DragSelectBox(Vector3 outer)
+	/// <param name="end">Outer position.</param>
+	public void DragSelectBox(Vector3 end)
 	{
-		var newSize = new Vector2();
-		var newPosition = new Vector3(_anchor.x, _anchor.y, _selectBoxTransform.position.z);
+		float x = (_start.x > end.x) ? end.x : _start.x;
+		float y = (_start.y > end.y) ? end.y : _start.y;
 
-		// if anchor is right of mouse
-		if (outer.x - _anchor.x < 0)
-		{
-			// move location
-			newSize.x = (_anchor.x - outer.x);
-			newPosition.x = outer.x;
-		}
-		else
-        {
-            newSize.x = (outer.x - _anchor.x);
-        }
+        Vector2 newSize = new Vector2(
+	        Mathf.Abs(end.x - _start.x),
+	        Mathf.Abs(end.y - _start.y));
 
-
-        // if anchor is below mouse
-        if (outer.y - _anchor.y < 0)
-        {
-            // move location
-            newSize.y = (_anchor.y - outer.y);
-            newPosition.y = outer.y;
-        }
-        else
-        {
-            newSize.y = (outer.y - _anchor.y);
-        }
+        Vector2 newPosition = new Vector2(x, y);
 
 		_selectBoxTransform.sizeDelta = newSize;
 		_selectBoxTransform.position = newPosition;
