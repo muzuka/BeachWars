@@ -291,31 +291,98 @@ public class CrabController : MonoBehaviour {
 		if (ActionStates.GetState("Attacking"))
 		{
 			if (CanInteract())
-            {
-                UpdateAttack(); 
-            }
+			{
+				UpdateAttack();
+			}
 			else
-            {
-                StartAttack(_target); 
-            }
+			{
+				StartAttack(_target);
+			}
 		}
-
+		
+		if (ActionStates.GetState("Capturing"))
+		{
+			if (!_target.GetComponent<Enterable>().Occupied() && CanInteract())
+			{
+				Capture(); 
+			}
+		}
+		
+		if (ActionStates.GetState("Collecting"))
+		{
+			if (CanInteract())
+				UpdateCollect();
+		}
+		
+		if (ActionStates.GetState("Unloading"))
+		{
+			if (CanInteract())
+				UpdateUnload();
+		}
+		
+		if (ActionStates.GetState("Entering"))
+		{
+			if (CanInteract())
+				UpdateEnter();
+		}
+		
+		if (ActionStates.GetState("Recruiting"))
+		{
+			if (CanInteract())
+				Recruit();
+		}
+		
+		if (ActionStates.GetState("Upgrading"))
+		{
+			if (CanInteract())
+			{
+				UpdateUpgrade();
+			}
+		}
+		
+		if (ActionStates.GetState("Repairing"))
+		{
+			if (CanInteract())
+			{
+				_repairTimer.update(Repair);
+			}
+		}
+		
+		if (ActionStates.GetState("Dismantling"))
+		{
+			if (CanInteract())
+			{
+				_dismantleTimer.update(Attack);
+			}
+		}
+		
+		if (ActionStates.GetState("Rebuilding"))
+		{
+			if (CanInteract())
+			{
+				_rebuildTimer.update(UpdateRebuild);
+			}
+		}
+		
 		if (IsInBuildRange())
 		{
 			Destroy(_destinationMarker);
 			ActionStates.SetState("Moving", false);
 		}
-
-		if (ActionStates.GetState("Taking") && CanInteract())
+		
+		if (ActionStates.GetState("Taking"))
 		{
-			if (ActionStates.GetState("Building"))
-            {
-                TakeResource(); 
-            }
-			else
-            {
-                TakeWeapon(_weaponToTake); 
-            }
+			if (CanInteract())
+			{
+				if (ActionStates.GetState("Building"))
+				{
+					TakeResource();
+				}
+				else
+				{
+					TakeWeapon(_weaponToTake); 
+				}
+			}
 		}
 
         // Building state is active
@@ -331,38 +398,6 @@ public class CrabController : MonoBehaviour {
                 ContinueBuild();
 			}
 		}
-
-        if (ActionStates.GetState("Rebuilding") && IsInBuildRange())
-            _rebuildTimer.update(UpdateRebuild);
-
-		if (ActionStates.GetState("Collecting") && CanInteract())
-			UpdateCollect();
-
-		if (ActionStates.GetState("Unloading") && CanInteract())
-			UpdateUnload();
-
-		if (ActionStates.GetState("Entering") && CanInteract())
-			UpdateEnter();
-
-        if (ActionStates.GetState("Capturing") && CanInteract())
-        {
-            if (!_target.GetComponent<Enterable>().Occupied())
-            {
-                Capture(); 
-            }
-        }
-
-		if (ActionStates.GetState("Recruiting") && CanInteract())
-			Recruit();
-
-		if (ActionStates.GetState("Upgrading") && CanInteract())
-			UpdateUpgrade();
-
-        if (ActionStates.GetState("Repairing") && CanInteract())
-            _repairTimer.update(Repair);
-        
-        if (ActionStates.GetState("Dismantling") && CanInteract())
-            _dismantleTimer.update(Attack);
 	}
 
 	#endregion
@@ -411,6 +446,9 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	public void StopMove()
 	{
+		if (_debug)
+			Debug.Log("Crab stopped moving");
+		
 		_crabAgent.isStopped = true;
 		_crabAgent.ResetPath();
 		ActionStates.SetState("Moving", false);
@@ -431,7 +469,6 @@ public class CrabController : MonoBehaviour {
 	{
 		if (_debug)
 		{
-			Debug.Assert(attackTarget.GetComponent<Attackable>());
 			Debug.Log("Started attack!");
 		}
 
