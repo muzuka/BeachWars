@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Main player controller.
@@ -24,56 +25,66 @@ public class Player : MonoBehaviour
     [Tooltip("The size of a block(informs distance between each block")]
     public float BlockSize;
 
-	Team _team;
-
 	// reference to gui
-	public GUIController Gui { get; set; }
+	[HideInInspector]
+	public GUIController GUI;
 
 	// reference to input
-	public InputController Input { get; set; }
+	[HideInInspector]
+	public InputController Input;
 
 	// The currently selected object or the first element of selectedList.
-	public GameObject Selected { get; set; }
+	[HideInInspector]
+	public GameObject Selected;
 
 	// The list of selected objects
-	public List<GameObject> SelectedList { get; set; }
+	[HideInInspector]
+	public List<GameObject> SelectedList;
 
  	// is something selected?
-	public bool HasSelected { get; set; }
+    [HideInInspector]
+    public bool HasSelected;
 
  	// can I command the selected object?
-	public bool CanCommand { get; set; }
+    [HideInInspector] 
+    public bool CanCommand;
 
 	// The selected objects team
-	public Team SelectedTeam { get; set; }
+	[HideInInspector]
+	public Team SelectedTeam;
 
 	// The list of haloes
-	public List<GameObject> HaloList { get; set; }
+	[HideInInspector]
+	public List<GameObject> HaloList;
 
 	// action states
 	// Assuming crab is selected
  	// set of states to affect behaviour
-	public StateController States { get; set; }
+    public StateController States;
 	string[] _stateList = {"Building", "Attacking", "Entering", "Capturing", "Recruiting", "Upgrading", "Repairing"};
 
 	// Designates type selected for building
-	public string BuildingType { get; set; }
+	[HideInInspector]
+	public string BuildingType;
 
-	public GhostBuildingManager GhostManager { get; set; }
+	public GhostBuildingManager GhostManager;
+	
+	[HideInInspector]
+	public HoldsWeapons TargetedArmoury;
 
-	public bool Paused { get; set; }
+	[HideInInspector]
+	public bool Paused;
+	public bool AutoBuild;
 
 	bool _debug;
-
-	public bool AutoBuild { get; set; }
-
+	
+	Team _team;
+	
 	Canvas _buildingCanvas;
 	Vector3 _cameraPos;
 	float _cameraXDelta;
 	float _cameraZDelta;
-
-	public HoldsWeapons TargetedArmoury { get; set; }
-
+	
     public static Player Instance;
 
     /// <summary>
@@ -95,7 +106,7 @@ public class Player : MonoBehaviour
     void Start()
 	{
 		Input = GetComponent<InputController>();
-		Gui = GetComponent<GUIController>();
+		GUI = GetComponent<GUIController>();
 
 		_team = GetComponent<Team>();
 		States = new StateController(_stateList);
@@ -118,7 +129,7 @@ public class Player : MonoBehaviour
 
 		TargetedArmoury = null;
 
-		Gui.StartUI();
+		GUI.StartUI();
 
 		if (_debug)
 			Debug.Log("Finished starting.");
@@ -150,9 +161,7 @@ public class Player : MonoBehaviour
 
 		Input.GetKeyboardInput(this);
 
-		Input.ProcessMouseClick(this, Gui);
-
-		
+		Input.ProcessMouseClick(this, GUI);
 		
 		if (HasSelected)
 			UpdateHalos();
@@ -244,6 +253,9 @@ public class Player : MonoBehaviour
 
     public void GeneralBuildButtonPressed(string buildingType)
     {
+	    if (_debug)
+		    Debug.Log($"Pressed {buildingType} button!");
+	    
         SetBuildingType(buildingType);
         SetPlayerState("Building");
         CreateGhostBuilding();
@@ -256,6 +268,9 @@ public class Player : MonoBehaviour
 	/// <param name="obj">Object.</param>
 	public void Select(GameObject obj) 
 	{
+		if (_debug)
+			Debug.Log($"Selected {obj.name}");
+		
 		Selected = obj;
 		SelectedTeam = obj.GetComponent<Team>();
 		CanCommand = _team.OnTeam(SelectedTeam.team);
@@ -264,10 +279,10 @@ public class Player : MonoBehaviour
 		Selected.SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver);
 
 		// set gui
-		Gui.InfoView.SetLabel(obj);
-		Gui.SetActiveGUIComponents(obj.tag);
-		Gui.InfoView.SelectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
-		Gui.UpdateUI(this);
+		GUI.InfoView.SetLabel(obj);
+		GUI.SetActiveGUIComponents(obj.tag);
+		GUI.InfoView.SelectedImage.texture = Resources.Load<Texture>("Textures/" + obj.tag);
+		GUI.UpdateUI(this);
 	}
 
 	/// <summary>
@@ -276,6 +291,9 @@ public class Player : MonoBehaviour
 	/// </summary>
 	public void SelectAll() 
 	{
+		if (_debug)
+			Debug.Log($"Selected {SelectedList.Count} units.");
+		
 		Selected = SelectedList[0];
 		HasSelected = true;
 		SelectedTeam = SelectedList[0].GetComponent<Team>();
@@ -287,8 +305,8 @@ public class Player : MonoBehaviour
 
 		CanCommand = (_team.team == SelectedTeam.team);
 
-		Gui.SetActiveGUIComponents("multi");
-		Gui.UpdateUI(this);
+		GUI.SetActiveGUIComponents("multi");
+		GUI.UpdateUI(this);
 	}
 
 	/// <summary>
@@ -327,7 +345,10 @@ public class Player : MonoBehaviour
 
 			ClearIndicators();
 
-			Gui.Deselect();
+			GUI.Deselect();
+			
+			if (_debug)
+				Debug.Log($"Deselected unit(s)");
 		}
 	}
 
@@ -391,7 +412,7 @@ public class Player : MonoBehaviour
 		if (!foundCastle)
 		{
 			Debug.Log("You win!");
-			Gui.WinMenu.SetActive(true);
+			GUI.WinMenu.SetActive(true);
 		}
 	}
 
@@ -412,17 +433,10 @@ public class Player : MonoBehaviour
 		if (!foundCastle)
 		{
 			Debug.Log("You lose!");
-			Gui.WinMenu.SetActive(true);
-			Gui.WinMenu.GetComponentInChildren<Text>().text = "You Lost!";
+			GUI.WinMenu.SetActive(true);
+			GUI.WinMenu.GetComponentInChildren<Text>().text = "You Lost!";
 		}
 	}
-
-    public void PressedGeneralBuildButton(string type)
-    {
-        SetBuildingType(type);
-        SetPlayerState(_stateList[0]);
-        CreateGhostBuilding();
-    }
 
 	/// <summary>
 	/// Sets the type of the building to build.
@@ -480,7 +494,7 @@ public class Player : MonoBehaviour
 	/// <param name="inv">Inventory array.</param>
 	public void UpdateInventory(string[] inv)
 	{
-		Gui.InfoView.SetInvView(inv);
+		GUI.InfoView.SetInvView(inv);
 	}
 
 	/// <summary>
@@ -563,31 +577,31 @@ public class Player : MonoBehaviour
 	/// Are the selected objects a mix of crabs and siege weapons?
 	/// </summary>
 	/// <returns>Crab for all crabs, Siege for all siege weapons, or Mixed for mixed.</returns>
-	public string GetMultiSelectStatus()
+	public Enum.SelectStatus GetMultiSelectStatus()
 	{
-		string type = "None";
+		Enum.SelectStatus type = Enum.SelectStatus.NONE;
 		for (int i = 0; i < SelectedList.Count; i++)
 		{
 			if (IdUtility.IsCrab(SelectedList[i]))
 			{
-				if (type == "None")
+				if (type == Enum.SelectStatus.NONE)
                 {
-                    type = "Crab"; 
+                    type = Enum.SelectStatus.CRAB; 
                 }
-				else if (type == "Siege")
+				else if (type == Enum.SelectStatus.SIEGE)
                 {
-                    type = "Mixed"; 
+                    type = Enum.SelectStatus.MIXED; 
                 }
 			}
 			if (IdUtility.IsSiegeWeapon(SelectedList[i]))
 			{
-				if (type == "None")
+				if (type == Enum.SelectStatus.NONE)
                 {
-                    type = "Siege"; 
+                    type = Enum.SelectStatus.SIEGE;
                 }
-				else if (type == "Crab")
+				else if (type == Enum.SelectStatus.CRAB)
                 {
-                    type = "Mixed"; 
+                    type = Enum.SelectStatus.MIXED; 
                 }
 			}
 		}

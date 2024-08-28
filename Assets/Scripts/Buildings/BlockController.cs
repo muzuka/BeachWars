@@ -11,7 +11,7 @@ public class BlockController : MonoBehaviour {
 	public int WoodMaxHealth;
 	public int StoneMaxHealth;
 
-	wallUpgradeType _upgradeLevel;		// current upgrade level
+	Enum.WallUpgradeType _upgradeLevel;		// current upgrade level
 
 	Transform[] _walls;	// references to upgrade wall elements
 
@@ -31,7 +31,7 @@ public class BlockController : MonoBehaviour {
 		}
 
 		GetComponent<Attackable>().SetHealth(NormalMaxHealth);
-		_upgradeLevel = wallUpgradeType.NORMAL;
+		_upgradeLevel = Enum.WallUpgradeType.NORMAL;
 
 		_selected = false;
 	}
@@ -50,10 +50,10 @@ public class BlockController : MonoBehaviour {
 	/// Called by crab that is upgrading block.
 	/// </summary>
 	/// <param name="newLevel">New level.</param>
-	public void UpgradeFinished(wallUpgradeType newLevel) 
+	public void UpgradeFinished(Enum.WallUpgradeType newLevel) 
 	{
 		_upgradeLevel = newLevel;
-		if (newLevel == wallUpgradeType.WOOD) 
+		if (newLevel == Enum.WallUpgradeType.WOOD) 
 		{
 			GetComponent<Attackable>().SetHealth(WoodMaxHealth);
 			for (int i = 0; i < _walls.Length; i++) 
@@ -62,7 +62,7 @@ public class BlockController : MonoBehaviour {
 					_walls[i].gameObject.SetActive(true);
 			}
 		}
-		else if (newLevel == wallUpgradeType.STONE) 
+		else if (newLevel == Enum.WallUpgradeType.STONE) 
 		{
 			GetComponent<Attackable>().SetHealth(StoneMaxHealth);
 			for (int i = 0; i < _walls.Length; i++) 

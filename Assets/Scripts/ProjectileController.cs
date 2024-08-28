@@ -4,8 +4,9 @@ public class ProjectileController : MonoBehaviour {
 
     [Tooltip("Speed of projectile")]
 	public float Speed;
-	public Vector3 Destination { get; set; }
-	public bool Moving { get; set; }
+
+	public Vector3 Destination;
+	public bool Moving;
 
 	Quaternion _velocity;
 

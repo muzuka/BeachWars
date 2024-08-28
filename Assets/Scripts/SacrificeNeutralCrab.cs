@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SacrificeNeutralCrab : NeutralCrab {
-
-	public int SacrificesRequired { get; set; }
+public class SacrificeNeutralCrab : NeutralCrab
+{
+	public int SacrificesRequired;
 
 	List<RawImage> _checkmarks;
 

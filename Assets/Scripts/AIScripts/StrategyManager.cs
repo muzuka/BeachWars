@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 
-public enum Stage {START, MID, END};
 
 /// <summary>
 /// Strategy manager.
@@ -26,7 +26,7 @@ public class StrategyManager : MonoBehaviour {
     public float DangerDistance;
 
     [Tooltip("Stage of game to start on")]
-	public Stage StartMode;
+	public Enum.AIStage StartMode;
 
 	[Header("Activity flags:")]
 	[Tooltip("Should the enemy gather resources?")]
@@ -69,7 +69,7 @@ public class StrategyManager : MonoBehaviour {
 
     const int _neutral = -1;
 
-	Stage _currentMode;
+    Enum.AIStage _currentMode;
 
 	bool _debug;
 

@@ -21,9 +21,6 @@ public class InputController : MonoBehaviour {
 
     public GameObject HaloCanvas;
     public GameObject BuildingCanvas;
-    
-    // Can I select more than one unit?
-    public bool MultiSelect { get; set; }
 
     PlayerInput _playerInput;
     BaseControls _clickControls;
@@ -42,8 +39,7 @@ public class InputController : MonoBehaviour {
 	bool _debug;
 
     List<Vector3> _offsets;
-
-
+    
     void Awake()
     {
 	    _clickControls = new BaseControls();
@@ -75,14 +71,6 @@ public class InputController : MonoBehaviour {
 	void OnDisable()
 	{
 		_clickControls.Disable();
-	}
-
-	/// <summary>
-	/// Update this instance.
-	/// </summary>
-	void Update() 
-	{
-		MultiSelect = _clickControls.Units.Multi.IsPressed();
 	}
 
 	/// <summary>
@@ -935,8 +923,6 @@ public class InputController : MonoBehaviour {
         List<GameObject> listB = new List<GameObject>();
         List<GameObject> listC = new List<GameObject>();
         List<GameObject> listD = new List<GameObject>();
-
-        DebugTools.DrawCircle(_hit.point, avgDistance, 1000);
 
         foreach (GameObject selected in player.SelectedList)
         {

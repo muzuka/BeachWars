@@ -12,14 +12,14 @@ public class GhostBuilder : MonoBehaviour {
     [Tooltip("Time to wait until checking for an idle crab.")]
     public float TimeToWait;
 
-	public int WoodRequirement { get; set; }
-	public int StoneRequirement { get; set; }
+    public int WoodRequirement;
+    public int StoneRequirement;
 
-	public bool HasBuilder { get; set; }
-	public bool Placed { get; set; }
+    public bool HasBuilder;
+    public bool Placed;
 
-	public int WoodAmount { get; set; }
-	public int StoneAmount { get; set; }
+    public int WoodAmount;
+    public int StoneAmount;
 
 	bool _debug;
 

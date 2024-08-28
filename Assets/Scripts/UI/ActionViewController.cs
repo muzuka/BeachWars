@@ -58,12 +58,12 @@ public class ActionViewController : MonoBehaviour
 		}
 		else if (player.SelectedList.Count > 1)
 		{
-			string type = player.GetMultiSelectStatus();
-			if (type == "Mixed" || type == "Siege")
+			Enum.SelectStatus type = player.GetMultiSelectStatus();
+			if (type == Enum.SelectStatus.MIXED || type == Enum.SelectStatus.SIEGE)
 			{
 				SetMultiButtonsMixed(player); 
 			}
-			else if (type == "Crab")
+			else if (type == Enum.SelectStatus.CRAB)
 			{
 				if (player.States.GetState("Building"))
 				{

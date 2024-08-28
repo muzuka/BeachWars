@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NeutralCrab : MonoBehaviour {
 
-	protected CrabSpecies Type;
+	protected Enum.CrabSpecies Type;
 
 	protected CrabController Crab;
 
@@ -70,26 +70,26 @@ public class NeutralCrab : MonoBehaviour {
 	protected void SetRecruitmentUI()
 	{
 		switch (Type) {
-		case CrabSpecies.FIDDLER:
+		case Enum.CrabSpecies.FIDDLER:
 			RecruitmentUIName = "FiddlerCrabRecruitUI";
 			break;
-		case CrabSpecies.TGIANT:
+		case Enum.CrabSpecies.TGIANT:
 			RecruitmentUIName = "TGiantCrabRecruitUI";
 			break;
-		case CrabSpecies.SPIDER:
+		case Enum.CrabSpecies.SPIDER:
 			RecruitmentUIName = "SpiderCrabRecruitUI";
 			break;
-		case CrabSpecies.COCONUT:
+		case Enum.CrabSpecies.COCONUT:
 			RecruitmentUIName = "CoconutCrabRecruitUI";
 			break;
-		case CrabSpecies.HORSESHOE:
+		case Enum.CrabSpecies.HORSESHOE:
 			RecruitmentUIName = "HorseshoeCrabRecruitUI";
 			break;
-		case CrabSpecies.SEAWEED:
-		case CrabSpecies.CALICO:
-		case CrabSpecies.KAKOOTA:
-		case CrabSpecies.TRILOBITE:
-		case CrabSpecies.ROCK:
+		case Enum.CrabSpecies.SEAWEED:
+		case Enum.CrabSpecies.CALICO:
+		case Enum.CrabSpecies.KAKOOTA:
+		case Enum.CrabSpecies.TRILOBITE:
+		case Enum.CrabSpecies.ROCK:
 			RecruitmentUIName = "AutoSuccessRecruitUI";
 			break;
 		}

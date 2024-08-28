@@ -10,7 +10,7 @@ public class GhostColorChanger : MonoBehaviour
 	
 	MeshRenderer _meshRenderer;
 
-	public bool CanBuild { get; set; }
+	public bool CanBuild;
 
 	/// <summary>
 	/// Start this instance.

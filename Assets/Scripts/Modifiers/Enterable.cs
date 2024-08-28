@@ -16,19 +16,21 @@ public class Enterable : MonoBehaviour {
 
 	Team _team;				// team of enterable object
 
-    public GameObject _currentCanvas { get; set; }
+	[HideInInspector]
+	public GameObject CurrentCanvas;
 
 	// occupant of enterable object
-    public GameObject _occupant { get; set; }
+	[HideInInspector]
+	public GameObject Occupant;
 
 	/// <summary>
 	/// Start this instance.
 	/// </summary>
 	void Start()
 	{
-		_occupant = null;
+		Occupant = null;
 		_team = GetComponent<Team>();
-        _currentCanvas = null;
+        CurrentCanvas = null;
 	}
 
     /// <summary>
@@ -36,9 +38,9 @@ public class Enterable : MonoBehaviour {
     /// </summary>
     void Update()
     {
-        if (_currentCanvas != null)
+        if (CurrentCanvas != null)
         {
-            _currentCanvas.transform.position = new Vector3(transform.position.x, _currentCanvas.transform.position.y, transform.position.z);
+            CurrentCanvas.transform.position = new Vector3(transform.position.x, CurrentCanvas.transform.position.y, transform.position.z);
         }
     }
 
@@ -48,7 +50,7 @@ public class Enterable : MonoBehaviour {
     /// <returns><c>true</c>, if object is occupied, <c>false</c> otherwise.</returns>
     public bool Occupied()
 	{
-		return (_occupant != null);
+		return (Occupant != null);
 	}
 
 	/// <summary>
@@ -64,10 +66,10 @@ public class Enterable : MonoBehaviour {
 
 		if (canEnter)
 		{
-			_occupant = enteringObject;
+			Occupant = enteringObject;
 			enteringObject.SetActive(false);
 			FindObjectOfType<Player>().Deselect(enteringObject);
-            InstantiateCanvas(_occupant.tag);
+            InstantiateCanvas(Occupant.tag);
             EventManager.TriggerEvent("ObjectEntered");
 		}
 		else if (GetComponent<DebugComponent>().Debug)
@@ -79,15 +81,15 @@ public class Enterable : MonoBehaviour {
 	/// </summary>
 	public void RemoveOccupant()
 	{
-		if (_occupant != null)
+		if (Occupant != null)
 		{
 			Vector3 pos = transform.position;
 			float dist1 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
 			float dist2 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
-			_occupant.SetActive(true);
-			_occupant.transform.position = new Vector3(pos.x + dist1, pos.y, pos.z + dist2);
-			_occupant = null;
-            Destroy(_currentCanvas);
+			Occupant.SetActive(true);
+			Occupant.transform.position = new Vector3(pos.x + dist1, pos.y, pos.z + dist2);
+			Occupant = null;
+            Destroy(CurrentCanvas);
 		}
 	}
 
@@ -97,13 +99,13 @@ public class Enterable : MonoBehaviour {
     /// <param name="imageTag"></param>
     void InstantiateCanvas(string imageTag) 
     {
-        _currentCanvas = Instantiate(OccupiedCanvas);
-        _currentCanvas.transform.position = new Vector3(transform.position.x, _currentCanvas.transform.position.y, transform.position.z);
-        Image[] images = _currentCanvas.GetComponentsInChildren<Image>();
+        CurrentCanvas = Instantiate(OccupiedCanvas);
+        CurrentCanvas.transform.position = new Vector3(transform.position.x, CurrentCanvas.transform.position.y, transform.position.z);
+        Image[] images = CurrentCanvas.GetComponentsInChildren<Image>();
 
         if (SliderHidden)
         {
-            Destroy(_currentCanvas.GetComponentInChildren<Slider>().gameObject);
+            Destroy(CurrentCanvas.GetComponentInChildren<Slider>().gameObject);
         }
 
         for (int i = 0; i < images.Length; i++)

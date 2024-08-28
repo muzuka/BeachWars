@@ -38,7 +38,7 @@ public class TowerController : MonoBehaviour {
 	/// </summary>
 	void Update()
 	{
-		GameObject occupant = GetComponent<Enterable>()._occupant;
+		GameObject occupant = GetComponent<Enterable>().Occupant;
 
 		if (GetComponent<Enterable>().Occupied())
 		{

@@ -8,19 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public enum CrabSpecies
-{
-	ROCK, 
-	FIDDLER, 
-	TGIANT, 
-	SPIDER, 
-	COCONUT, 
-	HORSESHOE, 
-	SEAWEED, 
-	CALICO, 
-	TRILOBITE, 
-	KAKOOTA
-};
+
 
 /// <summary>
 /// Crab controller.
@@ -33,7 +21,7 @@ public class CrabController : MonoBehaviour {
 
 	// public variables
 	[Tooltip("The species of crab")]
-	public CrabSpecies Type;				// type of crab
+	public Enum.CrabSpecies Type;				// type of crab
 	[Tooltip("The range of the crab")]
 	public float AttackRange;				// distance to hit
 
@@ -94,7 +82,7 @@ public class CrabController : MonoBehaviour {
     GhostBuilder _ghostBuilderReference;         // reference to ghost buildings builder script   
     string _buildingType;			            // the selected type of building
 
-	wallUpgradeType _upgradeType;				// type of upgrade for a block
+	Enum.WallUpgradeType _upgradeType;				// type of upgrade for a block
 
 	[SerializeField]
 	GameObject _destinationMarkerFab;
@@ -969,11 +957,11 @@ public class CrabController : MonoBehaviour {
 		_target = obj;
 
 		if (Inventory.IsAllOneType(Tags.Wood))
-			_upgradeType = wallUpgradeType.WOOD;
+			_upgradeType = Enum.WallUpgradeType.WOOD;
 		else if (Inventory.IsAllOneType(Tags.Stone))
-			_upgradeType = wallUpgradeType.STONE;
+			_upgradeType = Enum.WallUpgradeType.STONE;
 		else
-			_upgradeType = wallUpgradeType.NORMAL;
+			_upgradeType = Enum.WallUpgradeType.NORMAL;
 
 		StartMove(obj.transform.position);
 
@@ -1392,19 +1380,19 @@ public class CrabController : MonoBehaviour {
         }
 
 		switch (_target.GetComponent<CrabController>().Type) {
-		case CrabSpecies.ROCK:
-		case CrabSpecies.KAKOOTA:
-		case CrabSpecies.CALICO:
-		case CrabSpecies.SEAWEED:
+		case Enum.CrabSpecies.ROCK:
+		case Enum.CrabSpecies.KAKOOTA:
+		case Enum.CrabSpecies.CALICO:
+		case Enum.CrabSpecies.SEAWEED:
 			return true;
-		case CrabSpecies.FIDDLER:
+		case Enum.CrabSpecies.FIDDLER:
 			return HasCastles(1);
-		case CrabSpecies.SPIDER:
+		case Enum.CrabSpecies.SPIDER:
 			return HasCastles(2);
-		case CrabSpecies.TGIANT:
-		case CrabSpecies.COCONUT:
+		case Enum.CrabSpecies.TGIANT:
+		case Enum.CrabSpecies.COCONUT:
 			return _target.GetComponent<SacrificeNeutralCrab>().CanRecruit();
-		case CrabSpecies.HORSESHOE:
+		case Enum.CrabSpecies.HORSESHOE:
 			return HasVariedSpecies(2);
 		default:
 			if (_debug)
@@ -1446,7 +1434,7 @@ public class CrabController : MonoBehaviour {
 	bool HasVariedSpecies(int numOfSpecies) 
 	{
 		CrabController[] crabs = FindObjectsOfType<CrabController>();
-		var crabSpecies = new HashSet<CrabSpecies>();
+		var crabSpecies = new HashSet<Enum.CrabSpecies>();
 
 		for (int i = 0; i < crabs.Length; i++) 
 		{
@@ -1786,11 +1774,11 @@ public class CrabController : MonoBehaviour {
         gameObject.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
         SetStats(health, movementSpeed, attackDamage, attackSpeed);
 
-        if (Type == CrabSpecies.CALICO)
+        if (Type == Enum.CrabSpecies.CALICO)
         {
             _crabMaterial = Resources.Load<Material>("Materials/Crabs/Calico");
         }
-        else if (Type == CrabSpecies.KAKOOTA)
+        else if (Type == Enum.CrabSpecies.KAKOOTA)
         {
             if (_debug)
                 Debug.Log("Crab material is null.");
@@ -1802,17 +1790,17 @@ public class CrabController : MonoBehaviour {
         }
 	}
 
-	void SetNeutralComponent(CrabSpecies species)
+	void SetNeutralComponent(Enum.CrabSpecies species)
 	{
 		switch (species)
 		{
-		case CrabSpecies.TGIANT:
+		case Enum.CrabSpecies.TGIANT:
 			gameObject.AddComponent<SacrificeNeutralCrab>();
-			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = DataSource.CrabSacrifices[CrabSpecies.TGIANT];
+			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = DataSource.CrabSacrifices[Enum.CrabSpecies.TGIANT];
 			break;
-		case CrabSpecies.COCONUT:
+		case Enum.CrabSpecies.COCONUT:
 			gameObject.AddComponent<SacrificeNeutralCrab>();
-			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = DataSource.CrabSacrifices[CrabSpecies.COCONUT];
+			GetComponent<SacrificeNeutralCrab>().SacrificesRequired = DataSource.CrabSacrifices[Enum.CrabSpecies.COCONUT];
 			break;
 		}
 	}

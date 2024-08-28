@@ -21,7 +21,6 @@ public class NestController : MonoBehaviour {
     Slider _progressSlider;
 
     Player _player;
-    EnemyKnowledge _knowledge;
 
 	/// <summary>
 	/// Start this instance.
@@ -35,7 +34,6 @@ public class NestController : MonoBehaviour {
         _progressSlider = null;
 
         _player = FindObjectOfType<Player>();
-        _knowledge = FindObjectOfType<EnemyKnowledge>();
 	}
 
     void OnEnable()
@@ -58,7 +56,7 @@ public class NestController : MonoBehaviour {
             if (GetComponent<Enterable>().Occupied())
             {
                 _timeConsumed += Time.deltaTime;
-                if (GetComponent<Enterable>()._currentCanvas != null && _progressSlider != null)
+                if (GetComponent<Enterable>().CurrentCanvas != null && _progressSlider != null)
                 {
                     _progressSlider.value = _timeConsumed / TimeToCreate;
                 }
@@ -89,7 +87,7 @@ public class NestController : MonoBehaviour {
         float dist2 = Random.value * DistanceToInstantiate * Random.Range(-1, 1);
         Vector3 pos = gameObject.transform.position;
         newCrab = Instantiate(Crab, new Vector3(pos.x + dist1, pos.y, pos.z + dist2), Quaternion.identity);
-        newCrab.GetComponent<CrabController>().Type = GetComponent<Enterable>()._occupant.GetComponent<CrabController>().Type;
+        newCrab.GetComponent<CrabController>().Type = GetComponent<Enterable>().Occupant.GetComponent<CrabController>().Type;
         newCrab.GetComponent<Team>().team = GetComponent<Team>().team;
         _timeConsumed = 0.0f;
     }
@@ -97,7 +95,7 @@ public class NestController : MonoBehaviour {
     void CrabEntered() 
     {
         if (GetComponent<Enterable>().Occupied()) {
-            _progressSlider = GetComponent<Enterable>()._currentCanvas.GetComponentInChildren<Slider>();
+            _progressSlider = GetComponent<Enterable>().CurrentCanvas.GetComponentInChildren<Slider>();
         }
     }
 

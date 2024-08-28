@@ -4,9 +4,10 @@ using System.Collections.Generic;
 /// <summary>
 /// Manages weapons.
 /// </summary>
-public class HoldsWeapons : MonoBehaviour {
-
-    public Dictionary<string, int> Weapons { get; set; }
+public class HoldsWeapons : MonoBehaviour
+{
+	[HideInInspector]
+	public Dictionary<string, int> Weapons;
 
     public int[] WeaponAmounts;
 

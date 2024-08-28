@@ -19,23 +19,23 @@ public class UnitData : ScriptableObject
         {Tags.Spear, 1.5f}
     };
 
-    public Dictionary<CrabSpecies, string> CrabTypes = new Dictionary<CrabSpecies, string>()
+    public Dictionary<Enum.CrabSpecies, string> CrabTypes = new Dictionary<Enum.CrabSpecies, string>()
     {
-        { CrabSpecies.ROCK, "Rock Crab" },
-        { CrabSpecies.FIDDLER, "Fiddler Crab" },
-        { CrabSpecies.TGIANT, "Tasmanian Crab" },
-        { CrabSpecies.SPIDER, "Spider Crab" },
-        { CrabSpecies.COCONUT, "Coconut Crab" },
-        { CrabSpecies.HORSESHOE, "Horseshoe Crab" },
-        { CrabSpecies.SEAWEED, "Seaweed Crab" },
-        { CrabSpecies.CALICO, "Calico Crab" },
-        { CrabSpecies.KAKOOTA, "Kakoota Crab" },
-        { CrabSpecies.TRILOBITE, "Trilobite" },
+        { Enum.CrabSpecies.ROCK, "Rock Crab" },
+        { Enum.CrabSpecies.FIDDLER, "Fiddler Crab" },
+        { Enum.CrabSpecies.TGIANT, "Tasmanian Crab" },
+        { Enum.CrabSpecies.SPIDER, "Spider Crab" },
+        { Enum.CrabSpecies.COCONUT, "Coconut Crab" },
+        { Enum.CrabSpecies.HORSESHOE, "Horseshoe Crab" },
+        { Enum.CrabSpecies.SEAWEED, "Seaweed Crab" },
+        { Enum.CrabSpecies.CALICO, "Calico Crab" },
+        { Enum.CrabSpecies.KAKOOTA, "Kakoota Crab" },
+        { Enum.CrabSpecies.TRILOBITE, "Trilobite" },
     };
 
-    public Dictionary<CrabSpecies, int> CrabSacrifices = new Dictionary<CrabSpecies, int>()
+    public Dictionary<Enum.CrabSpecies, int> CrabSacrifices = new Dictionary<Enum.CrabSpecies, int>()
     {
-        { CrabSpecies.TGIANT, 5 },
-        { CrabSpecies.COCONUT, 2 }
+        { Enum.CrabSpecies.TGIANT, 5 },
+        { Enum.CrabSpecies.COCONUT, 2 }
     };
 }

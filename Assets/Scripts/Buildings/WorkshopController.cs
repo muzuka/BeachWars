@@ -27,13 +27,15 @@ public class WorkshopController : MonoBehaviour {
     [Tooltip("Distance from object to instantiate new objects")]
     public float DistanceToInstantiate;
 
-    public GameObject CurrentCanvas { get; set; }
+    [HideInInspector]
+    public GameObject CurrentCanvas;
 
     Slider _progressSlider;
     
 	float _timeConsumed;
 
-    public bool Building { get; set; }
+	[HideInInspector]
+	public bool Building;
 	string _buildingType;
 
 	CastleController _castleMaster;
