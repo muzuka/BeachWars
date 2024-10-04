@@ -1530,8 +1530,10 @@ public class CrabController : MonoBehaviour {
 			GoIdle();
 			return 0.0f;
 		}
+		
+		Vector3 closestPoint = obj.GetComponent<Collider>().ClosestPoint(transform.position);
 
-		return Vector3.Distance(transform.position, obj.transform.position); // Most cases should find object so return value that will fail
+		return Vector3.Distance(transform.position, closestPoint); // Most cases should find object so return value that will fail
 	}
 
 	#endregion
