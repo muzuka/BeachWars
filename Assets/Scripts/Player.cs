@@ -20,10 +20,13 @@ public class Player : MonoBehaviour
     [Tooltip("Maximum units allowed to exist.")]
     public int MaxUnitCount;
 
+    [Header("Building vars")]
+    
     [Tooltip("The min distance between junctions before intermediate blocks are placed")]
     public float JunctionDistanceLimit;
     [Tooltip("The size of a block(informs distance between each block")]
     public float BlockSize;
+    public bool AutoBuild;
 
 	// reference to gui
 	[HideInInspector]
@@ -74,8 +77,7 @@ public class Player : MonoBehaviour
 
 	[HideInInspector]
 	public bool Paused;
-	public bool AutoBuild;
-
+	
 	bool _debug;
 	
 	Team _team;
@@ -123,8 +125,6 @@ public class Player : MonoBehaviour
 
 		Paused = false;
 
-		AutoBuild = true;
-
 		_buildingCanvas = null;
 
 		TargetedArmoury = null;
@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
 		if (HasSelected)
 			UpdateHalos();
 
-		GhostManager.updateGhosts();
+		GhostManager.UpdateGhosts();
 
 		_cameraPos = GetComponentInParent<Transform>().position;
 	}

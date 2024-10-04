@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 114000010127862500}
   - component: {fileID: 114500683125472680}
   - component: {fileID: 114480996228777934}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostBlock
   m_TagString: Ghost
   m_Icon: {fileID: 0}
@@ -116,6 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Invalid: {fileID: 2100000, guid: 59a7fd49860b54973907b8cfff33c44d, type: 2}
   Valid: {fileID: 2100000, guid: ca209861ddb5f4b828cbc5fd8624b598, type: 2}
+  CanBuild: 0
 --- !u!114 &114000010182843452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +131,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Original: {fileID: 191168, guid: 8fa7701ae10ee4dc4b0070d2a5a6dab8, type: 3}
   TimeToWait: 5
+  WoodRequirement: 0
+  StoneRequirement: 0
+  HasBuilder: 0
+  Placed: 0
+  WoodAmount: 0
+  StoneAmount: 0
 --- !u!114 &114000010127862500
 MonoBehaviour:
   m_ObjectHideFlags: 0

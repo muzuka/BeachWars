@@ -1,32 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using System;
+using UnityEngine.ProBuilder;
+using Math = System.Math;
 
 /// <summary>
 /// Ghost building manager.
 /// Player holds instance.
 /// </summary>
-public class GhostBuildingManager {
+public class GhostBuildingManager
+{
+	public string BuildingType;
 
-	public string BuildingType { get; set; }
+	public bool CanBuild;
 
-	public bool CanBuild { get; set; }
-
-	public bool Debug { get; set; }
+	public bool Debug;
 
 	// main ghost building
-	public GameObject GhostBuilding { get; set; }
-	public Stack<GameObject> GhostWallSegments { get; set; }	// stack of blocks
+	public GameObject GhostBuilding;
+	public Stack<GameObject> GhostWallSegments;	// stack of blocks
 
-	public float JunctionDistLimit { get; set; }
-    public float BlockSize { get; set; }
+	public float JunctionDistLimit;
+	public float BlockSize;
 
     GameObject _prevJunction;				// tells you if there are three or more junctions
 	GameObject _firstJunction;				// starting point
 	GameObject _secondJunction;				// gets dragged
 
-	public bool Combined { get; set; }
+	public bool Combined;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="GhostBuildingManager"/> class.
@@ -47,7 +48,7 @@ public class GhostBuildingManager {
 	/// Updates the ghost buildings.
 	/// Called in Player update function.
 	/// </summary>
-	public void updateGhosts() 
+	public void UpdateGhosts() 
 	{
 		if (GhostBuilding)
 		{
@@ -64,12 +65,12 @@ public class GhostBuildingManager {
 
 			hit = Raycaster.ShootMouseRay();
 
-			GhostBuilding.transform.position = new Vector3(hit.point.x, 0.0f, hit.point.z);
+			GhostBuilding.transform.position = new Vector3(hit.point.x, 0f, hit.point.z);
 
 			if (BuildingType == Tags.Junction && (_firstJunction != null && _secondJunction != null))
 			{
 				CanBuild = CanBuildWall();
-				UpdateWallSegments();
+				UpdateWallSegments(hit.point);
 			}
 		}
 
@@ -159,7 +160,7 @@ public class GhostBuildingManager {
 		{
 			DestroyGhostBuilding();
 			Combined = true;
-			UpdateWallSegments();
+			UpdateWallSegments(Raycaster.ShootMouseRay().point);
 		}
 	}
 
@@ -178,6 +179,50 @@ public class GhostBuildingManager {
 			_secondJunction = GhostBuilding;
 			Combined = false;
 		}
+	}
+	
+	/// <summary>
+	/// Updates the wall segments.
+	/// Creates segments and places them between junctions
+	/// </summary>
+	void UpdateWallSegments(Vector3 mousePos)
+	{
+		if (_firstJunction == null || _secondJunction == null)
+		{
+			return;
+		}
+
+		mousePos = new Vector3(mousePos.x, 0f, mousePos.z);
+
+		// get number of segments
+		float distance = Vector3.Distance(_firstJunction.transform.position, mousePos);
+		int targetSegments = (int)Math.Floor(distance / (BlockSize));
+		float posStep = (BlockSize / distance);
+		
+		// moves segments to correct position
+		float interval = posStep;
+		GameObject[] ghostWallArray = GhostWallSegments.ToArray();
+
+		// add or remove segments as needed
+		if (targetSegments < GhostWallSegments.Count)
+		{
+			GameObject.Destroy(GhostWallSegments.Pop()); 
+		}
+		else if (targetSegments > GhostWallSegments.Count)
+		{
+			while (targetSegments > GhostWallSegments.Count)
+			{
+				GhostWallSegments.Push((GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PreviewStructures/GhostBlock"))); 
+			}
+		}
+		
+		for (int i = 0; i < ghostWallArray.Length; i++)
+		{
+			ghostWallArray[i].transform.position = Vector3.Lerp(_firstJunction.transform.position, mousePos, interval);
+			ghostWallArray[i].transform.rotation = Quaternion.LookRotation(mousePos - _firstJunction.transform.position);
+			interval += posStep;
+		}
+		_secondJunction.transform.position = Vector3.Lerp(_firstJunction.transform.position, mousePos, interval + (posStep * 1));
 	}
 
 	/// <summary>
@@ -215,7 +260,7 @@ public class GhostBuildingManager {
             return false; 
         }
 
-		if (_firstJunction.tag == Tags.Junction)
+		if (_firstJunction.CompareTag(Tags.Junction))
         {
             canBuildFirst = true; 
         }
@@ -224,7 +269,7 @@ public class GhostBuildingManager {
             canBuildFirst = _firstJunction.GetComponent<GhostColorChanger>().CanBuild; 
         }
 
-		if (_secondJunction.tag == Tags.Junction)
+		if (_secondJunction.CompareTag(Tags.Junction))
         {
             canBuildSecond = true; 
         }
@@ -348,46 +393,5 @@ public class GhostBuildingManager {
 		}
 			
 		DestroyGhostBuilding();
-	}
-
-	/// <summary>
-	/// Updates the wall segments.
-	/// Creates segments and places them between junctions
-	/// </summary>
-	void UpdateWallSegments()
-	{
-		if (_firstJunction == null || _secondJunction == null)
-		{
-			return;
-		}
-
-		// get number of segments
-		
-		float distance = Vector3.Distance(_firstJunction.transform.position, _secondJunction.transform.position);
-		int targetSegments = (int)Math.Floor(distance / BlockSize);
-		float posStep = (BlockSize / distance);
-
-		// add or remove segments as needed
-		if (targetSegments < GhostWallSegments.Count)
-        {
-            GameObject.Destroy(GhostWallSegments.Pop()); 
-        }
-		else if (targetSegments > GhostWallSegments.Count)
-		{
-			while (targetSegments > GhostWallSegments.Count)
-            {
-                GhostWallSegments.Push((GameObject)GameObject.Instantiate(Resources.Load("Prefabs/PreviewStructures/GhostBlock"))); 
-            }
-		}
-	
-		// moves segments to correct position
-		float interval = posStep;
-		GameObject[] ghostWallArray = GhostWallSegments.ToArray();
-		for (int i = 0; i < ghostWallArray.Length; i++)
-		{
-			ghostWallArray[i].transform.position = Vector3.Lerp(_firstJunction.transform.position, _secondJunction.transform.position, interval);
-			ghostWallArray[i].transform.rotation = Quaternion.LookRotation(_secondJunction.transform.position - _firstJunction.transform.position);
-			interval += posStep;
-		}
 	}
 }

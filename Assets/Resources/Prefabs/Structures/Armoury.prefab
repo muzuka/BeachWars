@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4448443883385400}
   - component: {fileID: 33798646151482124}
   - component: {fileID: 23569470508493680}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: -0.7064338, y: 0.03084356, z: -0.030843563, w: 0.7064338}
   m_LocalPosition: {x: -1, y: 0, z: 2}
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.99999994}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4026081217280186}
   m_RootOrder: 3
@@ -51,9 +52,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -65,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -77,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1060425238513110
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +94,7 @@ GameObject:
   - component: {fileID: 4247008317849794}
   - component: {fileID: 33285450146039410}
   - component: {fileID: 23121552789599310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +111,7 @@ Transform:
   m_LocalRotation: {x: -0.70585126, y: 0.017528033, z: -0.0057003167, w: 0.7081203}
   m_LocalPosition: {x: -1.0429826, y: -0.92290074, z: 1.3199965}
   m_LocalScale: {x: 0.1748714, y: 0.17487139, z: 0.17487137}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4026081217280186}
   m_RootOrder: 4
@@ -128,9 +135,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -142,6 +152,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -154,6 +165,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1591693458190214
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +177,7 @@ GameObject:
   - component: {fileID: 4736373896114870}
   - component: {fileID: 33435900636935088}
   - component: {fileID: 23975978061372674}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hammer_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,6 +194,7 @@ Transform:
   m_LocalRotation: {x: -0.49686122, y: 0.53985333, z: 0.4604466, w: 0.4996762}
   m_LocalPosition: {x: -1.0700358, y: -0.8672453, z: -0.46489272}
   m_LocalScale: {x: 0.18539947, y: 0.18539947, z: 0.18539947}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4026081217280186}
   m_RootOrder: 2
@@ -205,9 +218,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -219,6 +235,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -231,6 +248,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1690882784143484
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +260,7 @@ GameObject:
   - component: {fileID: 4312159398554700}
   - component: {fileID: 33668853026981966}
   - component: {fileID: 23953025517256358}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,6 +277,7 @@ Transform:
   m_LocalRotation: {x: -0.47464105, y: 0.52415466, z: 0.4889831, w: 0.51075757}
   m_LocalPosition: {x: -0.97986925, y: -0.0007648691, z: 0.6561202}
   m_LocalScale: {x: 0.0930245, y: 0.18604894, z: 0.9302448}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4026081217280186}
   m_RootOrder: 0
@@ -282,9 +301,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -296,6 +318,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -308,6 +331,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1769035431749764
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +343,7 @@ GameObject:
   - component: {fileID: 4120393963325954}
   - component: {fileID: 33582556652916380}
   - component: {fileID: 23714346225641522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spear_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,6 +360,7 @@ Transform:
   m_LocalRotation: {x: -0.70585126, y: 0.017528033, z: -0.0057003167, w: 0.7081203}
   m_LocalPosition: {x: -1.0429826, y: -0.9229008, z: 0.0742412}
   m_LocalScale: {x: 0.1748714, y: 0.17487139, z: 0.17487137}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4026081217280186}
   m_RootOrder: 5
@@ -359,9 +384,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -373,6 +401,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -385,6 +414,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1789359816795016
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +426,7 @@ GameObject:
   - component: {fileID: 4008354683495950}
   - component: {fileID: 33659837370229026}
   - component: {fileID: 23476114010455852}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,6 +443,7 @@ Transform:
   m_LocalRotation: {x: -0.7158367, y: 0.026969312, z: -0.027253708, w: 0.69721425}
   m_LocalPosition: {x: -1.0700358, y: -0.8672454, z: -1.3361039}
   m_LocalScale: {x: 0.18539947, y: 0.18539947, z: 0.18539947}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4026081217280186}
   m_RootOrder: 1
@@ -436,9 +467,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -450,6 +484,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -462,6 +497,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1847427194095158
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,7 +517,7 @@ GameObject:
   - component: {fileID: 114247612546113490}
   - component: {fileID: 114431784707340296}
   - component: {fileID: 114046735724974060}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Armoury
   m_TagString: Armoury
   m_Icon: {fileID: 0}
@@ -498,6 +534,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 14.916094, y: 0, z: 34.491528}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4312159398554700}
   - {fileID: 4008354683495950}
@@ -510,7 +547,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95005135709882140
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -523,10 +560,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!65 &65824982080727662
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -597,6 +636,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f350603d953640979e25088aada8d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHealth: 0
+  Health: 0
 --- !u!114 &114480470438757270
 MonoBehaviour:
   m_ObjectHideFlags: 0

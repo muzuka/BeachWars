@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 114517713915704278}
   - component: {fileID: 114153941138216892}
   - component: {fileID: 114185480909092658}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ballista
   m_TagString: Ballista
   m_Icon: {fileID: 0}
@@ -36,6 +36,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 25.153479, y: 0.5, z: 24.090958}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4332830667291386}
   - {fileID: 4668103617087202}
@@ -51,7 +52,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95831244142639028
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -64,10 +65,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!65 &65028298553490036
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -131,6 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d767bdb8af80345b263008df590e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Projectile: {fileID: 0}
   AttackRange: 0
   AttackDamage: 0
   AttackSpeed: 0
@@ -151,6 +155,8 @@ MonoBehaviour:
     type: 3}
   SliderHidden: 1
   DistanceToInstantiate: 2
+  CurrentCanvas: {fileID: 0}
+  Occupant: {fileID: 0}
 --- !u!114 &114276352969871528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f350603d953640979e25088aada8d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHealth: 0
+  Health: 0
 --- !u!114 &114517713915704278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +220,7 @@ GameObject:
   - component: {fileID: 4765343740525692}
   - component: {fileID: 33303471739212984}
   - component: {fileID: 23598299638687714}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NurbsPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,6 +237,7 @@ Transform:
   m_LocalRotation: {x: -0.00000005338508, y: 0.7071068, z: 0.7071068, w: 0.00000005338508}
   m_LocalPosition: {x: 0.0013653713, y: -0.000000007555427, z: -0.17284802}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 3
@@ -252,9 +261,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -266,6 +278,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -278,6 +291,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1466780408829928
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +303,7 @@ GameObject:
   - component: {fileID: 4343544427594380}
   - component: {fileID: 33270991744967610}
   - component: {fileID: 23327785026696306}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,6 +320,7 @@ Transform:
   m_LocalRotation: {x: 0.5033505, y: 0.4966268, z: 0.5033506, w: 0.49662688}
   m_LocalPosition: {x: -0.66655254, y: 0.46817747, z: -2.1664758}
   m_LocalScale: {x: 0.56, y: 0.56, z: 0.099999994}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 2
@@ -329,9 +344,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -343,6 +361,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -355,6 +374,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1474089971754462
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +386,7 @@ GameObject:
   - component: {fileID: 4823327824476742}
   - component: {fileID: 33633593752965426}
   - component: {fileID: 23384682696872400}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,6 +403,7 @@ Transform:
   m_LocalRotation: {x: 0.5, y: 0.49999994, z: 0.5, w: 0.50000006}
   m_LocalPosition: {x: 2.1334474, y: -0.1318227, z: -2.6664753}
   m_LocalScale: {x: 0.56, y: 0.56, z: 0.099999994}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 8
@@ -406,9 +427,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -420,6 +444,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -432,6 +457,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1534234930074466
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +469,7 @@ GameObject:
   - component: {fileID: 4332830667291386}
   - component: {fileID: 33069786597427560}
   - component: {fileID: 23307733826570892}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,6 +486,7 @@ Transform:
   m_LocalRotation: {x: -0.00000005338508, y: 0.7071068, z: 0.7071068, w: 0.00000005338508}
   m_LocalPosition: {x: 0.0013653713, y: -0.000000007555427, z: -0.17284802}
   m_LocalScale: {x: 2, y: 3, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 0
@@ -483,9 +510,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -497,6 +527,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -509,6 +540,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1609583385685428
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +552,7 @@ GameObject:
   - component: {fileID: 4668103617087202}
   - component: {fileID: 33703847029602716}
   - component: {fileID: 23233565849795550}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,6 +569,7 @@ Transform:
   m_LocalRotation: {x: -0.00000007526518, y: 0.07845915, z: 0.99691737, w: 0.0000000059235017}
   m_LocalPosition: {x: 0.0013647662, y: 1.6566375, z: 3.8352695}
   m_LocalScale: {x: 0.84000003, y: 0.3153968, z: 0.31539682}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 1
@@ -560,9 +593,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -574,6 +610,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -586,6 +623,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1663496260871686
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +635,7 @@ GameObject:
   - component: {fileID: 4794595879495700}
   - component: {fileID: 33892435590363012}
   - component: {fileID: 23920510039947986}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NurbsPath_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -614,6 +652,7 @@ Transform:
   m_LocalRotation: {x: -0.00000005338508, y: 0.7071068, z: 0.7071068, w: 0.00000005338508}
   m_LocalPosition: {x: 0.0013653713, y: -0.000000007555427, z: -0.17284802}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 4
@@ -637,9 +676,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -651,6 +693,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -663,6 +706,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1666979648675546
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +718,7 @@ GameObject:
   - component: {fileID: 4140460710544796}
   - component: {fileID: 33721623045270816}
   - component: {fileID: 23047630441244816}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -691,6 +735,7 @@ Transform:
   m_LocalRotation: {x: 0.5, y: 0.49999994, z: 0.5, w: 0.50000006}
   m_LocalPosition: {x: -2.2665534, y: 0.000000102001565, z: 2.3335238}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 5
@@ -714,9 +759,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -728,6 +776,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -740,6 +789,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1680586305069532
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,7 +801,7 @@ GameObject:
   - component: {fileID: 4537728656474852}
   - component: {fileID: 33877597669083784}
   - component: {fileID: 23038015668846868}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -768,6 +818,7 @@ Transform:
   m_LocalRotation: {x: 0.5, y: 0.49999994, z: 0.5, w: 0.50000006}
   m_LocalPosition: {x: 2.2334464, y: 0.00000010200161, z: 2.3335247}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.19999999}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 7
@@ -791,9 +842,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -805,6 +859,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -817,6 +872,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1699540440337312
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,7 +884,7 @@ GameObject:
   - component: {fileID: 4760263702889822}
   - component: {fileID: 33958567203792410}
   - component: {fileID: 23776919550752798}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,6 +901,7 @@ Transform:
   m_LocalRotation: {x: 0.5, y: 0.49999994, z: 0.5, w: 0.50000006}
   m_LocalPosition: {x: -2.1665525, y: -0.1318227, z: -2.6664762}
   m_LocalScale: {x: 0.56, y: 0.56, z: 0.099999994}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4493310671921042}
   m_RootOrder: 6
@@ -868,9 +925,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -882,6 +942,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -894,3 +955,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
