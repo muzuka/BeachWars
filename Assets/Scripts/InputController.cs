@@ -22,6 +22,7 @@ public class InputController : MonoBehaviour {
     public GameObject HaloCanvas;
     public GameObject BuildingCanvas;
 
+    Dictionary<string, Action<Player, GameObject>> _rightClickActions;
     PlayerInput _playerInput;
     BaseControls _clickControls;
     InputAction _select;
@@ -52,6 +53,20 @@ public class InputController : MonoBehaviour {
 	{
 		_debug = GetComponent<DebugComponent>().Debug;
 
+		_rightClickActions = new Dictionary<string, Action<Player, GameObject>>()
+		{
+			{ Tags.Crab, RightClickCrab },
+			{ Tags.Castle, (x, y) => RightClickCastle(x, y.GetComponent<CastleController>()) },
+			{ Tags.Ghost, RightClickGhost },
+			{ Tags.Block, RightClickBlock },
+			{ Tags.Gate, (x, y) => RightClickGate(y) },
+			{ Tags.Catapult, RightClickSiege },
+			{ Tags.Ballista, RightClickSiege },
+			{ Tags.Wood, RightClickResource },
+			{ Tags.Stone, RightClickResource },
+			{ Tags.Armoury, RightClickArmoury },
+			{ Tags.Beach, (x, y) => RightClickBeach(x) },
+		};
 		_playerInput = GetComponent<PlayerInput>();
 		_select = _clickControls.Units.Select;
 		_use = _clickControls.Units.Use;
@@ -73,6 +88,8 @@ public class InputController : MonoBehaviour {
 		_clickControls.Disable();
 	}
 
+	#region Mouse click functions
+
 	/// <summary>
 	/// Processes the mouse click.
 	/// </summary>
@@ -92,64 +109,26 @@ public class InputController : MonoBehaviour {
 			
 			if (player.States.GetState("Building"))
 			{
-				GhostBuildingManager ghostManager = player.GhostManager;
-
-				if (player.BuildingType == "Junction")
-				{
-					player.Deselect();
-					player.States.SetState("Building", true);
-
-					if (_select.WasReleasedThisFrame())
-					{
-						Debug.Log("Pressed select");
-						if (Raycaster.IsPointingAt(Tags.Junction))
-                        {
-                            ghostManager.ExtendJunction();
-                        }
-						else if (ghostManager.CanBuild)
-                        {
-                            ghostManager.PlaceJunction();
-                        }
-					}
-					else if (_use.WasReleasedThisFrame())
-					{
-						ghostManager.DestroyGhostBuilding();
-						ghostManager.DestroyWall();
-						player.States.SetState("Building", false);
-						ghostManager.BuildingType = null;
-						player.BuildingType = null;
-					}
-				}
-				else
-				{
-					if (_select.WasReleasedThisFrame() && ghostManager.CanBuild)
-                    {
-                        LeftClickWhileBuilding(player);
-                    }
-					else if (_use.WasReleasedThisFrame())
-                    {
-                        RightClickWhileBuilding(player);
-                    }
-				}
+				ClickWhileBuilding(player);
 			}
 			else
 			{
 				// left click
 				if (_select.WasPressedThisFrame())
-                {
-                    CreateBoxSelection();
-                }
+				{
+					CreateBoxSelection();
+				}
 				else if (_select.WasReleasedThisFrame())
-                {
-                    SelectEntities(player, gui);
-                }
+				{
+					SelectEntities(player, gui);
+				}
 				// right click
 				else if (_use.WasReleasedThisFrame()) 
 				{
 					if (Physics.Raycast(Raycaster.GetRay(), out _hit))
-                    {
-                        RightClickTarget(player);
-                    }
+					{
+						RightClickTarget(player);
+					}
 				}
 
 				DragBoxSelection();
@@ -161,39 +140,230 @@ public class InputController : MonoBehaviour {
 		}
 	}
 
-	// Process Left Click
-	// ####################################################################################
-	/// <summary>
-	/// Left click occurred while building
-	/// </summary>
-	/// <param name="manager">Manager object.</param>
-	/// <param name="player">Player script.</param>
-	void LeftClickWhileBuilding(Player player)
+	void ClickWhileBuilding(Player player)
 	{
-        GhostBuildingManager ghostManager = player.GhostManager;
+		GhostBuildingManager ghostManager = player.GhostManager;
 
-        if (ghostManager.GhostBuilding)
+		if (player.BuildingType == "Junction")
 		{
-            GhostBuilder buildingGhost = ghostManager.GhostBuilding.GetComponent<GhostBuilder>();
-            buildingGhost.HasBuilder = player.HasSelected;
-
-            buildingGhost.Placed = true;
-            ghostManager.PlaceGhostBuilding();
-
-			player.States.SetState("Building", false);
+			ClickWhileBuildingJunction(player);
 		}
 		else
 		{
-			_hit = Raycaster.ShootMouseRay();
+			if (_select.WasReleasedThisFrame() && ghostManager.CanBuild)
+			{
+				LeftClickWhileBuilding(player);
+			}
+			else if (_use.WasReleasedThisFrame())
+			{
+				RightClickWhileBuilding(player);
+			}
+		}
+	}
+	
+	void ClickWhileBuildingJunction(Player player)
+	{
+		GhostBuildingManager ghostManager = player.GhostManager;
+	    
+		player.Deselect();
+		player.States.SetState("Building", true);
 
-			if (_hit.collider.CompareTag(Tags.Junction))
-            {
-                ghostManager.ExtendJunction();
-            }
+		if (_select.WasReleasedThisFrame())
+		{
+			Debug.Log("Pressed select");
+			if (Raycaster.IsPointingAt(Tags.Junction))
+			{
+				ghostManager.ExtendJunction();
+			}
+			else if (ghostManager.CanBuild)
+			{
+				ghostManager.PlaceJunction();
+			}
+		}
+		else if (_use.WasReleasedThisFrame())
+		{
+			player.CancelBuilding();
 		}
 	}
 
-    #region right click code
+	#endregion
+	
+	#region Left click functions
+
+    // Process Left Click
+    // ####################################################################################
+    /// <summary>
+    /// Left click occurred while building
+    /// </summary>
+    /// <param name="manager">Manager object.</param>
+    /// <param name="player">Player script.</param>
+    void LeftClickWhileBuilding(Player player)
+    {
+	    GhostBuildingManager ghostManager = player.GhostManager;
+
+	    if (ghostManager.GhostBuilding)
+	    {
+		    GhostBuilder buildingGhost = ghostManager.GhostBuilding.GetComponent<GhostBuilder>();
+		    buildingGhost.HasBuilder = player.HasSelected;
+
+		    buildingGhost.Placed = true;
+		    ghostManager.PlaceGhostBuilding();
+
+		    player.States.SetState("Building", false);
+	    }
+	    else
+	    {
+		    _hit = Raycaster.ShootMouseRay();
+
+		    if (_hit.collider.CompareTag(Tags.Junction))
+		    {
+			    ghostManager.ExtendJunction();
+		    }
+	    }
+    }
+    
+    void ProcessClickWithNoDrag(Player player)
+    {
+        if (_debug)
+            Debug.Log("Single-selected");
+
+        _hit = Raycaster.ShootMouseRay();
+
+        if (_hit.transform.CompareTag(Tags.Beach) && player.CanCommand)
+        {
+            if (_debug)
+                Debug.Log("Hit Beach");
+            if (player.SelectedList.Count > 1)
+            {
+                MoveSelectedCrabs(player);
+            }
+            else
+            {
+                if (IdUtility.IsCrab(player.Selected))
+                {
+                    player.Selected.GetComponent<CrabController>().StartNewMove(_hit.point);
+                }
+                else if (IdUtility.IsSiegeWeapon(player.Selected))
+                {
+                    player.Selected.GetComponent<SiegeController>().StartMove(_hit.point);
+                }
+            }
+        }
+        else
+        {
+            player.Deselect();
+            AddSingleEntity(player);
+            if (player.SelectedList.Count == 1)
+            {
+                player.Select(player.SelectedList[0]); 
+            }
+        }
+    }
+
+    // Spaces crabs out around the selected position
+    void MoveSelectedCrabs(Player player)
+    {
+        Vector3 avgPosition = InfoTool.GetAveragePosition(player.SelectedList);
+        float avgDistance = InfoTool.GetAverageDistance(player.SelectedList, avgPosition);
+        int avgQuadrantAmount = player.SelectedList.Count / 4;
+        List<GameObject> listA = new List<GameObject>();
+        List<GameObject> listB = new List<GameObject>();
+        List<GameObject> listC = new List<GameObject>();
+        List<GameObject> listD = new List<GameObject>();
+
+        foreach (GameObject selected in player.SelectedList)
+        {
+            if (selected.transform.position.x > avgPosition.x && selected.transform.position.z > avgPosition.z)
+            {
+                listA.Add(selected);
+            }
+            else if (selected.transform.position.x > avgPosition.x && selected.transform.position.z < avgPosition.z)
+            {
+                listB.Add(selected);
+            }
+            else if (selected.transform.position.x < avgPosition.x && selected.transform.position.z > avgPosition.z)
+            {
+                listD.Add(selected);
+            }
+            else if (selected.transform.position.x < avgPosition.x && selected.transform.position.z < avgPosition.z)
+            {
+                listC.Add(selected);
+            }
+        }
+
+        SortByPosition(avgPosition, ref listA);
+        SortByPosition(avgPosition, ref listB);
+        SortByPosition(avgPosition, ref listC);
+        SortByPosition(avgPosition, ref listD);
+
+        BalanceQuadrants(ref listA, ref listB, ref listC, ref listD, avgQuadrantAmount);
+
+        MoveSelected(listA, 1, 1);
+        MoveSelected(listB, 1, -1);
+        MoveSelected(listC, -1, -1);
+        MoveSelected(listD, -1, 1);
+    }
+
+    // Makes sure all quadrants have as close to the same amount of crabs as possible.
+    void BalanceQuadrants(ref List<GameObject> listA, ref List<GameObject> listB, ref List<GameObject> listC, ref List<GameObject> listD, int avgAmount)
+    {
+        List<GameObject>[] lists = { listA, listB, listC, listD };
+
+        for (int i = 0; i < lists.Length; i++)
+        {
+            if (lists[i].Count > avgAmount)
+            {
+                for (int j = i + 1; j < lists.Length; j++)
+                {
+                    if (lists[j].Count < avgAmount)
+                    {
+                        while (lists[i].Count > avgAmount && lists[j].Count < avgAmount)
+                        {
+                            lists[j].Add(lists[i][0]);
+                            lists[i].RemoveAt(0);
+                        }
+                    }
+                }
+            }
+            else if (lists[i].Count < avgAmount)
+            {
+                for (int j = i + 1; j < lists.Length; j++)
+                {
+                    if (lists[j].Count > avgAmount)
+                    {
+                        while (lists[j].Count > avgAmount && lists[i].Count < avgAmount)
+                        {
+                            lists[i].Add(lists[j][0]);
+                            lists[j].RemoveAt(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Tells crabs in list to move to the assigned offset position
+    void MoveSelected(List<GameObject> crabs, int xSign, int zSign)
+    {
+        for (int i = 0; i < crabs.Count; i++)
+        {
+            Vector3 offset = new Vector3(xSign * _offsets[i].x, _offsets[i].y, zSign * _offsets[i].z);
+
+            if (IdUtility.IsCrab(crabs[i]))
+            {
+                crabs[i].GetComponent<CrabController>().ActionStates.ClearStates(); 
+                crabs[i].GetComponent<CrabController>().StartNewMove(_hit.point + offset);
+            }
+            else if (IdUtility.IsSiegeWeapon(crabs[i]))
+            {
+                crabs[i].GetComponent<SiegeController>().StartMove(_hit.point + offset);
+            }
+        }
+    }
+
+    #endregion
+	
+    #region Right click functions
 
     // Process Right Click
     // ####################################################################################
@@ -232,47 +402,20 @@ public class InputController : MonoBehaviour {
 
 		if (player.CanCommand)
 		{
-			switch (target.tag) 
+			if (_rightClickActions.ContainsKey(target.tag))
 			{
-			case Tags.Beach:
-				RightClickBeach(player);
-				break;
-			case Tags.Castle:
-				RightClickCastle(player, target.GetComponent<CastleController>());
-				break;
-			case Tags.Crab:
-				RightClickCrab(player, target);
-				break;
-            case Tags.Ghost:
-                RightClickGhost(player, target);
-                break;
-			case Tags.Block:
-				RightClickBlock(player, target);
-				break;
-            case Tags.Gate:
-                RightClickGate(target);
-                break;
-			case Tags.Catapult:
-			case Tags.Ballista:
-				RightClickSiege(player, target);
-				break;
-			case Tags.Wood:
-			case Tags.Stone:
-				RightClickResource(player, target);
-				break;
-			case Tags.Armoury:
-				RightClickArmoury(player, target);
-				break;
-			default:
-                if (IdUtility.IsBuilding(target))
-                {
-                    RightClickBuilding(player, target);
-                }
-                else if (IdUtility.IsWeapon(target) && IdUtility.IsCrab(player.Selected))
-                {
-                    player.Selected.GetComponent<CrabController>().StartCollecting(target);
-                }
-				break;
+				_rightClickActions[target.tag].Invoke(player, target);
+			}
+			else
+			{
+				if (IdUtility.IsBuilding(target))
+				{
+					RightClickBuilding(player, target);
+				}
+				else if (IdUtility.IsWeapon(target) && IdUtility.IsCrab(player.Selected))
+				{
+					player.Selected.GetComponent<CrabController>().StartCollecting(target);
+				}
 			}
 		}
 	}
@@ -636,7 +779,7 @@ public class InputController : MonoBehaviour {
 	}
     #endregion
 
-    #region keyboard input
+    #region Keyboard functions
 
     /// <summary>
     /// Gets the keyboard input.
@@ -724,7 +867,7 @@ public class InputController : MonoBehaviour {
 	}
     #endregion
 
-    #region selection code
+    #region Selection functions
 
     // box selection
     // ##################################################################################################################################################
@@ -872,150 +1015,7 @@ public class InputController : MonoBehaviour {
 	}
 
     #endregion
-
-    #region left click code
-
-    void ProcessClickWithNoDrag(Player player)
-    {
-        if (_debug)
-            Debug.Log("Single-selected");
-
-        _hit = Raycaster.ShootMouseRay();
-
-        if (_hit.transform.CompareTag(Tags.Beach) && player.CanCommand)
-        {
-            if (_debug)
-                Debug.Log("Hit Beach");
-            if (player.SelectedList.Count > 1)
-            {
-                MoveSelectedCrabs(player);
-            }
-            else
-            {
-                if (IdUtility.IsCrab(player.Selected))
-                {
-                    player.Selected.GetComponent<CrabController>().StartNewMove(_hit.point);
-                }
-                else if (IdUtility.IsSiegeWeapon(player.Selected))
-                {
-                    player.Selected.GetComponent<SiegeController>().StartMove(_hit.point);
-                }
-            }
-        }
-        else
-        {
-            player.Deselect();
-            AddSingleEntity(player);
-            if (player.SelectedList.Count == 1)
-            {
-                player.Select(player.SelectedList[0]); 
-            }
-        }
-    }
-
-    // Spaces crabs out around the selected position
-    void MoveSelectedCrabs(Player player)
-    {
-        Vector3 avgPosition = InfoTool.GetAveragePosition(player.SelectedList);
-        float avgDistance = InfoTool.GetAverageDistance(player.SelectedList, avgPosition);
-        int avgQuadrantAmount = player.SelectedList.Count / 4;
-        List<GameObject> listA = new List<GameObject>();
-        List<GameObject> listB = new List<GameObject>();
-        List<GameObject> listC = new List<GameObject>();
-        List<GameObject> listD = new List<GameObject>();
-
-        foreach (GameObject selected in player.SelectedList)
-        {
-            if (selected.transform.position.x > avgPosition.x && selected.transform.position.z > avgPosition.z)
-            {
-                listA.Add(selected);
-            }
-            else if (selected.transform.position.x > avgPosition.x && selected.transform.position.z < avgPosition.z)
-            {
-                listB.Add(selected);
-            }
-            else if (selected.transform.position.x < avgPosition.x && selected.transform.position.z > avgPosition.z)
-            {
-                listD.Add(selected);
-            }
-            else if (selected.transform.position.x < avgPosition.x && selected.transform.position.z < avgPosition.z)
-            {
-                listC.Add(selected);
-            }
-        }
-
-        SortByPosition(avgPosition, ref listA);
-        SortByPosition(avgPosition, ref listB);
-        SortByPosition(avgPosition, ref listC);
-        SortByPosition(avgPosition, ref listD);
-
-        BalanceQuadrants(ref listA, ref listB, ref listC, ref listD, avgQuadrantAmount);
-
-        MoveSelected(listA, 1, 1);
-        MoveSelected(listB, 1, -1);
-        MoveSelected(listC, -1, -1);
-        MoveSelected(listD, -1, 1);
-    }
-
-    // Makes sure all quadrants have as close to the same amount of crabs as possible.
-    void BalanceQuadrants(ref List<GameObject> listA, ref List<GameObject> listB, ref List<GameObject> listC, ref List<GameObject> listD, int avgAmount)
-    {
-        List<GameObject>[] lists = { listA, listB, listC, listD };
-
-        for (int i = 0; i < lists.Length; i++)
-        {
-            if (lists[i].Count > avgAmount)
-            {
-                for (int j = i + 1; j < lists.Length; j++)
-                {
-                    if (lists[j].Count < avgAmount)
-                    {
-                        while (lists[i].Count > avgAmount && lists[j].Count < avgAmount)
-                        {
-                            lists[j].Add(lists[i][0]);
-                            lists[i].RemoveAt(0);
-                        }
-                    }
-                }
-            }
-            else if (lists[i].Count < avgAmount)
-            {
-                for (int j = i + 1; j < lists.Length; j++)
-                {
-                    if (lists[j].Count > avgAmount)
-                    {
-                        while (lists[j].Count > avgAmount && lists[i].Count < avgAmount)
-                        {
-                            lists[i].Add(lists[j][0]);
-                            lists[j].RemoveAt(0);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Tells crabs in list to move to the assigned offset position
-    void MoveSelected(List<GameObject> crabs, int xSign, int zSign)
-    {
-        for (int i = 0; i < crabs.Count; i++)
-        {
-            Vector3 offset = new Vector3(xSign * _offsets[i].x, _offsets[i].y, zSign * _offsets[i].z);
-
-            if (IdUtility.IsCrab(crabs[i]))
-            {
-                crabs[i].GetComponent<CrabController>().ActionStates.ClearStates(); 
-                crabs[i].GetComponent<CrabController>().StartNewMove(_hit.point + offset);
-            }
-            else if (IdUtility.IsSiegeWeapon(crabs[i]))
-            {
-                crabs[i].GetComponent<SiegeController>().StartMove(_hit.point + offset);
-            }
-        }
-    }
-
-    #endregion
-
+    
     #region helper functions
 
     // Sorts by distance to the hit point of the mouse click.
