@@ -71,7 +71,7 @@ public class StrategyManager : MonoBehaviour {
 
     Enum.AIStage _currentMode;
 
-	bool _debug;
+	DebugComponent _debug;
 
 	/// <summary>
 	/// Wake this instance.
@@ -86,7 +86,7 @@ public class StrategyManager : MonoBehaviour {
         Knowledge = GetComponent<EnemyKnowledge>();
         TacticsManager = GetComponent<TacticsManager>();
         ProductionManager = GetComponent<ProductionManager>();
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
 	}
 
 	/// <summary>
@@ -94,9 +94,7 @@ public class StrategyManager : MonoBehaviour {
 	/// </summary>
 	void Start()
 	{
-        if (_debug) {
-            Debug.Log("Started Thinker.");
-        }
+        _debug.LogMessage("Started Thinker.");
 
         _circleTimer = new Timer(_circleLifeTime);
 	}
@@ -109,7 +107,7 @@ public class StrategyManager : MonoBehaviour {
         if (Knowledge.AICastleList.Count > 0 && MainCastle == null)
             MainCastle = Knowledge.AICastleList[0].GetComponent<CastleController>();
 
-        if (_debug)
+        if (_debug.IsDebugModeEnabled)
         {
             _circleTimer.update(DrawCircles);
         }

@@ -73,7 +73,7 @@ public class NestController : MonoBehaviour {
 	/// </summary>
 	public void Destroyed()
 	{
-		if (GetComponent<DebugComponent>().Debug)
+		if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 			Debug.Log("Nest was destroyed.");
 	}
 

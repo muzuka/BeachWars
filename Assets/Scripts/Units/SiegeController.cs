@@ -5,7 +5,7 @@ using UnityEngine.AI;
 /// Siege controller.
 /// Controls siege weapons(catapults and ballistas)
 /// </summary>
-public class SiegeController : MonoBehaviour {
+public class SiegeController : MonoBehaviour, IUnit {
 
     public GameObject Projectile;
 
@@ -35,8 +35,8 @@ public class SiegeController : MonoBehaviour {
     Animator _animator;          // for accessing the animator
             
 	GameObject _boulder;
-
-	bool _debug;
+	
+	DebugComponent _debug;
 
 	/// <summary>
 	/// Start this instance.
@@ -58,8 +58,7 @@ public class SiegeController : MonoBehaviour {
 		GetComponent<Attackable>().SetHealth(MaxHealth);
 
 		_team = GetComponent<Team>();
-
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
 	}
 
 	/// <summary>
@@ -89,14 +88,14 @@ public class SiegeController : MonoBehaviour {
 	/// <summary>
 	/// Destroyed this instance.
 	/// </summary>
-	public void destroyed()
+	public void Destroyed()
 	{
 		if (_debug)
 			Debug.Log(tag + " was destroyed.");
 
 		if (_target)
         {
-            _target.SendMessage("enemyDied", SendMessageOptions.DontRequireReceiver); 
+            _target.GetComponent<IUnit>().EnemyDied(); 
         }
 		if (_controller)
         {
@@ -112,9 +111,7 @@ public class SiegeController : MonoBehaviour {
 	{
 		if (GetComponent<Enterable>().Occupied())
 		{
-			if (_debug)
-				Debug.Log("Crab moving to " + dest);
-
+			_debug.LogMessage("Crab moving to " + dest);
 			_siegeAgent.isStopped = false;
 			_siegeAgent.ResetPath();
 			_destination = dest;
@@ -138,18 +135,14 @@ public class SiegeController : MonoBehaviour {
 	/// <param name="attackTarget">Target object.</param>
 	public void StartAttack(GameObject attackTarget)
 	{
-		if (_debug)
-		{
-			Debug.Assert(attackTarget.GetComponent<Attackable>());
-			Debug.Log("Started attack!");
-		}
+		_debug.Assert(attackTarget.GetComponent<Attackable>() != null);
+		_debug.LogMessage("Started attack!");
 
 		_target = attackTarget;
 
 		if ((!ValidTarget()) || !TargetIsEnemy())
 		{
-			if (_debug)
-				Debug.Log("Invalid Target");
+			_debug.LogMessage("Invalid Target");
 			
 			_target = null;
 			return;
@@ -157,7 +150,7 @@ public class SiegeController : MonoBehaviour {
 
 		if (IdUtility.IsMoveable(_target))
         {
-            _target.SendMessage("SetAttacker", gameObject, SendMessageOptions.DontRequireReceiver); 
+            _target.GetComponent<IUnit>().SetAttacker(gameObject); 
         }
 
 		StartMove(_target.transform.position);
@@ -172,8 +165,7 @@ public class SiegeController : MonoBehaviour {
 		_timeConsumed += Time.deltaTime;
 		if (_timeConsumed >= AttackSpeed)
 		{
-			if (_debug)
-				Debug.Log(gameObject.tag + " launched attack!");
+			_debug.LogMessage(gameObject.tag + " launched attack!");
 
             _animator.SetTrigger("Fire");
 			_boulder = Instantiate(Projectile, transform.position, transform.rotation);
@@ -200,15 +192,13 @@ public class SiegeController : MonoBehaviour {
 	/// <param name="enterTarget">Target object.</param>
 	public void StartEnter(GameObject enterTarget)
 	{
-		if (_debug)
-			Debug.Log("Started entering");
+		_debug.LogMessage("Started entering");
 
 		_target = enterTarget;
 
 		if (!_target.CompareTag(Tags.Tower) || !_target.GetComponent<Team>().OnTeam(_team.team))
 		{
-			if (_debug)
-				Debug.Log("Cannot Enter");
+			_debug.LogMessage("Cannot Enter");
 			
 			_target = null;
 			return;
@@ -296,16 +286,6 @@ public class SiegeController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Sets the controller.
-	/// </summary>
-	/// <param name="obj">Player script.</param>
-	public void SetController(Player obj)
-	{
-		_controller = obj;
-		_selected = true;
-	}
-
-	/// <summary>
 	/// Is siege weapon busy?
 	/// </summary>
 	/// <returns><c>true</c>, if siege weapon is busy, <c>false</c> otherwise.</returns>
@@ -320,6 +300,23 @@ public class SiegeController : MonoBehaviour {
 	public void ToggleSelected()
 	{
 		_selected = !_selected;
+	}
+	
+	public void Deselect()
+	{
+		Debug.Log("deselected");
+		_controller = null;
+		_selected = false;
+	}
+	
+	/// <summary>
+	/// Sets the controller.
+	/// </summary>
+	/// <param name="obj">Player script.</param>
+	public void SetController(Player obj)
+	{
+		_controller = obj;
+		_selected = true;
 	}
 
 	/// <summary>

@@ -42,14 +42,14 @@ public class GUIController : MonoBehaviour {
 
 	const string _emptyString = "Nothing";
 
-	bool _debug;
+	DebugComponent _debug;
 
 	/// <summary>
 	/// Initializes the UI.
 	/// </summary>
 	public void StartUI()
 	{
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
 
 		if (!GUIHookedIn())
 			Debug.Log("GUI isn't completely connected.");
@@ -105,7 +105,7 @@ public class GUIController : MonoBehaviour {
 	/// <param name="player">Player script.</param>
 	void SingleUIUpdate(Player player)
 	{
-		player.Selected.SendMessage("UpdateUI", InfoView);
+		player.Selected.GetComponent<IUnit>().UpdateUI(InfoView);
 		ActionView.SetButtons(player);
 	}
 
@@ -142,14 +142,12 @@ public class GUIController : MonoBehaviour {
 
 		if (!SelectBox)
 		{
-			if (_debug)
-				Debug.Log("Select box isn't hooked up!");
+			_debug.LogMessage("Select box isn't hooked up!");
 			return false;
 		}
 		if (!menus)
 		{
-			if (_debug)
-				Debug.Log("A menu isn't hooked up!");
+			_debug.LogMessage("A menu isn't hooked up!");
 			return false;
 		}
 
@@ -235,8 +233,7 @@ public class GUIController : MonoBehaviour {
 			InfoView.SetBuildingView();
 			break;
 		case "multi":
-			if (_debug)
-				Debug.Log("Activated objects");
+			_debug.LogMessage("Activated objects");
 
 			InfoView.SetMultiView(GetComponent<Player>());
 			break;
@@ -317,8 +314,7 @@ public class GUIController : MonoBehaviour {
 	/// </summary>
 	public void ClearBox()
 	{
-		if (_debug)
-			Debug.Log("Cleared Box.");
+		_debug.LogMessage("Cleared Box.");
 		SelectBox.SetActive(false);
 		_selectBoxTransform.sizeDelta = new Vector2(0, 0);
 	}

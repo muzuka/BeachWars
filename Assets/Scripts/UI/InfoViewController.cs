@@ -52,7 +52,7 @@ public class InfoViewController : MonoBehaviour
     const string _emptyString = "Nothing";
     const int _miniProfileCount = 16;
     
-    bool _debug;
+    DebugComponent _debug;
     
     // Start is called before the first frame update
     void Start()
@@ -64,6 +64,8 @@ public class InfoViewController : MonoBehaviour
 	    LabelText.text = _emptyString;
 	    StoneCount.text = "";
 	    WoodCount.text = "";
+
+	    _debug = GetComponent<DebugComponent>();
         
 	    if (!GUIHookedIn())
 		    Debug.Log("GUI isn't completely connected.");
@@ -89,57 +91,49 @@ public class InfoViewController : MonoBehaviour
 
 	    if (!LabelText)
 	    {
-		    if (_debug)
-			    Debug.Log("LabelText isn't hooked up!");
+		    _debug.LogMessage("LabelText isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!count)
 	    {
-		    if (_debug)
-			    Debug.Log("Stone or wood count isn't hooked up!");
+		    _debug.LogMessage("Stone or wood count isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!HealthSlider)
 	    {
-		    if (_debug)
-			    Debug.Log("Health slider isn't hooked up!");
+		    _debug.LogMessage("Health slider isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!SelectedImage)
 	    {
-		    if (_debug)
-			    Debug.Log("Selected image isn't hooked up!");
+		    _debug.LogMessage("Selected image isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!invSlots)
 	    {
-		    if (_debug)
-			    Debug.Log("One of the inventory slots isn't hooked up!");
+		    _debug.LogMessage("One of the inventory slots isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!buttons)
 	    {
-		    if (_debug)
-			    Debug.Log("A button isn't hooked up!");
+		    _debug.LogMessage("A button isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!multiSelect)
 	    {
-		    if (_debug)
-			    Debug.Log("A multi-select element isn't hooked up!");
+		    _debug.LogMessage("A multi-select element isn't hooked up!");
 		    return false;
 	    }
 
 	    if (!uiTransforms)
 	    {
-		    if (_debug)
-			    Debug.Log("A transform isn't hooked up!");
+		    _debug.LogMessage("A transform isn't hooked up!");
 		    return false;
 	    }
 
@@ -152,7 +146,7 @@ public class InfoViewController : MonoBehaviour
 	    {
 		    if (MiniProfiles[i] == null)
 		    {
-			    Debug.Log("Profile " + i + " isn't hooked up");
+			    _debug.LogMessage("Profile " + i + " isn't hooked up");
 			    return false;
 		    }
 	    }
@@ -259,7 +253,7 @@ public class InfoViewController : MonoBehaviour
 			    break;
 		    }
 
-		    Debug.Log(i);
+		    _debug.LogMessage(i.ToString());
 		    MiniProfiles[i].texture = Resources.Load<Texture>("Textures/" + player.SelectedList[i].tag);
 
 		    player.SelectedList[i].GetComponent<Attackable>().SetHealth(MiniProfiles[i].GetComponentInChildren<Slider>());
@@ -309,8 +303,7 @@ public class InfoViewController : MonoBehaviour
 	    Player player = Player.Instance;
 	    GameObject crab = player.SelectedList[pos];
 
-	    if (_debug)
-		    Debug.Log(player.SelectedList.Count + " trying to access " + pos);
+	    _debug.LogMessage(player.SelectedList.Count + " trying to access " + pos);
 		
 	    player.Deselect();
 	    player.SelectedList.Add(crab);

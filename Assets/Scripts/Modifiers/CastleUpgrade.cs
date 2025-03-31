@@ -19,7 +19,7 @@ public class CastleUpgrade : Upgradable {
 		Upgrading = false;
 		TimeConsumed = 0.0f;
 		OtherCrabs = 1;
-		Debug = GetComponent<DebugComponent>().Debug;
+		Debug = GetComponent<DebugComponent>().IsDebugModeEnabled;
 	}
 	
 	// Update is called once per frame
@@ -61,7 +61,7 @@ public class CastleUpgrade : Upgradable {
 			TimeConsumed = 0.0f;
 			Upgrading = false;
 			OtherCrabs = 1;
-			gameObject.SendMessage("UpgradeFinished", _nextLevel, SendMessageOptions.DontRequireReceiver);
+			gameObject.GetComponent<CastleController>().UpgradeFinished(_nextLevel);
 		}
 	}
 

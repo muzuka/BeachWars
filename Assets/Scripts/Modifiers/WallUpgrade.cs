@@ -18,7 +18,7 @@ public class WallUpgrade : Upgradable
 		Upgrading = false;
 		TimeConsumed = 0.0f;
 		OtherCrabs = 1;
-		Debug = GetComponent<DebugComponent>().Debug;
+		Debug = GetComponent<DebugComponent>().IsDebugModeEnabled;
 	}
 	
 	/// <summary>

@@ -8,14 +8,12 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-
-
 /// <summary>
 /// Crab controller.
 /// Handles all crab actions that can be commanded.
 /// TODO: Add team variable
 /// </summary>
-public class CrabController : MonoBehaviour {
+public class CrabController : MonoBehaviour, IUnit {
 
 	#region public variables
 
@@ -134,7 +132,7 @@ public class CrabController : MonoBehaviour {
 	string _weaponToTake;
 	string _resourceToTake;
 
-	bool _debug;
+	DebugComponent _debug;
 
 	GameObject _destinationMarker;
 
@@ -185,7 +183,7 @@ public class CrabController : MonoBehaviour {
 		_weaponToTake = "none";
 		_resourceToTake = "none";
 
-        _debug = GetComponent<DebugComponent>().Debug;
+        _debug = GetComponent<DebugComponent>();
 		Inventory.Debug = _debug;
 		ActionStates.Debug = _debug;
 		_weaponStates.Debug = _debug;
@@ -253,7 +251,7 @@ public class CrabController : MonoBehaviour {
 
 		if (_target)
         {
-            _target.SendMessage("enemyDied", SendMessageOptions.DontRequireReceiver); 
+            _target.GetComponent<IUnit>().EnemyDied(); 
         }
 
 		if (_controller)
@@ -434,8 +432,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	public void StopMove()
 	{
-		if (_debug)
-			Debug.Log("Crab stopped moving");
+		_debug.LogMessage("Crab stopped moving");
 		
 		_crabAgent.isStopped = true;
 		_crabAgent.ResetPath();
@@ -455,24 +452,20 @@ public class CrabController : MonoBehaviour {
 	/// <param name="attackTarget">Attack target.</param>
 	public void StartAttack(GameObject attackTarget) 
 	{
-		if (_debug)
-		{
-			Debug.Log("Started attack!");
-		}
+		_debug.LogMessage("Started attack!");
 
 		_target = attackTarget;
 
 		if ((!ValidTarget()) || !TargetIsEnemy()) 
 		{
-			if (_debug)
-				Debug.Log("Invalid Target");
+			_debug.LogMessage("Invalid Target");
 			_target = null;
 			return;
 		}
 			
 		if (IdUtility.IsMoveable(_target))
         {
-            _target.SendMessage("SetAttacker", gameObject, SendMessageOptions.DontRequireReceiver); 
+            _target.GetComponent<IUnit>().SetAttacker(gameObject); 
         }
 
 		StartMove(_target.transform.position);
@@ -484,8 +477,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void Attack() 
 	{
-		if (_debug)
-			Debug.Log("Crab attack");
+		_debug.LogMessage("Crab attack");
 
 		float finalAttack = _attackDamage;
 		
@@ -528,8 +520,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void UpdateAttack()
 	{
-		if (_debug)
-			Debug.Log("Attacking");
+		_debug.LogMessage("Attacking");
 		_crabAgent.isStopped = true;
         _attackTimer.update(Attack);
 	}
@@ -687,8 +678,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void UpdateUnload()
 	{
-		if (_debug)
-			Debug.Log("Unloading");
+		_debug.LogMessage("Unloading");
 
 		Unload();
 		Inventory.SortInventory();
@@ -776,8 +766,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void UpdateGhostBuild() 
 	{
-		if (_debug)
-			Debug.Log("Building from ghost");
+		_debug.LogMessage("Building from ghost");
 
 		if (_ghostBuilderReference.CanBuild()) 
 		{
@@ -951,8 +940,7 @@ public class CrabController : MonoBehaviour {
 	/// <param name="obj">Castle or block object.</param>
 	public void StartUpgrading(GameObject obj)
 	{
-		if (_debug)
-			Debug.Log("Started upgrading");
+		_debug.LogMessage("Started upgrading");
 
 		_target = obj;
 
@@ -973,8 +961,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void UpdateUpgrade()
 	{
-		if (_debug)
-			Debug.Log("Upgrading");
+		_debug.LogMessage("Upgrading");
 
 		_target.GetComponent<WallUpgrade>().StartWallUpgrade(_upgradeType, Inventory);
 		_target.GetComponent<WallUpgrade>().SetCrabs(_selectedCrabs);
@@ -1000,8 +987,7 @@ public class CrabController : MonoBehaviour {
 	/// <param name="obj">Wood, stone, or weapon object.</param>
 	public void StartCollecting(GameObject obj)
 	{
-		if (_debug)
-			Debug.Log("Started collecting");
+		_debug.LogMessage("Started collecting");
 
         if (_mainCastle != null && Inventory.Full())
         {
@@ -1027,7 +1013,7 @@ public class CrabController : MonoBehaviour {
             yield break;
         }
 
-		while (CanInteract() && !Inventory.Full() && ActionStates.GetState("Collecting")) 
+		while (CanInteract() && !Inventory.Full() && ActionStates.GetState("Collecting") && _target.GetComponent<ResourceController>().ResourceCount != 0) 
 		{
 			if (_debug)
 				Debug.Log("Taking " + _target.tag + ".");
@@ -1060,8 +1046,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void UpdateCollect()
 	{
-		if (_debug)
-			Debug.Log("Collecting");
+		_debug.LogMessage("Collecting");
 
 		if (_target == null)
 		{
@@ -1198,10 +1183,7 @@ public class CrabController : MonoBehaviour {
 	/// <param name="enterable">Enterable script.</param>
 	public void StartEnter(GameObject enterable) 
 	{
-		if (_debug)
-		{
-			Debug.Log("Started entering");
-		}
+		_debug.LogMessage("Started entering");
 
 		_target = enterable;
 
@@ -1225,8 +1207,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void UpdateEnter()
 	{
-		if (_debug)
-			Debug.Log("Entering");
+		_debug.LogMessage("Entering");
 
 		Enter();
 		ActionStates.ClearStates();
@@ -1244,10 +1225,7 @@ public class CrabController : MonoBehaviour {
 	/// <param name="castle">Castle object.</param>
 	public void CaptureCastle(GameObject castle)
 	{
-		if (_debug)
-        {
-            Debug.Log("Capturing castle.");
-        }
+		_debug.LogMessage("Capturing castle.");
 			
 		_target = castle;
 		_timeToCapture = _target.GetComponent<CastleController>().GetResistanceTime() / _selectedCrabs;
@@ -1276,8 +1254,7 @@ public class CrabController : MonoBehaviour {
 		_timeConsumed += Time.deltaTime;
 		if (_timeConsumed >= _timeToCapture && !_target.GetComponent<Enterable>().Occupied())
 		{
-			if (_debug)
-				Debug.Log("Captured castle");
+			_debug.LogMessage("Captured castle");
 
 			_target.GetComponent<Team>().ChangeTeam(_team.team);
 
@@ -1339,8 +1316,7 @@ public class CrabController : MonoBehaviour {
 		// if good then
 			// run dialog
 			// change crab team
-		if (_debug)
-			Debug.Log("Recruiting");
+		_debug.LogMessage("Recruiting");
 
         if (_target.GetComponent<CrabController>() == null)
         {
@@ -1474,8 +1450,7 @@ public class CrabController : MonoBehaviour {
 	/// </summary>
 	void Repair() 
 	{
-		if (_debug)
-			Debug.Log("Repairing");
+		_debug.LogMessage("Repairing");
         
 		_target.SendMessage("Repair", RebuildAmount, SendMessageOptions.DontRequireReceiver);
 	}
@@ -1671,9 +1646,16 @@ public class CrabController : MonoBehaviour {
 	/// <summary>
 	/// Toggles the selected.
 	/// </summary>
-	public void ToggleSelected() 
+	public void ToggleSelected()
 	{
 		_selected = !_selected;
+	}
+
+	public void Deselect()
+	{
+		Debug.Log("deselected");
+		_controller = null;
+		_selected = false;
 	}
 
 	/// <summary>

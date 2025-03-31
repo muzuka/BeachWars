@@ -78,11 +78,12 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public bool Paused;
 	
-	bool _debug;
+	DebugComponent _debug;
 	
 	Team _team;
 	
 	Canvas _buildingCanvas;
+	Transform _camera;
 	Vector3 _cameraPos;
 	float _cameraXDelta;
 	float _cameraZDelta;
@@ -121,20 +122,20 @@ public class Player : MonoBehaviour
 	    GhostManager.JunctionDistLimit = JunctionDistanceLimit;
 	    GhostManager.BlockSize = BlockSize;
 
-	    _debug = GetComponent<DebugComponent>().Debug;
+	    _debug = GetComponent<DebugComponent>();
 	    GhostManager.Debug = _debug;
 	    States.Debug = _debug;
 
 	    Paused = false;
 
+	    _camera = GetComponentInParent<Transform>();
 	    _buildingCanvas = null;
 
 	    TargetedArmoury = null;
-
+	    
 	    GUI.StartUI();
 
-	    if (_debug)
-		    Debug.Log("Finished starting.");
+	    _debug.LogMessage("Finished starting.");
     }
 
     /// <summary>
@@ -152,8 +153,8 @@ public class Player : MonoBehaviour
 
 	    if (_buildingCanvas)
 	    {
-		    _cameraXDelta = GetComponentInParent<Transform>().position.x - _cameraPos.x;
-		    _cameraZDelta = GetComponentInParent<Transform>().position.z - _cameraPos.z;
+		    _cameraXDelta = _camera.position.x - _cameraPos.x;
+		    _cameraZDelta = _camera.position.z - _cameraPos.z;
 
 		    Vector2 tempPos = GetPanel().anchoredPosition;
 		    tempPos.x -= _cameraXDelta;
@@ -170,7 +171,7 @@ public class Player : MonoBehaviour
 
 	    GhostManager.UpdateGhosts();
 
-	    _cameraPos = GetComponentInParent<Transform>().position;
+	    _cameraPos = _camera.position;
     }
 
     #endregion
@@ -275,8 +276,7 @@ public class Player : MonoBehaviour
     /// <returns>The panel transform.</returns>
     RectTransform GetPanel()
     {
-	    if (_debug)
-		    Debug.Assert(_buildingCanvas);
+	    _debug.Assert(_buildingCanvas);
 
 	    List<RectTransform> transforms = _buildingCanvas.GetComponentsInChildren<RectTransform>().ToList();
 
@@ -285,8 +285,7 @@ public class Player : MonoBehaviour
 
     public void GeneralBuildButtonPressed(string buildingType)
     {
-	    if (_debug)
-		    Debug.Log($"Pressed {buildingType} button!");
+	    _debug.LogMessage($"Pressed {buildingType} button!");
 	    
 	    SetBuildingType(buildingType);
 	    SetPlayerState("Building");
@@ -304,15 +303,19 @@ public class Player : MonoBehaviour
     /// <param name="obj">Object.</param>
     public void Select(GameObject obj) 
     {
-	    if (_debug)
-		    Debug.Log($"Selected {obj.name}");
-		
+	    _debug.LogMessage($"Selected {obj.name}");
+
+	    if (HasSelected)
+	    {
+		    Selected.GetComponent<IUnit>().Deselect();
+	    }
+	    
 	    Selected = obj;
 	    SelectedTeam = obj.GetComponent<Team>();
 	    CanCommand = _team.OnTeam(SelectedTeam.team);
 	    HasSelected = true;
 
-	    Selected.SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver);
+	    Selected.GetComponent<IUnit>().SetController(this);
 
 	    // set gui
 	    GUI.InfoView.SetLabel(obj);
@@ -327,8 +330,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void SelectAll() 
     {
-	    if (_debug)
-		    Debug.Log($"Selected {SelectedList.Count} units.");
+	    _debug.LogMessage($"Selected {SelectedList.Count} units.");
 		
 	    Selected = SelectedList[0];
 	    HasSelected = true;
@@ -336,7 +338,7 @@ public class Player : MonoBehaviour
 
 	    for (int i = 0; i < SelectedList.Count; i++)
 	    {
-		    SelectedList[i].SendMessage("SetController", this, SendMessageOptions.DontRequireReceiver); 
+		    SelectedList[i].GetComponent<IUnit>().SetController(this); 
 	    }
 
 	    CanCommand = (_team.team == SelectedTeam.team);
@@ -356,7 +358,7 @@ public class Player : MonoBehaviour
 		    {
 			    if (SelectedList[i])
 			    {
-				    SelectedList[i].SendMessage("toggleSelected", SendMessageOptions.DontRequireReceiver); 
+				    SelectedList[i].GetComponent<IUnit>().ToggleSelected(); 
 			    }
 		    }
 
@@ -383,8 +385,7 @@ public class Player : MonoBehaviour
 
 		    GUI.Deselect();
 			
-		    if (_debug)
-			    Debug.Log($"Deselected unit(s)");
+		    _debug.LogMessage($"Deselected unit(s)");
 	    }
     }
 
@@ -439,7 +440,7 @@ public class Player : MonoBehaviour
 		
 	    if (!foundCastle)
 	    {
-		    Debug.Log("You win!");
+		    _debug.LogMessage("You win!");
 		    GUI.WinMenu.SetActive(true);
 	    }
     }
@@ -460,7 +461,7 @@ public class Player : MonoBehaviour
 
 	    if (!foundCastle)
 	    {
-		    Debug.Log("You lose!");
+		    _debug.LogMessage("You lose!");
 		    GUI.WinMenu.SetActive(true);
 		    GUI.WinMenu.GetComponentInChildren<Text>().text = "You Lost!";
 	    }
@@ -489,7 +490,7 @@ public class Player : MonoBehaviour
 	{
 		if (Selected.GetComponent<CrabController>() == null)
 		{
-			Debug.LogWarning("Selected object is not a crab.");
+			_debug.LogWarning("Selected object is not a crab.");
 			return;
 		}
 
@@ -510,7 +511,7 @@ public class Player : MonoBehaviour
 	{
 		if (Selected.GetComponent<CrabController>() == null)
 		{
-			Debug.LogWarning("Selected object is not a crab.");
+			_debug.LogWarning("Selected object is not a crab.");
 			return;
 		}
 
@@ -519,6 +520,21 @@ public class Player : MonoBehaviour
 			CrabController crab = Selected.GetComponent<CrabController>();
 			crab.Craft(Tags.Bow);
 			UpdateInventory(crab.GetInventory());
+		}
+	}
+	
+	/// <summary>
+	/// Moves multiple crabs at once.
+	/// </summary>
+	/// <param name="dest">Destination.</param>
+	public void MoveMultiple(Vector3 dest)
+	{
+		for (int i = 1; i < SelectedList.Count; i++)
+		{
+			if (IdUtility.IsCrab(SelectedList[i]))
+			{
+				SelectedList[i].GetComponent<CrabController>().StartMove(dest); 
+			}
 		}
 	}
 
@@ -537,30 +553,33 @@ public class Player : MonoBehaviour
 		}
 		else
 		{
-			if (_debug)
-				Debug.Log("No available crab.");
+			_debug.LogMessage("No available crab.");
 		}
 	}
 
-	/// <summary>
-	/// Moves multiple crabs at once.
-	/// </summary>
-	/// <param name="dest">Destination.</param>
-	public void MoveMultiple(Vector3 dest)
+	public void StartAttack(GameObject target)
 	{
-		for (int i = 1; i < SelectedList.Count; i++)
+		for (int i = 0; i < SelectedList.Count; i++)
 		{
-			if (IdUtility.IsCrab(SelectedList[i]))
+			if (SelectedList[i].GetComponent<CrabController>())
 			{
-				SelectedList[i].SendMessage("startMove", dest); 
+				SelectedList[i].GetComponent<CrabController>().StartAttack(target);
+			}
+			else if (SelectedList[i].GetComponent<SiegeController>())
+			{
+				SelectedList[i].GetComponent<SiegeController>().StartAttack(target);
 			}
 		}
 	}
 
-	#endregion
-
-	#region Building functions
-
+	public void StartBuild(Vector3 position)
+	{
+		Selected.GetComponent<CrabController>().StartBuild(BuildingType, position);
+		Selected.GetComponent<CrabController>().SetCrabs(SelectedList.Count);
+		MoveMultiple(position);
+		GhostManager.DestroyGhostBuilding();
+	}
+	
 	/// <summary>
 	/// Sets the type of the building to build.
 	/// </summary>
@@ -584,8 +603,7 @@ public class Player : MonoBehaviour
 	/// </summary>
 	public void CreateGhostBuilding() 
 	{
-		if (_debug)
-			Debug.Log("Building a " + BuildingType);
+		_debug.LogMessage("Building a " + BuildingType);
 
 		GhostManager.CreateGhostBuilding();
 	}
@@ -654,5 +672,10 @@ public class Player : MonoBehaviour
 		}
 
 		return false;
+	}
+
+	public Team GetTeam()
+	{
+		return _team;
 	}
 }

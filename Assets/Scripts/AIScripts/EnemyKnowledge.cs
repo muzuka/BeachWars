@@ -241,7 +241,7 @@ public class EnemyKnowledge : MonoBehaviour {
 				NeutralCrabList.Add(crab);
 			}
 		}
-		else if (GetComponent<DebugComponent>().Debug)
+		else if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 			Debug.Log("Crab has no valid team.");
 	}
 

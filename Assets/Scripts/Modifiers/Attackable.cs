@@ -23,10 +23,10 @@ public class Attackable : MonoBehaviour {
 	{
 		if (Health <= 0) 
 		{
-			if (GetComponent<DebugComponent>().Debug)
+			if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 				Debug.Log(gameObject.name + " ran out of health.");
 			
-			gameObject.SendMessage("destroyed", SendMessageOptions.DontRequireReceiver);
+			gameObject.GetComponent<IUnit>().Destroyed();
 			Destroy(gameObject);
 		}
 	}

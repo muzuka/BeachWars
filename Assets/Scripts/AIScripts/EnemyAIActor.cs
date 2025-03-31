@@ -24,7 +24,7 @@ public class EnemyAIActor : MonoBehaviour {
 	{
 		if (_controller.Commands.Count > 0)
 		{
-			if (GetComponent<DebugComponent>().Debug)
+			if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 				Debug.Log("Executing command " + _controller.Commands.Peek().GetType());
 			_controller.Commands.Dequeue().Execute();
 		}

@@ -41,7 +41,7 @@ public class NeutralCrab : MonoBehaviour {
 
 		if (PlayerIsNear)
 		{
-			if (GetComponent<DebugComponent>().Debug)
+			if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 				Debug.Log("Player is near!");
 
 			if (UIOpen)
@@ -50,7 +50,7 @@ public class NeutralCrab : MonoBehaviour {
             }
 			else
 			{
-				if (GetComponent<DebugComponent>().Debug)
+				if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 					Debug.Log("Opened recruitment panel!");
 
 				RecruitmentUI = Instantiate(Resources.Load<GameObject>("Prefabs/GUI/RecruitmentPanels/" + RecruitmentUIName), gameObject.transform.position, Quaternion.identity);

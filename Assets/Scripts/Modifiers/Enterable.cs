@@ -72,7 +72,7 @@ public class Enterable : MonoBehaviour {
             InstantiateCanvas(Occupant.tag);
             EventManager.TriggerEvent("ObjectEntered");
 		}
-		else if (GetComponent<DebugComponent>().Debug)
+		else if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 			Debug.Log("Couldn't enter " + gameObject.tag);
 	}
 

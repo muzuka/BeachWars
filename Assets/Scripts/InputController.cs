@@ -37,7 +37,7 @@ public class InputController : MonoBehaviour {
 
 	Canvas _weaponCanvas;
 
-	bool _debug;
+	DebugComponent _debug;
 
     List<Vector3> _offsets;
     
@@ -51,7 +51,7 @@ public class InputController : MonoBehaviour {
 	/// </summary>
 	void Start()
 	{
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
 
 		_rightClickActions = new Dictionary<string, Action<Player, GameObject>>()
 		{
@@ -96,12 +96,9 @@ public class InputController : MonoBehaviour {
 	/// <param name="player">Player script.</param>
 	/// <param name="gui">GUI script.</param>
 	public void ProcessMouseClick(Player player, GUIController gui) 
-	{
-		if (_debug)
-		{
-			Debug.Assert(player);
-			Debug.Assert(gui);
-		}
+	{ 
+		_debug.Assert(player != null);
+		_debug.Assert(gui != null);
 
 		if (!gui.MouseOnGUI())
 		{
@@ -170,7 +167,7 @@ public class InputController : MonoBehaviour {
 
 		if (_select.WasReleasedThisFrame())
 		{
-			Debug.Log("Pressed select");
+			_debug.LogMessage("Pressed select");
 			if (Raycaster.IsPointingAt(Tags.Junction))
 			{
 				ghostManager.ExtendJunction();
@@ -224,15 +221,13 @@ public class InputController : MonoBehaviour {
     
     void ProcessClickWithNoDrag(Player player)
     {
-        if (_debug)
-            Debug.Log("Single-selected");
+	    _debug.LogMessage("Single-selected");
 
         _hit = Raycaster.ShootMouseRay();
 
         if (_hit.transform.CompareTag(Tags.Beach) && player.CanCommand)
         {
-            if (_debug)
-                Debug.Log("Hit Beach");
+	        _debug.LogMessage("Hit Beach");
             if (player.SelectedList.Count > 1)
             {
                 MoveSelectedCrabs(player);
@@ -395,10 +390,7 @@ public class InputController : MonoBehaviour {
 		GameObject target = _hit.transform.gameObject;
 		string targetName = _hit.transform.tag;
 
-		if (_debug)
-		{
-			Debug.Log("Right clicked " + targetName + ".");
-		}
+		_debug.LogMessage("Right clicked " + targetName + ".");
 
 		if (player.CanCommand)
 		{
@@ -427,15 +419,11 @@ public class InputController : MonoBehaviour {
 	/// <param name="player">Player script.</param>
 	void RightClickBeach(Player player)
 	{
-        if (_debug)
-            Debug.Log("Deselected " + player.Selected.name + ".");
+		_debug.LogMessage("Deselected " + player.Selected.name + ".");
 
 		if (player.CanCommand && player.States.GetState("Building"))
 		{
-			player.SelectedList[0].GetComponent<CrabController>().StartBuild(player.BuildingType, _hit.point);
-			player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
-			player.MoveMultiple(_hit.point);
-			player.GhostManager.DestroyGhostBuilding();
+			player.StartBuild(_hit.point);
 		}
 		else
         {
@@ -451,11 +439,12 @@ public class InputController : MonoBehaviour {
 	/// <param name="castle">Castle script.</param>
 	void RightClickCastle(Player player, CastleController castle)
 	{
-		if (_debug)
-			Debug.Assert(castle);
+		_debug.Assert(castle);
 		
-        if (castle.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
+        if (castle.GetTeam().OnTeam(player.GetTeam().team))
         {
+	        Inventory inv;
+	        
             // Evacuate castle
             if (player.Selected.CompareTag(Tags.Castle))
             {
@@ -464,56 +453,44 @@ public class InputController : MonoBehaviour {
             // Repair castle if friendly
             else if (player.States.GetState("Repairing") && player.CanCommand)
             {
-                player.SelectedList[0].GetComponent<CrabController>().StartRepair(castle.gameObject);
-                player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
+                player.Selected.GetComponent<CrabController>().StartRepair(castle.gameObject);
+                player.Selected.GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
                 player.MoveMultiple(castle.transform.position);
             }
             // Unload resources if friendly
             else
             {
-                if (player.CanCommand)
-                {
-                    if (IdUtility.IsCrab(player.Selected))
-                    {
-                        if (player.Selected.GetComponent<CrabController>().Inventory.Contains(Tags.Stone) || player.Selected.GetComponent<CrabController>().Inventory.Contains(Tags.Wood))
-                        {
-                            for (int i = 0; i < player.SelectedList.Count; i++)
-                            {
-                                if (IdUtility.IsCrab(player.SelectedList[i]))
-                                {
-                                    player.SelectedList[i].GetComponent<CrabController>().StartUnloading(castle.gameObject); 
-                                }
-                            }
-                        } 
-                        else
-                        {
-                            player.Selected.GetComponent<CrabController>().StartEnter(castle.gameObject);
-                        }
-                    }
-                }
+	            if (player.CanCommand && IdUtility.IsCrab(player.Selected))
+	            {
+		            inv = player.Selected.GetComponent<CrabController>().Inventory;
+		            if (inv.Contains(Tags.Stone) || inv.Contains(Tags.Wood))
+		            {
+			            for (int i = 0; i < player.SelectedList.Count; i++)
+			            {
+				            if (IdUtility.IsCrab(player.SelectedList[i]))
+				            {
+					            player.SelectedList[i].GetComponent<CrabController>().StartUnloading(castle.gameObject);
+				            }
+			            }
+		            }
+		            else
+		            {
+			            player.Selected.GetComponent<CrabController>().StartEnter(castle.gameObject);
+		            }
+	            }
             }
         }
         else {
             // Attack castle if on enemy team
             if (player.States.GetState("Attacking"))
             {
-                for (int i = 0; i < player.SelectedList.Count; i++)
-                {
-                    if (player.SelectedList[i].GetComponent<CrabController>())
-                    {
-                        player.SelectedList[i].GetComponent<CrabController>().StartAttack(castle.gameObject);
-                    }
-                    else if (player.SelectedList[i].GetComponent<SiegeController>())
-                    {
-                        player.SelectedList[i].GetComponent<SiegeController>().StartAttack(castle.gameObject);
-                    }
-                }
+                player.StartAttack(castle.gameObject);
             }
             // Capture castle if on enemy team
             else 
             {
-                player.SelectedList[0].GetComponent<CrabController>().CaptureCastle(castle.gameObject);
-                player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
+                player.Selected.GetComponent<CrabController>().CaptureCastle(castle.gameObject);
+                player.Selected.GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
                 player.MoveMultiple(castle.transform.position);
             }
         }
@@ -527,17 +504,17 @@ public class InputController : MonoBehaviour {
 	/// <param name="building">Target object.</param>
 	public void RightClickBuilding(Player player, GameObject building) 
 	{
-        if (building.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
+        if (building.GetComponent<Team>().OnTeam(player.GetTeam().team))
         {
             if (player.States.GetState("Repairing"))
             {
-                player.SelectedList[0].GetComponent<CrabController>().StartRepair(building);
-                player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
+                player.Selected.GetComponent<CrabController>().StartRepair(building);
+                player.Selected.GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
                 player.MoveMultiple(building.transform.position);
             }
             else if (player.States.GetState("Attacking"))
             {
-                player.Selected.SendMessage("StartDismantling", building, SendMessageOptions.DontRequireReceiver);
+	            player.Selected.GetComponent<CrabController>().StartDismantling(building);
             }
             else if (building.GetComponent<Enterable>())
             {
@@ -592,14 +569,11 @@ public class InputController : MonoBehaviour {
         {
             player.Selected.GetComponent<CrabController>().StartRecruiting(target);
         }
-		else if (!player.GetComponent<Team>().OnTeam(hitTeam)) 
+		else if (!player.GetTeam().OnTeam(hitTeam)) 
 		{
 			player.States.ClearStates();
 			player.States.SetState("Attacking", true);
-			for (int i = 0; i < player.SelectedList.Count; i++)
-            {
-                player.SelectedList[i].SendMessage("StartAttack", target, SendMessageOptions.DontRequireReceiver);
-            }
+			player.StartAttack(target);
 		}
 	}
 
@@ -620,8 +594,8 @@ public class InputController : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Target is not commandable.");
-            if (target.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team))
+	        _debug.LogMessage("Target is not commandable.");
+            if (target.GetComponent<Team>().OnTeam(player.GetTeam().team))
             {
                 target.GetComponent<GhostBuilder>().Destroyed();
                 Destroy(target);
@@ -637,30 +611,30 @@ public class InputController : MonoBehaviour {
 	/// <param name="target">Target object.</param>
 	void RightClickBlock(Player player, GameObject target) 
 	{
-		if (target.GetComponent<Team>().OnTeam(player.GetComponent<Team>().team)) 
+		if (target.GetComponent<Team>().OnTeam(player.GetTeam().team)) 
 		{
 			if (player.States.GetState("Upgrading")) 
 			{
-				player.SelectedList[0].GetComponent<CrabController>().StartUpgrading(target);
-				player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
+				player.Selected.GetComponent<CrabController>().StartUpgrading(target);
+				player.Selected.GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
 				player.MoveMultiple(target.transform.position);
 			}
 			else if (player.States.GetState("Repairing"))
 			{
-				player.SelectedList[0].GetComponent<CrabController>().StartRepair(target);
-				player.SelectedList[0].GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
+				player.Selected.GetComponent<CrabController>().StartRepair(target);
+				player.Selected.GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
 				player.MoveMultiple(target.transform.position);
 			}
             else if (player.States.GetState("Attacking"))
             {
-                player.Selected.SendMessage("StartDismantling", target, SendMessageOptions.DontRequireReceiver); 
+	            player.Selected.GetComponent<CrabController>().StartDismantling(target);
             }
 		}
         else
         {
             if (player.States.GetState("Attacking"))
             {
-                player.Selected.SendMessage("StartAttack", target, SendMessageOptions.DontRequireReceiver); 
+                player.StartAttack(target); 
             }
         }
 	}
@@ -676,12 +650,12 @@ public class InputController : MonoBehaviour {
         if (controller.IsOpen())
         {
             controller.CloseGate();
-            Debug.Log("Closing gate");
+            _debug.LogMessage("Closing gate");
         }
         else
         {
             controller.OpenGate();
-            Debug.Log("Opening gate");
+            _debug.LogMessage("Opening gate");
         }
     }
 
@@ -706,7 +680,7 @@ public class InputController : MonoBehaviour {
         }
 		else
         {
-            player.Selected.SendMessage("StartAttack", target, SendMessageOptions.DontRequireReceiver);
+            player.StartAttack(target);
         }
 	}
 
@@ -718,7 +692,7 @@ public class InputController : MonoBehaviour {
 	/// <param name="target">Target object.</param>
 	void RightClickArmoury(Player player, GameObject target)
 	{
-		if (player.GetComponent<Team>().OnTeam(target.GetComponent<Team>().team))
+		if (player.GetTeam().OnTeam(target.GetComponent<Team>().team))
 		{
 			if (IdUtility.IsCrab(player.Selected) && player.CanCommand)
 			{
@@ -727,12 +701,11 @@ public class InputController : MonoBehaviour {
 
 				if (player.States.GetState("Attacking"))
 				{
-					player.Selected.SendMessage("StartDismantling", target, SendMessageOptions.DontRequireReceiver);
+					player.Selected.GetComponent<CrabController>().StartDismantling(target);
 				}
 				else
 				{
-					if (_debug)
-						Debug.Log("Set up weapon canvas");
+					_debug.LogMessage("Set up weapon canvas");
 
 					if (!_weaponCanvas)
 					{
@@ -787,22 +760,19 @@ public class InputController : MonoBehaviour {
     /// <param name="player">Player script.</param>
     public void GetKeyboardInput(Player player)
 	{
-		if (_debug)
-			Debug.Assert(player);
+		_debug.Assert(player);
 
 		if (Keyboard.current.anyKey.IsPressed())
 		{
 			if (_hotkeys.Attack.IsPressed())
 			{
-				if (_debug)
-					Debug.Log("Click on something to attack.");
+				_debug.LogMessage("Click on something to attack.");
 				player.States.ClearStates();
 				player.States.SetState("Attacking", true);
 			}
 			if (_hotkeys.Build.IsPressed()) 
 			{
-				if (_debug)
-					Debug.Log("Start building castle.");
+				_debug.LogMessage("Start building castle.");
 				player.States.ClearStates();
 				player.States.SetState("Building", true);
 				player.SetBuildingType(Tags.Castle);
@@ -810,31 +780,25 @@ public class InputController : MonoBehaviour {
 			}
 			if (_hotkeys.Capture.IsPressed()) 
 			{
-				if (_debug)
-					Debug.Log("Click on castle to capture.");
+				_debug.LogMessage("Click on castle to capture.");
 				player.States.SetState("Capturing", true);
 			}
 			if (_hotkeys.Enter.IsPressed()) 
 			{
-				if (_debug)
-					Debug.Log("Click on a castle or siege weapon to enter.");
+				_debug.LogMessage("Click on a castle or siege weapon to enter.");
 				player.States.ClearStates();
 				player.States.SetState("Entering", true);
 			}
 			if (_hotkeys.Repair.IsPressed()) 
 			{
-				if (_debug)
-					Debug.Log("Click an object to repair.");
+				_debug.LogMessage("Click an object to repair.");
 				player.States.SetState("Repairing", true);
 			}
 			if (_hotkeys.Info.IsPressed()) 
 			{
-				if (_debug)
+				for (int i = 0; i < player.SelectedList.Count; i++)
 				{
-					for (int i = 0; i < player.SelectedList.Count; i++)
-                    {
-                        Debug.Log(player.SelectedList[i].tag); 
-                    }
+					_debug.LogMessage(player.SelectedList[i].tag);
 				}
 			}
 			if (_hotkeys.Pause.IsPressed()) 
@@ -853,14 +817,12 @@ public class InputController : MonoBehaviour {
 			}
 			if (_hotkeys.Recruit.IsPressed()) 
 			{
-				if (_debug)
-					Debug.Log("Click on a neutral crab to recruit.");
+				_debug.LogMessage("Click on a neutral crab to recruit.");
 				player.States.SetState("Recruiting", true);
 			}
 			if (_hotkeys.Upgrade.IsPressed()) 
 			{
-				if (_debug)
-					Debug.Log("Click on a block to upgrade.");
+				_debug.LogMessage("Click on a block to upgrade.");
 				player.States.SetState("Upgrading", true);
 			}
 		}
@@ -878,11 +840,8 @@ public class InputController : MonoBehaviour {
     /// <param name="entity">Entity object.</param>
     void AddToSelection(Player player, GameObject entity) 
 	{
-		if (_debug)
-		{
-			Debug.Assert(entity);
-			Debug.Log("Added " + entity.tag);
-		}
+		_debug.Assert(entity);
+		_debug.LogMessage("Added " + entity.tag);
 
 		player.SelectedList.Add(entity);
 
@@ -928,8 +887,7 @@ public class InputController : MonoBehaviour {
 	/// <param name="player">Player script.</param>
 	void AddSingleEntity(Player player) 
 	{
-		if (_debug)
-			Debug.Assert(player);
+		_debug.Assert(player);
 
 		_hit = Raycaster.ShootMouseRay();
 		GameObject entity = _hit.transform.gameObject;
@@ -950,11 +908,8 @@ public class InputController : MonoBehaviour {
 	/// <param name="gui">GUI script.</param>
 	public void SelectEntities(Player player, GUIController gui) 
 	{
-		if (_debug)
-		{
-			Debug.Assert(gui);
-			Debug.Assert(player);
-		}
+		_debug.Assert(gui);
+		_debug.Assert(player);
 
 		_hasActiveBox = false;
 
@@ -965,22 +920,19 @@ public class InputController : MonoBehaviour {
 		}
 		else 
 		{
-			if (_debug)
-				Debug.Log("Multi-selected");
+			_debug.LogMessage("Multi-selected");
 			
 			player.Deselect();
 			AddAllWithinBounds(player);
 
 			if (player.SelectedList.Count == 1) 
 			{
-				if (_debug)
-					Debug.Log("Selected one object");
+				_debug.LogMessage("Selected one object");
 				player.Select(player.SelectedList[0]);
 			}
 			else if (player.SelectedList.Count > 1)
 			{
-				if (_debug)
-					Debug.Log("Selected multiple objects");
+				_debug.LogMessage("Selected multiple objects");
 				player.SelectAll();
 			}
 		}
@@ -1060,8 +1012,7 @@ public class InputController : MonoBehaviour {
 
 	    if (pos == 0)
 	    {
-		    if (_debug)
-			    Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
+		    _debug.LogMessage("Crab moving to(" + x + " " + y + " " + z + ")");
 		    return new Vector3(x, y, z);
 	    }
 
@@ -1076,8 +1027,7 @@ public class InputController : MonoBehaviour {
 
 			    if (count == pos)
 			    {
-				    if (_debug)
-					    Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
+				    _debug.LogMessage("Crab moving to(" + x + " " + y + " " + z + ")");
 				    return new Vector3(x, y, z);
 			    }
 
@@ -1091,8 +1041,7 @@ public class InputController : MonoBehaviour {
 
 			    if (count == pos)
 			    {
-				    if (_debug)
-					    Debug.Log("Crab moving to(" + x + " " + y + " " + z + ")");
+				    _debug.LogMessage("Crab moving to(" + x + " " + y + " " + z + ")");
 				    return new Vector3(x, y, z);
 			    }
 

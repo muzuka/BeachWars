@@ -115,13 +115,13 @@ public class ProductionManager : MonoBehaviour {
                 _strategyManager.StartBuildFromGhost(spareCrab, _currentGhostBuilding);
                 _isBuilding = true;
 
-                if (GetComponent<DebugComponent>().Debug)
+                if (GetComponent<DebugComponent>().IsDebugModeEnabled)
                     Debug.Log("Created new ghost!");
             }
         }
         else
         {
-            if (GetComponent<DebugComponent>().Debug)
+            if (GetComponent<DebugComponent>().IsDebugModeEnabled)
                 Debug.Log("Cannot find spare crab.");
         }
     }
@@ -162,7 +162,7 @@ public class ProductionManager : MonoBehaviour {
             _currentGoal = new BuildingGoal("None");
         }
         EventManager.TriggerEvent("FinishedBuilding");
-        if (GetComponent<DebugComponent>().Debug)
+        if (GetComponent<DebugComponent>().IsDebugModeEnabled)
             Debug.Log("New goal: " + _currentGoal.buildingType);
     }
 

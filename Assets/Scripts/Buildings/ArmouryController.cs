@@ -82,7 +82,7 @@ public class ArmouryController : MonoBehaviour {
 	/// </summary>
 	void BuildWeapon()
 	{
-		if (GetComponent<DebugComponent>().Debug)
+		if (GetComponent<DebugComponent>().IsDebugModeEnabled)
 			Debug.Log(_timeConsumed + " / " + _timeToBuild);
 		
 		_timeConsumed += Time.deltaTime;

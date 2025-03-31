@@ -35,7 +35,9 @@ public class CastleController : MonoBehaviour {
     // stone piece amount
     int _stonePieces;
 
-	bool _debug;
+	DebugComponent _debug;
+
+	Team _team;
 
 	/// <summary>
 	/// Start this instance.
@@ -50,7 +52,8 @@ public class CastleController : MonoBehaviour {
 		_interactor = null;
 		_targets = new List<GameObject>();
 
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
+		_team = GetComponent<Team>();
 	}
 
 	/// <summary>
@@ -62,7 +65,7 @@ public class CastleController : MonoBehaviour {
 		{
 			for (int i = 0; i < _targets.Count; i++)
             {
-                _targets[i].SendMessage("enemyDied", SendMessageOptions.DontRequireReceiver); 
+                _targets[i].GetComponent<IUnit>().EnemyDied(); 
             }
 		}
 
@@ -77,7 +80,7 @@ public class CastleController : MonoBehaviour {
 	/// Increases upgrade level.
 	/// </summary>
 	/// <param name="level">New level.</param>
-	public void UgradeFinished(int level) 
+	public void UpgradeFinished(int level) 
 	{
 		_woodPieces -= GetComponent<CastleUpgrade>().UpgradeCost;
 		_stonePieces -= GetComponent<CastleUpgrade>().UpgradeCost;
@@ -196,8 +199,7 @@ public class CastleController : MonoBehaviour {
 	/// </summary>
 	public void PrintInventory() 
 	{
-		if (_debug)
-			Debug.Log("Wood = " + _woodPieces + " Stone = " + _stonePieces);
+		_debug.LogMessage("Wood = " + _woodPieces + " Stone = " + _stonePieces);
 	}
 
 	/// <summary>
@@ -218,5 +220,10 @@ public class CastleController : MonoBehaviour {
 
     public int GetStonePieces() {
         return _stonePieces;
+    }
+
+    public Team GetTeam()
+    {
+	    return _team;
     }
 }

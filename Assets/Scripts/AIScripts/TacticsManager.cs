@@ -24,7 +24,7 @@ public class TacticsManager : MonoBehaviour {
 
     int _crabCount = 0;
 
-    bool _debug;
+    DebugComponent _debug;
 
     /// <summary>
     /// Wake this instance
@@ -35,7 +35,7 @@ public class TacticsManager : MonoBehaviour {
         _knowledge = GetComponent<EnemyKnowledge>();
         _strategyManager = GetComponent<StrategyManager>();
         _incomeManager = GetComponent<IncomeManager>();
-        _debug = GetComponent<DebugComponent>().Debug;
+        _debug = GetComponent<DebugComponent>();
     }
 	
 	/// <summary>

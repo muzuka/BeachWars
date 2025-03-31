@@ -21,7 +21,7 @@ public class GhostBuilder : MonoBehaviour {
     public int WoodAmount;
     public int StoneAmount;
 
-	bool _debug;
+	DebugComponent _debug;
 
 	bool _waiting;
 	float _timeConsumed;
@@ -39,7 +39,7 @@ public class GhostBuilder : MonoBehaviour {
 		WoodAmount = 0;
 		StoneAmount = 0;
 		Placed = false;
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
 
 		WoodRequirement = BuildingCost.GetWoodRequirement(Original.name);
 		StoneRequirement = BuildingCost.GetStoneRequirement(Original.name);
@@ -57,7 +57,7 @@ public class GhostBuilder : MonoBehaviour {
 				if (_debug)
 				{
 					if (Original.name == "Junction")
-						Debug.Log("Junction is searching for crabBuilder");
+						_debug.LogMessage("Junction is searching for crabBuilder");
 				}
 
 				if (HasBuilder)
@@ -116,8 +116,7 @@ public class GhostBuilder : MonoBehaviour {
 	/// </summary>
 	public void Destroyed()
 	{
-		if (_debug)
-			Debug.Log(gameObject.name + " has been destroyed.");
+		_debug.LogMessage(gameObject.name + " has been destroyed.");
 
         if (_builders != null)
         {

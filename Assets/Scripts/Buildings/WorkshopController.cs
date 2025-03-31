@@ -40,7 +40,7 @@ public class WorkshopController : MonoBehaviour {
 
 	CastleController _castleMaster;
 
-	bool _debug;
+	DebugComponent _debug;
 
 	/// <summary>
 	/// Start this instance.
@@ -55,7 +55,7 @@ public class WorkshopController : MonoBehaviour {
 
 		GetComponent<Attackable>().SetHealth(MaxHealth);
 
-		_debug = GetComponent<DebugComponent>().Debug;
+		_debug = GetComponent<DebugComponent>();
 	}
 
 	/// <summary>
@@ -72,8 +72,7 @@ public class WorkshopController : MonoBehaviour {
 	/// </summary>
 	public void Destroyed()
 	{
-		if (_debug)
-			Debug.Log("Workshop was destroyed.");
+		_debug.LogMessage("Workshop was destroyed.");
 	}
 
 	/// <summary>
@@ -89,11 +88,11 @@ public class WorkshopController : MonoBehaviour {
         {
             if (_castleMaster.GetWoodPieces() < CatapultWoodCost || _castleMaster.GetStonePieces() < CatapultStoneCost)
             {
-                if (_debug && _castleMaster.GetWoodPieces() < CatapultWoodCost)
-                    Debug.Log("Not enough wood");
+                if (_castleMaster.GetWoodPieces() < CatapultWoodCost)
+	                _debug.LogMessage("Not enough wood");
 
-                if (_debug && _castleMaster.GetStonePieces() < CatapultStoneCost)
-                    Debug.Log("Not enough stone");
+                if (_castleMaster.GetStonePieces() < CatapultStoneCost)
+	                _debug.LogMessage("Not enough stone");
 
                 MessageEventManager.AddNewMessage("Insufficient resources to build a catapult.");
 
@@ -103,11 +102,11 @@ public class WorkshopController : MonoBehaviour {
         {
             if (_castleMaster.GetWoodPieces() < BallistaWoodCost || _castleMaster.GetStonePieces() < BallistaStoneCost)
             {
-                if (_debug && _castleMaster.GetWoodPieces() < BallistaWoodCost)
-                    Debug.Log("Not enough wood");
+                if (_castleMaster.GetWoodPieces() < BallistaWoodCost)
+	                _debug.LogMessage("Not enough wood");
 
-                if (_debug && _castleMaster.GetStonePieces() < BallistaStoneCost)
-                    Debug.Log("Not enough stone");
+                if (_castleMaster.GetStonePieces() < BallistaStoneCost)
+	                _debug.LogMessage("Not enough stone");
 
                 MessageEventManager.AddNewMessage("Insufficient resources to build a ballista.");
 
