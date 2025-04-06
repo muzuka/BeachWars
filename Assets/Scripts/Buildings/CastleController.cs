@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// Castle controller.
 /// Handles resources and upgrading.
 /// </summary>
-public class CastleController : MonoBehaviour {
+public class CastleController : MonoBehaviour, IUnit {
 
 	// public variables
 	[Tooltip("Time to conquer")]
@@ -226,4 +226,11 @@ public class CastleController : MonoBehaviour {
     {
 	    return _team;
     }
+    
+    public void Deselect()
+    {
+        _selected = false;
+    }
+
+    public void EnemyDied() {}
 }

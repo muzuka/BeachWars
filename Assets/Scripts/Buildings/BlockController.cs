@@ -4,7 +4,7 @@
 /// Block controller.
 /// Handles upgrading blocks and converting to a tower or gate.
 /// </summary>
-public class BlockController : MonoBehaviour {
+public class BlockController : MonoBehaviour, IUnit {
 
 	// maximum healths for upgrade levels
 	public int NormalMaxHealth;
@@ -106,8 +106,8 @@ public class BlockController : MonoBehaviour {
 		_selected = true;
 	}
 
-	/// <summary>
-	/// Placeholder so SendMessage doesn't return null.
-	/// </summary>
-	public void UpdateUI() {}
+	public void UpdateUI(InfoViewController info) {}
+	public void Deselect() {}
+	public void EnemyDied() {}
+	public void SetAttacker(GameObject enemy) {}
 }

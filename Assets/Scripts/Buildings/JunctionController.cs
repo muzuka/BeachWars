@@ -3,7 +3,7 @@
 /// <summary>
 /// Junction controller.
 /// </summary>
-public class JunctionController : MonoBehaviour {
+public class JunctionController : MonoBehaviour, IUnit {
 
 	const int MaxHealth = 10;
 
@@ -15,11 +15,6 @@ public class JunctionController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Placeholder so SendMessage doesn't return null
-	/// </summary>
-	public void UpdateUI() {}
-
-	/// <summary>
 	/// Converts to tower.
 	/// </summary>
 	public void ConvertToTower()
@@ -27,4 +22,12 @@ public class JunctionController : MonoBehaviour {
 		CrabController crab = InfoTool.FindIdleCrab(GetComponent<Team>().team);
 		crab.StartRebuild(gameObject, Tags.Tower);
 	}
+	
+	public void SetController(Player player) {}
+	public void SetAttacker(GameObject enemy) {}
+	public void UpdateUI(InfoViewController gui) {}
+	public void Deselect() {}
+	public void ToggleSelected() {}
+	public void Destroyed() {}
+	public void EnemyDied() {}
 }

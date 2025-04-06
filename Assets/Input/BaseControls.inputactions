@@ -9,7 +9,7 @@
                     "name": "Forward",
                     "type": "Button",
                     "id": "964996f6-2d8e-4f23-adbe-096cc1c937c9",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -181,7 +181,7 @@
                     "name": "Select",
                     "type": "Button",
                     "id": "3bd42a4a-6b98-4f8f-a85b-10b72cbe901e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -190,7 +190,7 @@
                     "name": "Use",
                     "type": "Button",
                     "id": "19fcd0fc-03eb-4b4e-a530-0c942d2fbb53",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -199,7 +199,7 @@
                     "name": "Multi",
                     "type": "Button",
                     "id": "e2e6bd88-ec96-4860-ad8a-cc20cc417386",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -579,6 +579,54 @@
                     "name": "",
                     "id": "578c3353-45bd-4a6f-b6f0-49dc33f5504e",
                     "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Building",
+            "id": "90cf52e4-8f8b-42ce-bf9b-965b673da0ae",
+            "actions": [
+                {
+                    "name": "Place",
+                    "type": "Button",
+                    "id": "aa85cdb4-0109-4b36-8c5b-12dbf63489ef",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "c15cd490-53af-4715-b37a-5db240d8a26a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "29d6ea8e-1c0c-48b3-abe2-c696190467d0",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Place",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7fbc1cdb-822c-4b1c-afe8-eeffbbef8ec0",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

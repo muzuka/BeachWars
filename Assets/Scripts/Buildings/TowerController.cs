@@ -4,7 +4,7 @@
 /// Tower controller.
 /// Handles attacking.
 /// </summary>
-public class TowerController : MonoBehaviour {
+public class TowerController : MonoBehaviour, IUnit {
 
 	[Tooltip("Base distance it attacks from")]
 	public float AttackRange;
@@ -100,4 +100,11 @@ public class TowerController : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void SetController(Player player) {}
+	public void SetAttacker(GameObject enemy) {}
+	public void UpdateUI(InfoViewController gui) {}
+	public void Deselect() {}
+	public void ToggleSelected() {}
+	public void EnemyDied() {}
 }

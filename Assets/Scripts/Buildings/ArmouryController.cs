@@ -4,7 +4,7 @@
 /// Armoury controller.
 /// Handles model changes and interfaces with HoldsWeapons.
 /// </summary>
-public class ArmouryController : MonoBehaviour {
+public class ArmouryController : MonoBehaviour, IUnit {
 
 	const int MAXHEALTH = 200;
 
@@ -171,7 +171,7 @@ public class ArmouryController : MonoBehaviour {
 	/// <summary>
 	/// Placeholder so SendMessage doesn't return null.
 	/// </summary>
-	public void setController(Player player) {}
+	public void SetController(Player player) {}
 
 	/// <summary>
 	/// Gets the closest castle.
@@ -197,4 +197,10 @@ public class ArmouryController : MonoBehaviour {
 		}
 		return closestCastle;
 	}
+	
+	public void SetAttacker(GameObject enemy) {}
+	public void Deselect() {}
+	public void ToggleSelected() {}
+	public void Destroyed() {}
+	public void EnemyDied() {}
 }

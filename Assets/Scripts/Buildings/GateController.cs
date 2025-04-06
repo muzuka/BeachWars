@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 using System.Collections;
 
-public class GateController : MonoBehaviour {
+public class GateController : MonoBehaviour, IUnit {
 
     public int MaxHealth;
 
@@ -66,4 +66,12 @@ public class GateController : MonoBehaviour {
     {
         return _gateStates.GetState("Open");
     }
+    
+    public void SetController(Player player) {}
+    public void SetAttacker(GameObject enemy) {}
+    public void UpdateUI(InfoViewController gui) {}
+    public void Deselect() {}
+    public void ToggleSelected() {}
+    public void Destroyed() {}
+    public void EnemyDied() {}
 }

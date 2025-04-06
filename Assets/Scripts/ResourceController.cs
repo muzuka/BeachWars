@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// Resource controller.
 /// Handles amount of resources and life of object.
 /// </summary>
-public class ResourceController : MonoBehaviour {
+public class ResourceController : MonoBehaviour, IUnit {
 
 	[Tooltip("Amount of resource")]
 	public int ResourceCount;			// amount of resource available(set by level design)
@@ -38,12 +38,12 @@ public class ResourceController : MonoBehaviour {
 	/// <summary>
 	/// Placeholder so SendMessage doesn't return null.
 	/// </summary>
-	public void SetController() {}
+	public void SetController(Player player) {}
 
 	/// <summary>
 	/// Placeholder so SendMessage doesn't return null.
 	/// </summary>
-	public void UpdateUI() {}
+	public void UpdateUI(InfoViewController info) {}
 
 	/// <summary>
 	/// Sets the crabs that are taking resources.
@@ -61,4 +61,10 @@ public class ResourceController : MonoBehaviour {
 	{
 		ResourceCount--;
 	}
+
+	public void SetAttacker(GameObject enemy) {}
+	public void Deselect() {}
+	public void ToggleSelected() {}
+	public void Destroyed() {}
+	public void EnemyDied() {}
 }

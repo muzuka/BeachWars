@@ -161,10 +161,6 @@ public class Player : MonoBehaviour
 		    tempPos.y -= _cameraZDelta;
 		    GetPanel().anchoredPosition = tempPos;
 	    }
-
-	    Input.GetKeyboardInput(this);
-
-	    Input.ProcessMouseClick(this, GUI);
 		
 	    if (HasSelected)
 		    UpdateHalos();
@@ -289,6 +285,7 @@ public class Player : MonoBehaviour
 	    
 	    SetBuildingType(buildingType);
 	    SetPlayerState("Building");
+	    Input.EnterBuildingMode();
 	    CreateGhostBuilding();
     }
 
@@ -312,7 +309,7 @@ public class Player : MonoBehaviour
 	    
 	    Selected = obj;
 	    SelectedTeam = obj.GetComponent<Team>();
-	    CanCommand = _team.OnTeam(SelectedTeam.team);
+	    CanCommand = _team.OnTeam(SelectedTeam.team) && Selected.GetComponent<IUnit>() != null;
 	    HasSelected = true;
 
 	    Selected.GetComponent<IUnit>().SetController(this);
@@ -334,14 +331,13 @@ public class Player : MonoBehaviour
 		
 	    Selected = SelectedList[0];
 	    HasSelected = true;
+	    CanCommand = (_team.team == SelectedTeam.team) && Selected.GetComponent<IUnit>() != null;
 	    SelectedTeam = SelectedList[0].GetComponent<Team>();
 
 	    for (int i = 0; i < SelectedList.Count; i++)
 	    {
-		    SelectedList[i].GetComponent<IUnit>().SetController(this); 
+		    SelectedList[i].GetComponent<IUnit>().SetController(this);
 	    }
-
-	    CanCommand = (_team.team == SelectedTeam.team);
 
 	    GUI.SetActiveGUIComponents("multi");
 	    GUI.UpdateUI(this);
@@ -358,7 +354,7 @@ public class Player : MonoBehaviour
 		    {
 			    if (SelectedList[i])
 			    {
-				    SelectedList[i].GetComponent<IUnit>().ToggleSelected(); 
+				    SelectedList[i].GetComponent<IUnit>().ToggleSelected();
 			    }
 		    }
 
@@ -612,6 +608,7 @@ public class Player : MonoBehaviour
 	{
 		GhostManager.DestroyGhostBuilding();
 		GhostManager.DestroyWall();
+		Input.ExitBuildingMode();
 		States.SetState("Building", false);
 		GhostManager.BuildingType = null;
 		BuildingType = null;
