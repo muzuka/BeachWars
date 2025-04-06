@@ -354,7 +354,7 @@ public class Player : MonoBehaviour
 		    {
 			    if (SelectedList[i])
 			    {
-				    SelectedList[i].GetComponent<IUnit>().ToggleSelected();
+				    SelectedList[i].GetComponent<IUnit>().Deselect();
 			    }
 		    }
 

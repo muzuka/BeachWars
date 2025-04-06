@@ -408,7 +408,7 @@ public class CrabController : MonoBehaviour, IUnit {
 
         if (!_destinationMarker)
         {
-            _destinationMarker = Instantiate<GameObject>(_destinationMarkerFab, _destination, Quaternion.identity);
+            _destinationMarker = Instantiate(_destinationMarkerFab, _destination, Quaternion.identity);
         }
         else
         {
@@ -1656,6 +1656,10 @@ public class CrabController : MonoBehaviour, IUnit {
 		Debug.Log("deselected");
 		_controller = null;
 		_selected = false;
+		if (ActionStates.GetState("Moving"))
+		{
+			_destinationMarker.SetActive(false);
+		}
 	}
 
 	/// <summary>
@@ -1666,6 +1670,10 @@ public class CrabController : MonoBehaviour, IUnit {
 	{
 		_controller = player;
 		_selected = true;
+		if (ActionStates.GetState("Moving"))
+		{
+			_destinationMarker.SetActive(true);
+		}
 	}
 
 	#endregion
