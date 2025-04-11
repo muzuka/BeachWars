@@ -264,7 +264,7 @@ public class GUIController : MonoBehaviour {
         OnGUI.isOn = false;
 		return false;
 	}
-
+	
 	/// <summary>
 	/// Creates the select box.
 	/// </summary>
@@ -273,9 +273,9 @@ public class GUIController : MonoBehaviour {
 	{
 		SelectBox.SetActive(true);
 
-		_start = anchor;
+		_start = ScreenToLocal(anchor);
 
-		_selectBoxTransform.position = new Vector3(_start.x, _start.y, _selectBoxTransform.position.z);
+		_selectBoxTransform.anchoredPosition = _start;
 	}
 
 	/// <summary>
@@ -284,17 +284,20 @@ public class GUIController : MonoBehaviour {
 	/// <param name="end">Outer position.</param>
 	public void DragSelectBox(Vector3 end)
 	{
-		float x = (_start.x > end.x) ? end.x : _start.x;
-		float y = (_start.y > end.y) ? end.y : _start.y;
+		end = ScreenToLocal(end);
 
-        Vector2 newSize = new Vector2(
-	        Mathf.Abs(end.x - _start.x),
-	        Mathf.Abs(end.y - _start.y));
+		Vector2 anchorMin = new Vector2(
+			Mathf.Min(_start.x, end.x),
+			Mathf.Min(_start.y, end.y));
+		Vector2 anchorMax = new Vector2(
+			Mathf.Max(_start.x, end.x),
+			Math.Max(_start.y, end.y));
 
-        Vector2 newPosition = new Vector2(x, y);
+		Vector2 boxPos = anchorMin;
+		Vector2 boxSize = anchorMax - anchorMin;
 
-		_selectBoxTransform.sizeDelta = newSize;
-		_selectBoxTransform.position = newPosition;
+		_selectBoxTransform.sizeDelta = boxSize;
+		_selectBoxTransform.anchoredPosition = boxPos;
 	}
 
 	/// <summary>
@@ -305,7 +308,8 @@ public class GUIController : MonoBehaviour {
 	Vector2 ScreenToLocal(Vector3 point)
 	{
 		Vector2 pos;
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(MainGUI.GetComponent<RectTransform>(), point, Camera.main, out pos);
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(MainGUI.GetComponent<RectTransform>(), point, null,
+			out pos);
 
 		return pos;
 	}

@@ -188,7 +188,6 @@ public class InputController : MonoBehaviour {
 		if (!_gui.MouseOnGUI())
 		{
 			_playerInput.enabled = true;
-			GhostBuildingManager ghostManager = _player.GhostManager;
 			if (_rightClick.WasReleasedThisFrame())
 			{
 				RightClickWhileBuilding();
@@ -798,12 +797,12 @@ public class InputController : MonoBehaviour {
 		if (_player.Paused)
 		{
 			Time.timeScale = 0.0f;
-			GetComponent<GUIController>().PauseMenu.SetActive(true);
+			_gui.PauseMenu.SetActive(true);
 		}
 		else
 		{
 			Time.timeScale = 1.0f;
-			GetComponent<GUIController>().PauseMenu.SetActive(false);
+			_gui.PauseMenu.SetActive(false);
 		}
 	}
 
@@ -924,7 +923,7 @@ public class InputController : MonoBehaviour {
 		
 		_hasActiveBox = true;
 
-		GetComponent<GUIController>().StartSelectBox(_anchor);
+		_gui.StartSelectBox(_anchor);
 	}
 
 	/// <summary>
@@ -934,9 +933,7 @@ public class InputController : MonoBehaviour {
 	{
 		if (_hasActiveBox) 
 		{
-			_outer = Mouse.current.position.ReadValue();
-
-			GetComponent<GUIController>().DragSelectBox(_outer);
+			_gui.DragSelectBox(Mouse.current.position.ReadValue());
 		}
 	}
 
