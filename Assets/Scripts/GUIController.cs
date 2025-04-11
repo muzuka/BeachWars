@@ -246,8 +246,9 @@ public class GUIController : MonoBehaviour {
 	/// <returns><c>true</c>, if mouse is over GUI, <c>false</c> otherwise.</returns>
 	public bool MouseOnGUI()
 	{
+		RectTransform[] UITransforms = FindObjectsOfType<RectTransform>();
 		// for each gui component
-		foreach(RectTransform rectTrans in FindObjectsOfType<RectTransform>())
+		foreach(RectTransform rectTrans in UITransforms)
 		{
 			// ignore maingui that takes whole screen
 			if (rectTrans.gameObject.GetInstanceID() != MainGUI.GetInstanceID() && rectTrans.gameObject.GetInstanceID() != SelectBox.GetInstanceID()) 

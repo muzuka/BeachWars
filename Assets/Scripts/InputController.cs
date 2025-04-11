@@ -36,6 +36,7 @@ public class InputController : MonoBehaviour {
     Vector3 _anchor;				// Start point
 	Vector3 _outer;					// drag point
 	bool _hasActiveBox;				// is SelectBox active?
+	Vector2 _mouseDownPos;
 
 	RaycastHit _hit;
 
@@ -54,8 +55,10 @@ public class InputController : MonoBehaviour {
 	    _leftClick = _clickControls.Units.Select;
 	    _rightClick = _clickControls.Units.Use;
 
-	    _clickControls.Units.Select.performed += 
-		    x => LeftClickWithoutBuilding();
+	    _clickControls.Units.Select.started += 
+		    x => LeftClickStart();
+	    _clickControls.Units.Select.canceled +=
+		    x => LeftClickEnd();
 	    _clickControls.Units.Use.performed +=
 		    x => RightClickWithoutBuilding();
 	    _clickControls.Building.Place.performed +=
@@ -116,7 +119,7 @@ public class InputController : MonoBehaviour {
 
     void Update()
     {
-	    if (_leftClick.IsPressed() && !_clickControls.Building.Place.enabled)
+	    if (_hasActiveBox)
 	    {
 		    if (!_gui.MouseOnGUI())
 		    {
@@ -161,19 +164,17 @@ public class InputController : MonoBehaviour {
 
 	void LeftClickWithBuilding()
 	{
-		_debug.Assert(_player != null);
-		_debug.Assert(_gui != null);
 		if (!_gui.MouseOnGUI())
 		{
 			_playerInput.enabled = true;
 			GhostBuildingManager ghostManager = _player.GhostManager;
 			if (_player.BuildingType == "Junction")
 			{
-				ClickWhileBuildingJunction(_player);
+				ClickWhileBuildingJunction();
 			}
 			else if (_leftClick.WasReleasedThisFrame() && ghostManager.CanBuild)
 			{
-				LeftClickWhileBuilding(_player);
+				LeftClickWhileBuilding();
 			}
 		}
 		else
@@ -184,8 +185,6 @@ public class InputController : MonoBehaviour {
 
 	void RightClickWithBuilding()
 	{
-		_debug.Assert(_player != null);
-		_debug.Assert(_gui != null);
 		if (!_gui.MouseOnGUI())
 		{
 			_playerInput.enabled = true;
@@ -201,22 +200,15 @@ public class InputController : MonoBehaviour {
 		}
 	}
 
-	void LeftClickWithoutBuilding()
+	void LeftClickStart()
 	{
-		_debug.Assert(_player != null);
-		_debug.Assert(_gui != null);
 		_debug.LogMessage("Left clicked!");
 		if (!_gui.MouseOnGUI())
 		{
 			_playerInput.enabled = true;
-			if (_leftClick.phase == InputActionPhase.Started)
-			{
-				CreateBoxSelection();
-			}
-			else if (_leftClick.phase == InputActionPhase.Performed)
-			{
-				SelectEntities(_player, _gui);
-			}
+			_mouseDownPos = Mouse.current.position.ReadValue();
+			_hasActiveBox = true;
+			CreateBoxSelection();
 		}
 		else
 		{
@@ -224,10 +216,28 @@ public class InputController : MonoBehaviour {
 		}
 	}
 
+	void LeftClickEnd()
+	{
+		if (!_gui.MouseOnGUI() && _hasActiveBox)
+		{
+			Vector2 releasePos = Mouse.current.position.ReadValue();
+			float dragDist = Vector2.Distance(_mouseDownPos, releasePos);
+
+			if (dragDist < SingleClickMaxDist)
+			{
+				ProcessClickWithNoDrag();
+			}
+			else
+			{
+				SelectEntities();
+			}
+
+			_hasActiveBox = false;
+		}
+	}
+
 	void RightClickWithoutBuilding()
 	{
-		_debug.Assert(_player != null);
-		_debug.Assert(_gui != null);
 		if (!_gui.MouseOnGUI())
 		{
 			_playerInput.enabled = true;
@@ -242,12 +252,12 @@ public class InputController : MonoBehaviour {
 		}
 	}
 	
-	void ClickWhileBuildingJunction(Player player)
+	void ClickWhileBuildingJunction()
 	{
-		GhostBuildingManager ghostManager = player.GhostManager;
+		GhostBuildingManager ghostManager = _player.GhostManager;
 	    
-		player.Deselect();
-		player.States.SetState("Building", true);
+		_player.Deselect();
+		_player.States.SetState("Building", true);
 
 		if (_leftClick.WasReleasedThisFrame())
 		{
@@ -263,13 +273,9 @@ public class InputController : MonoBehaviour {
 		}
 		else if (_rightClick.WasReleasedThisFrame())
 		{
-			player.CancelBuilding();
+			_player.CancelBuilding();
 		}
 	}
-
-	#endregion
-	
-	#region Left click functions
 
     // Process Left Click
     // ####################################################################################
@@ -278,19 +284,19 @@ public class InputController : MonoBehaviour {
     /// </summary>
     /// <param name="manager">Manager object.</param>
     /// <param name="player">Player script.</param>
-    void LeftClickWhileBuilding(Player player)
+    void LeftClickWhileBuilding()
     {
-	    GhostBuildingManager ghostManager = player.GhostManager;
+	    GhostBuildingManager ghostManager = _player.GhostManager;
 
 	    if (ghostManager.GhostBuilding)
 	    {
 		    GhostBuilder buildingGhost = ghostManager.GhostBuilding.GetComponent<GhostBuilder>();
-		    buildingGhost.HasBuilder = player.HasSelected;
+		    buildingGhost.HasBuilder = _player.HasSelected;
 
 		    buildingGhost.Placed = true;
 		    ghostManager.PlaceGhostBuilding();
 
-		    player.States.SetState("Building", false);
+		    _player.States.SetState("Building", false);
 	    }
 	    else
 	    {
@@ -303,38 +309,38 @@ public class InputController : MonoBehaviour {
 	    }
     }
     
-    void ProcessClickWithNoDrag(Player player)
+    void ProcessClickWithNoDrag()
     {
 	    _debug.LogMessage("Single-selected");
 
         _hit = Raycaster.ShootMouseRay();
 
-        if (_hit.transform.CompareTag(Tags.Beach) && player.CanCommand)
+        if (_hit.transform.CompareTag(Tags.Beach) && _player.CanCommand)
         {
 	        _debug.LogMessage("Hit Beach");
-            if (player.SelectedList.Count > 1)
+            if (_player.SelectedList.Count > 1)
             {
-                MoveSelectedCrabs(player);
+                MoveSelectedCrabs();
             }
             else
             {
-                if (IdUtility.IsCrab(player.Selected))
+                if (IdUtility.IsCrab(_player.Selected))
                 {
-                    player.Selected.GetComponent<CrabController>().StartNewMove(_hit.point);
+	                _player.Selected.GetComponent<CrabController>().StartNewMove(_hit.point);
                 }
-                else if (IdUtility.IsSiegeWeapon(player.Selected))
+                else if (IdUtility.IsSiegeWeapon(_player.Selected))
                 {
-                    player.Selected.GetComponent<SiegeController>().StartMove(_hit.point);
+	                _player.Selected.GetComponent<SiegeController>().StartMove(_hit.point);
                 }
             }
         }
         else
         {
-            player.Deselect();
-            AddSingleEntity(player);
-            if (player.SelectedList.Count == 1)
+	        _player.Deselect();
+            AddSingleEntity();
+            if (_player.SelectedList.Count == 1)
             {
-                player.Select(player.SelectedList[0]); 
+	            _player.Select(_player.SelectedList[0]); 
             }
         }
     }
@@ -383,7 +389,7 @@ public class InputController : MonoBehaviour {
 			{
 				if (IdUtility.IsBuilding(target))
 				{
-					RightClickBuilding(_player, target);
+					RightClickBuilding(target);
 				}
 				else if (IdUtility.IsWeapon(target) && IdUtility.IsCrab(_player.Selected))
 				{
@@ -419,8 +425,6 @@ public class InputController : MonoBehaviour {
 	/// <param name="castle">Castle script.</param>
 	void RightClickCastle(CastleController castle)
 	{
-		_debug.Assert(castle);
-		
         if (castle.GetTeam().OnTeam(_player.GetTeam().team))
         {
 	        Inventory inv;
@@ -482,35 +486,35 @@ public class InputController : MonoBehaviour {
 	/// </summary>
 	/// <param name="player">Player script.</param>
 	/// <param name="building">Target object.</param>
-	void RightClickBuilding(Player player, GameObject building) 
+	void RightClickBuilding(GameObject building) 
 	{
-        if (building.GetComponent<Team>().OnTeam(player.GetTeam().team))
+        if (building.GetComponent<Team>().OnTeam(_player.GetTeam().team))
         {
-            if (player.States.GetState("Repairing"))
+            if (_player.States.GetState("Repairing"))
             {
-                player.Selected.GetComponent<CrabController>().StartRepair(building);
-                player.Selected.GetComponent<CrabController>().SetCrabs(player.SelectedList.Count);
-                player.MoveMultiple(building.transform.position);
+                _player.Selected.GetComponent<CrabController>().StartRepair(building);
+                _player.Selected.GetComponent<CrabController>().SetCrabs(_player.SelectedList.Count);
+                _player.MoveMultiple(building.transform.position);
             }
-            else if (player.States.GetState("Attacking"))
+            else if (_player.States.GetState("Attacking"))
             {
-	            player.Selected.GetComponent<CrabController>().StartDismantling(building);
+	            _player.Selected.GetComponent<CrabController>().StartDismantling(building);
             }
             else if (building.GetComponent<Enterable>())
             {
-                if (player.Selected == building)
+                if (_player.Selected == building)
                 {
-                    player.Selected.GetComponent<Enterable>().RemoveOccupant();
+                    _player.Selected.GetComponent<Enterable>().RemoveOccupant();
                 }
                 else
                 {
-                    if (IdUtility.IsCrab(player.Selected))
+                    if (IdUtility.IsCrab(_player.Selected))
                     {
-                        player.Selected.GetComponent<CrabController>().StartEnter(building); 
+                        _player.Selected.GetComponent<CrabController>().StartEnter(building); 
                     }
-                    else if (IdUtility.IsSiegeWeapon(player.Selected) && building.CompareTag(Tags.Tower))
+                    else if (IdUtility.IsSiegeWeapon(_player.Selected) && building.CompareTag(Tags.Tower))
                     {
-                        player.Selected.GetComponent<SiegeController>().StartEnter(building); 
+                        _player.Selected.GetComponent<SiegeController>().StartEnter(building); 
                     }
                 }
             }
@@ -814,33 +818,32 @@ public class InputController : MonoBehaviour {
     /// </summary>
     /// <param name="player">Player script.</param>
     /// <param name="entity">Entity object.</param>
-    void AddToSelection(Player player, GameObject entity) 
+    void AddToSelection(GameObject entity) 
 	{
-		_debug.Assert(entity);
 		_debug.LogMessage("Added " + entity.tag);
 
-		player.SelectedList.Add(entity);
+		_player.SelectedList.Add(entity);
 
 		if (IdUtility.IsMoveable(entity))
-			player.HaloList.Add(Instantiate(HaloCanvas));
+			_player.HaloList.Add(Instantiate(HaloCanvas));
 	}
 		
 	/// <summary>
 	/// Adds all within bounds.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	void AddAllWithinBounds(Player player)
+	void AddAllWithinBounds()
 	{
 		Camera mainCamera = Camera.main;
-		Team playerTeam = player.GetComponent<Team>();
-		Bounds bounds = SelectUtils.GetViewportBounds(Camera.main, _anchor, _outer);
-
+		Team playerTeam = _player.GetComponent<Team>();
+		Bounds bounds = SelectUtils.GetViewportBounds(mainCamera, _anchor, _outer);
+		
 		foreach(CrabController crab in FindObjectsOfType<CrabController>()) 
 		{
 			if (crab.GetComponent<Team>().OnTeam(playerTeam.team)) 
 			{
 				if (SelectUtils.IsWithinBounds(mainCamera, bounds, crab.transform.position))
-					AddToSelection(player, crab.gameObject);
+					AddToSelection(crab.gameObject);
 			}
 		}
 
@@ -851,7 +854,7 @@ public class InputController : MonoBehaviour {
 				if (siege.GetComponent<Team>().OnTeam(playerTeam.team))
 				{
 					if (SelectUtils.IsWithinBounds(mainCamera, bounds, siege.transform.position))
-						AddToSelection(player, siege.gameObject);
+						AddToSelection(siege.gameObject);
 				}
 			}
 		}
@@ -861,19 +864,17 @@ public class InputController : MonoBehaviour {
 	/// Adds a single entity.
 	/// </summary>
 	/// <param name="player">Player script.</param>
-	void AddSingleEntity(Player player) 
+	void AddSingleEntity() 
 	{
-		_debug.Assert(player);
-
 		_hit = Raycaster.ShootMouseRay();
 		GameObject entity = _hit.transform.gameObject;
 		// entity exists and player hasn't selected already and entity isn't the beach.
-		bool selectable = entity != null && !player.SelectedList.Contains(entity) && entity.tag != Tags.Beach;
+		bool selectable = entity != null && !_player.SelectedList.Contains(entity) && entity.tag != Tags.Beach;
 		
 		if (selectable)
 		{
 			//player.select(entity);
-			AddToSelection(player, entity);
+			AddToSelection(entity);
 		}
 	}
 
@@ -882,38 +883,35 @@ public class InputController : MonoBehaviour {
 	/// </summary>
 	/// <param name="player">Player script.</param>
 	/// <param name="gui">GUI script.</param>
-	void SelectEntities(Player player, GUIController gui) 
+	void SelectEntities() 
 	{
-		_debug.Assert(gui);
-		_debug.Assert(player);
-
 		_hasActiveBox = false;
 
 		// if mouse hasn't moved
 		if (Vector3.Distance(_anchor, _outer) < SingleClickMaxDist)
 		{
-            ProcessClickWithNoDrag(player);
+            ProcessClickWithNoDrag();
 		}
 		else 
 		{
 			_debug.LogMessage("Multi-selected");
 			
-			player.Deselect();
-			AddAllWithinBounds(player);
+			_player.Deselect();
+			AddAllWithinBounds();
 
-			if (player.SelectedList.Count == 1) 
+			if (_player.SelectedList.Count == 1) 
 			{
 				_debug.LogMessage("Selected one object");
-				player.Select(player.SelectedList[0]);
+				_player.Select(_player.SelectedList[0]);
 			}
-			else if (player.SelectedList.Count > 1)
+			else if (_player.SelectedList.Count > 1)
 			{
 				_debug.LogMessage("Selected multiple objects");
-				player.SelectAll();
+				_player.SelectAll();
 			}
 		}
 
-		gui.ClearBox();
+		_gui.ClearBox();
 	}
 
 	/// <summary>
@@ -947,17 +945,17 @@ public class InputController : MonoBehaviour {
     #region Helper functions
 
         // Spaces crabs out around the selected position
-    void MoveSelectedCrabs(Player player)
+    void MoveSelectedCrabs()
     {
-        Vector3 avgPosition = InfoTool.GetAveragePosition(player.SelectedList);
-        float avgDistance = InfoTool.GetAverageDistance(player.SelectedList, avgPosition);
-        int avgQuadrantAmount = player.SelectedList.Count / 4;
+        Vector3 avgPosition = InfoTool.GetAveragePosition(_player.SelectedList);
+        float avgDistance = InfoTool.GetAverageDistance(_player.SelectedList, avgPosition);
+        int avgQuadrantAmount = _player.SelectedList.Count / 4;
         List<GameObject> listA = new List<GameObject>();
         List<GameObject> listB = new List<GameObject>();
         List<GameObject> listC = new List<GameObject>();
         List<GameObject> listD = new List<GameObject>();
 
-        foreach (GameObject selected in player.SelectedList)
+        foreach (GameObject selected in _player.SelectedList)
         {
             if (selected.transform.position.x > avgPosition.x && selected.transform.position.z > avgPosition.z)
             {

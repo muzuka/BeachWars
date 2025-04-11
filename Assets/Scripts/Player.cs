@@ -309,10 +309,12 @@ public class Player : MonoBehaviour
 	    
 	    Selected = obj;
 	    SelectedTeam = obj.GetComponent<Team>();
-	    CanCommand = _team.OnTeam(SelectedTeam.team) && Selected.GetComponent<IUnit>() != null;
 	    HasSelected = true;
-
-	    Selected.GetComponent<IUnit>().SetController(this);
+	    CanCommand = _team.OnTeam(SelectedTeam.team) && Selected.GetComponent<IUnit>() != null;
+	    if (CanCommand)
+	    {
+		    Selected.GetComponent<IUnit>().SetController(this);
+	    }
 
 	    // set gui
 	    GUI.InfoView.SetLabel(obj);
@@ -330,13 +332,16 @@ public class Player : MonoBehaviour
 	    _debug.LogMessage($"Selected {SelectedList.Count} units.");
 		
 	    Selected = SelectedList[0];
+	    SelectedTeam = Selected.GetComponent<Team>();
 	    HasSelected = true;
 	    CanCommand = (_team.team == SelectedTeam.team) && Selected.GetComponent<IUnit>() != null;
-	    SelectedTeam = SelectedList[0].GetComponent<Team>();
 
-	    for (int i = 0; i < SelectedList.Count; i++)
+	    if (CanCommand)
 	    {
-		    SelectedList[i].GetComponent<IUnit>().SetController(this);
+		    for (int i = 0; i < SelectedList.Count; i++)
+		    {
+			    SelectedList[i].GetComponent<IUnit>().SetController(this);
+		    }
 	    }
 
 	    GUI.SetActiveGUIComponents("multi");
